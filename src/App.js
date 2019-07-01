@@ -34,7 +34,7 @@ class App extends React.Component {
 
   styleGridItem = () => {
     return {
-      border: "solid 1px"
+      //border: "solid 1px"
     }
   }
 
@@ -48,12 +48,12 @@ class App extends React.Component {
             </Paper>
           </Grid>
           <Grid item style={this.styleGridItem()} xs={12} sm={6}>
-            <Paper className="paper">
+            <Paper style={this.stylePaper()}>
               <Statistics state={this.state}/>
             </Paper>
           </Grid>
           <Grid item style={this.styleGridItem()} xs={12} sm={12}>
-            <Paper className="paper">
+            <Paper style={this.stylePaper()}>
               <DataTable state={this.state}/>
             </Paper>
           </Grid>
