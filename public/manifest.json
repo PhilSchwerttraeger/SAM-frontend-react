@@ -1,6 +1,6 @@
 {
   "short_name": "AM",
-  "name": "Account Management",
+  "name": "Simple Account Manager",
   "icons": [
     {
       "src": "favicon.ico",
