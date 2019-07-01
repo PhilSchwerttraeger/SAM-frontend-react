@@ -22,13 +22,14 @@ class App extends React.Component {
 
   styleRoot = () => {
     return {
-      flexGrow: 1
+      flexGrow: 1,
+      padding: 16
     }
   }
   
   stylePaper = () => {
     return {
-      padding: 20
+      padding: 16
     }
   }
 
