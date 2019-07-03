@@ -13,16 +13,11 @@ class App extends React.Component {
 
   componentWillMount(){
 
-  }
-
-  state = {
-    "strings": {
-      "titles": {
-        "analysis": "Analysis",
-        "statistics": "Statistics",
-        "datatable": "Data Table"
+    this.setState(
+      { 
+        strings: require('./languages/english.json') 
       }
-    }
+    );
   }
 
   styleRoot = () => {
