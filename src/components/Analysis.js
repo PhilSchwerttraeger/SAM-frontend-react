@@ -6,6 +6,7 @@ export default class Analysis extends Component {
         return (
             <div>
                 <h2>{this.props.state.strings.titles.analysis}</h2>
+
             </div>
         )
     }

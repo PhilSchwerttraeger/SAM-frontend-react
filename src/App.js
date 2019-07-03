@@ -9,13 +9,18 @@ import DataTable from './components/DataTable';
 class App extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      "strings": {
-        "titles": {
-          "analysis": "Analysis",
-          "statistics": "Statistics",
-          "datatable": "Data Table"
-        }
+  }
+
+  componentWillMount(){
+
+  }
+
+  state = {
+    "strings": {
+      "titles": {
+        "analysis": "Analysis",
+        "statistics": "Statistics",
+        "datatable": "Data Table"
       }
     }
   }
@@ -41,25 +46,27 @@ class App extends React.Component {
 
   render() {
     return (
-      <div style={this.styleRoot()}>
-        <Grid container spacing={3}>
-          <Grid item style={this.styleGridItem()} xs={12} sm={6}>
-            <Paper style={this.stylePaper()}>
-              <Analysis state={this.state}/>
-            </Paper>
+      
+        <div style={this.styleRoot()}>
+          <Grid container spacing={3}>
+            <Grid item style={this.styleGridItem()} xs={12} sm={6}>
+              <Paper style={this.stylePaper()}>
+                <Analysis state={this.state}/>
+              </Paper>
+            </Grid>
+            <Grid item style={this.styleGridItem()} xs={12} sm={6}>
+              <Paper style={this.stylePaper()}>
+                <Statistics state={this.state}/>
+              </Paper>
+            </Grid>
+            <Grid item style={this.styleGridItem()} xs={12} sm={12}>
+              <Paper style={this.stylePaper()}>
+                <DataTable state={this.state}/>
+              </Paper>
+            </Grid>
           </Grid>
-          <Grid item style={this.styleGridItem()} xs={12} sm={6}>
-            <Paper style={this.stylePaper()}>
-              <Statistics state={this.state}/>
-            </Paper>
-          </Grid>
-          <Grid item style={this.styleGridItem()} xs={12} sm={12}>
-            <Paper style={this.stylePaper()}>
-              <DataTable state={this.state}/>
-            </Paper>
-          </Grid>
-        </Grid>
-      </div>
+        </div>
+      
     );
   }
 }
