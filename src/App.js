@@ -7,11 +7,25 @@ import Statistics from './components/Statistics';
 import DataTable from './components/DataTable';
 
 class App extends React.Component {
+  // eslint-disable-next-line
   constructor(props){
     super(props);
+    this.state = {
+      data: [],
+      strings: []
+    }
   }
 
   componentWillMount(){
+    fetch('http://localhost:3001/data')
+      .then(
+        res => res.json()
+      )
+      .then(
+        data => {
+          this.setState({data: data});
+        }
+      );
 
     this.setState(
       { 
