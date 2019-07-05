@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Analysis from './components/Analysis';
 import Statistics from './components/Statistics';
 import DataTable from './components/DataTable';
+import NavBar from './components/NavBar';
 
 class App extends React.Component {
   // eslint-disable-next-line
@@ -55,8 +56,9 @@ class App extends React.Component {
 
   render() {
     return (
-      
-        <div style={this.styleRoot()}>
+      <div>
+        <NavBar />
+        <div style={this.styleMain()}>
           <Grid container spacing={3}>
             <Grid item style={this.styleGridItem()} xs={12} sm={6}>
               <Paper style={this.stylePaper()}>
@@ -69,13 +71,11 @@ class App extends React.Component {
               </Paper>
             </Grid>
             <Grid item style={this.styleGridItem()} xs={12} sm={12}>
-              <Paper style={this.stylePaper()}>
-                <DataTable state={this.state}/>
-              </Paper>
+              <DataTable state={this.state}/>
             </Grid>
           </Grid>
         </div>
-      
+      </div>
     );
   }
 }
