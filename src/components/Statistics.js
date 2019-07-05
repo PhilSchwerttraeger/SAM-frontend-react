@@ -4,7 +4,7 @@ export default class Statistics extends Component {
     render() {
         return (
             <div>
-                <h2>{this.props.state.strings.titles.statistics}</h2>
+                <h4 style={{fontWeight: 500}}>{this.props.state.strings.titles.statistics}</h4>
             </div>
         )
     }

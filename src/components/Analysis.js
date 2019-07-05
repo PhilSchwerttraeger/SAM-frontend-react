@@ -5,7 +5,7 @@ export default class Analysis extends Component {
   render() {
     return (
       <div>
-        <h2>{this.props.state.strings.titles.analysis}</h2>
+        <h4 style={{fontWeight: 500}}>{this.props.state.strings.titles.analysis}</h4>
       </div>
     )
   }
