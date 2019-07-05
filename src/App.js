@@ -35,7 +35,7 @@ class App extends React.Component {
     );
   }
 
-  styleRoot = () => {
+  styleMain = () => {
     return {
       flexGrow: 1,
       padding: 16
