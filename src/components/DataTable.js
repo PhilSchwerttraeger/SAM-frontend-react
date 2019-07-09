@@ -45,6 +45,48 @@ export default class DataTable extends Component {
                   options={{
                     exportButton: true
                   }}
+                  editable={{
+                    onRowAdd: newData =>
+                      new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                          // eslint-disable-next-line
+                            {
+                              /* const data = this.state.data;
+                              data.push(newData);
+                              this.setState({ data }, () => resolve()); */
+                            }
+                            resolve();
+                        }, 2500);
+                      }),
+                    onRowUpdate: (newData, oldData) =>
+                      new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                          // eslint-disable-next-line
+                            {
+                              const fields = state.fields;
+                              const index = fields.indexOf(oldData);
+                              delete newData.tableData;
+                              fields[index] = newData;         
+                              this.setState({ fields }, () => resolve());
+                              updateEntry(index, newData);
+                            }
+                            resolve();
+                        }, 2500);
+                      }),
+                    onRowDelete: oldData =>
+                      new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                        // eslint-disable-next-line
+                          {
+                            /* let data = this.state.data;
+                            const index = data.indexOf(oldData);
+                            data.splice(index, 1);
+                            this.setState({ data }, () => resolve()); */
+                          }
+                          resolve();
+                        }, 2500);
+                      })
+                  }}
                 />
               </div>
             )
