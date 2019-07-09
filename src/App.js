@@ -9,32 +9,6 @@ import NavBar from './components/NavBar';
 import { DataProvider } from './components/DataContext';
 
 class App extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      data: [],
-      strings: []
-    }
-  }
-
-  componentWillMount(){
-    fetch('http://localhost:3001/data')
-      .then(
-        res => res.json()
-      )
-      .then(
-        data => {
-          this.setState({data: data});
-        }
-      );
-
-    this.setState(
-      { 
-        strings: require('./languages/english.json') 
-      }
-    );
-  }
-
   styleMain = () => {
     return {
       flexGrow: 1,

@@ -4,24 +4,24 @@ const DataContext = React.createContext();
 
 export class DataProvider extends Component {
   state = {
-    data: [],
+    generalConfig: {},
+    fieldConfig: [],
+    fields: [],
     strings: []
   }
 
   componentWillMount(){
-    fetch('http://localhost:3001/data')
-      .then(
-        res => res.json()
-      )
-      .then(
-        data => {
-          this.setState(
-            {
-              data: data
-            }
-          );
-        }
-      );
+    fetch('http://localhost:3001/generalConfig')
+      .then(res => res.json())
+      .then(data => {this.setState({generalConfig: data});});
+      
+    fetch('http://localhost:3001/fieldConfig')
+    .then(res => res.json())
+    .then(data => {this.setState({fieldConfig: data});});
+    
+    fetch('http://localhost:3001/fields')
+    .then(res => res.json())
+    .then(data => {this.setState({fields: data});});
 
     this.setState(
       { 

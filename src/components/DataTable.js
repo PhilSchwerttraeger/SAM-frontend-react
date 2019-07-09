@@ -1,47 +1,27 @@
 import React, { Component } from 'react';
 import { Consumer } from './DataContext';
 import MaterialTable from 'material-table';
-import Spinner from './Spinner';
+import Spinner from '../assets/Spinner';
+
+export function updateEntry(id, data) {
+  return fetch('http://localhost:3001/fields/' + id, {
+      method: 'PUT',
+      mode: 'CORS',
+      body: JSON.stringify(data),
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  }).then(res => {
+      return res;
+  }).catch(err => err);
+}
 
 export default class DataTable extends Component {
   render() {
-    /*
-    var columns = [];
-		var data = [];
-    
-		if(this.props.state.data.fieldConfig){
-			columns = this.props.state.data.fieldConfig.map(
-        fieldItem => {
-          var column = {
-            name: fieldItem.name,
-            label: fieldItem.title,
-            // en/disable sort/filter here is needed
-            // filter: true
-            // sort: false
-            filterList: fieldItem.type
-          }
-          return column;
-        }
-      );
-      columns.shift();
-		}
-
-    if(this.props.state.data.fields){
-			data = this.props.state.data.fields.map(
-				fieldItem => {
-          let item = Object.values(fieldItem);
-          item.shift();
-          return(item);
-        }
-			);
-    }
-    
-    */
-
     return (
       <Consumer>
         {state => {
-          if(state.data.fieldConfig === undefined){
+          if(state.fieldConfig === undefined){
             // data not fetched yet, show spinner
             return <Spinner />
           } else {
@@ -51,7 +31,7 @@ export default class DataTable extends Component {
                 <MaterialTable 
                   title = {state.strings.titles.datatable}
                   columns = {
-                    state.data.fieldConfig.map(
+                    state.fieldConfig.map(
                       column => {
                         return {
                           title: column.title,
@@ -61,7 +41,7 @@ export default class DataTable extends Component {
                       }
                     )
                   }
-                  data = {state.data.fields}
+                  data = {state.fields}
                   options={{
                     exportButton: true
                   }}
