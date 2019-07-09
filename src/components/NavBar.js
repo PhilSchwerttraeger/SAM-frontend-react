@@ -4,10 +4,11 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+//import AccountCircle from '@material-ui/icons/AccountCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
 import InfoIcon from '@material-ui/icons/Info';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
+import CategoriesModal from './CategoriesModal';
 
 export default class NavBar extends Component {
   render() {
@@ -18,14 +19,15 @@ export default class NavBar extends Component {
             <IconButton edge="start" color="inherit">
               <MenuIcon />
             </IconButton>
-            <Typography variant="title">
+            <Typography>
               Simple Account Manager
             </Typography>
             <div style={{flexGrow: 1}}/>
             <div style={{display: 'flex'}}>
-              <IconButton color="inherit">
+              <IconButton color="inherit" onClick={this.handleOpen}>
                 <ViewColumnIcon />
               </IconButton>
+              <CategoriesModal />
               <IconButton color="inherit">
                 <SettingsIcon />
               </IconButton>
