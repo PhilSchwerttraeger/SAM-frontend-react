@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Consumer } from './DataContext';
+import MaterialTable from 'material-table';
 import Spinner from './Spinner';
 
 export default class DataTable extends Component {
@@ -40,8 +41,6 @@ export default class DataTable extends Component {
     return (
       <Consumer>
         {state => {
-          console.log(state);
-          return <div>{state.strings.titles.datatable}</div>
           if(state.data.fieldConfig === undefined){
             // data not fetched yet, show spinner
             return <Spinner />
@@ -49,6 +48,24 @@ export default class DataTable extends Component {
             //console.log(state);
             return (
               <div>
+                <MaterialTable 
+                  title = {state.strings.titles.datatable}
+                  columns = {
+                    state.data.fieldConfig.map(
+                      column => {
+                        return {
+                          title: column.title,
+                          field: column.name,
+                          type: column.type
+                        };
+                      }
+                    )
+                  }
+                  data = {state.data.fields}
+                  options={{
+                    exportButton: true
+                  }}
+                />
               </div>
             )
           }
