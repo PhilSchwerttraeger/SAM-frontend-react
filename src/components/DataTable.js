@@ -4,9 +4,10 @@ import MaterialTable from 'material-table';
 import Spinner from '../assets/Spinner';
 
 export function updateEntry(id, data) {
+  delete data.tableData;
+  console.log({id, data});
   return fetch('http://localhost:3001/fields/' + id, {
       method: 'PUT',
-      mode: 'CORS',
       body: JSON.stringify(data),
       headers: {
           'Content-Type': 'application/json'
@@ -21,7 +22,8 @@ export default class DataTable extends Component {
     return (
       <Consumer>
         {state => {
-          if(state.fieldConfig === undefined){
+          if(state === undefined 
+            || state.fieldConfig === undefined){
             // data not fetched yet, show spinner
             return <Spinner />
           } else {
@@ -49,42 +51,40 @@ export default class DataTable extends Component {
                     onRowAdd: newData =>
                       new Promise((resolve, reject) => {
                         setTimeout(() => {
-                          // eslint-disable-next-line
                             {
-                              /* const data = this.state.data;
-                              data.push(newData);
-                              this.setState({ data }, () => resolve()); */
+                              const fields = state.fields;
+                              fields.push(newData);
+                              //addEntry(newData);
+                              this.setState({ fields }, () => resolve());
                             }
                             resolve();
-                        }, 2500);
+                        }, 500);
                       }),
                     onRowUpdate: (newData, oldData) =>
                       new Promise((resolve, reject) => {
                         setTimeout(() => {
-                          // eslint-disable-next-line
                             {
                               const fields = state.fields;
                               const index = fields.indexOf(oldData);
-                              delete newData.tableData;
-                              fields[index] = newData;         
-                              this.setState({ fields }, () => resolve());
+                              //delete newData.tableData;
+                              fields[index] = newData;
                               updateEntry(index, newData);
+                              this.setState({ fields }, () => resolve());
                             }
                             resolve();
-                        }, 2500);
+                        }, 500);
                       }),
                     onRowDelete: oldData =>
                       new Promise((resolve, reject) => {
                         setTimeout(() => {
-                        // eslint-disable-next-line
                           {
-                            /* let data = this.state.data;
-                            const index = data.indexOf(oldData);
-                            data.splice(index, 1);
-                            this.setState({ data }, () => resolve()); */
+                            let fields = state.fields;
+                            const index = fields.indexOf(oldData);
+                            fields.splice(index, 1);
+                            this.setState({ fields }, () => resolve());
                           }
                           resolve();
-                        }, 2500);
+                        }, 500);
                       })
                   }}
                 />

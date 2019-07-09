@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 
-const DataContext = React.createContext();
+const DataContext = React.createContext({
+  updateFields: (newFields) => {
+    this.setState({
+      fields: newFields
+    })
+  }
+});
 
 export class DataProvider extends Component {
   state = {
