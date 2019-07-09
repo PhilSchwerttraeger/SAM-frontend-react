@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Consumer } from './DataContext';
+import Spinner from './Spinner';
 
 export default class DataTable extends Component {
   render() {
@@ -41,6 +42,16 @@ export default class DataTable extends Component {
         {state => {
           console.log(state);
           return <div>{state.strings.titles.datatable}</div>
+          if(state.data.fieldConfig === undefined){
+            // data not fetched yet, show spinner
+            return <Spinner />
+          } else {
+            //console.log(state);
+            return (
+              <div>
+              </div>
+            )
+          }
         }}
       </Consumer>
     )
