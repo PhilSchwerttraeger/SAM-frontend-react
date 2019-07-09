@@ -5,10 +5,34 @@ import Spinner from '../assets/Spinner';
 
 export function updateEntry(id, data) {
   delete data.tableData;
-  console.log({id, data});
   return fetch('http://localhost:3001/fields/' + id, {
       method: 'PUT',
       body: JSON.stringify(data),
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  }).then(res => {
+      return res;
+  }).catch(err => err);
+}
+
+export function addEntry(data) {
+  delete data.tableData;
+  return fetch('http://localhost:3001/fields', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  }).then(res => {
+      return res;
+  }).catch(err => err);
+}
+
+export function deleteEntry(id) {
+  return fetch('http://localhost:3001/fields/' + id, {
+      method: 'DELETE',
+      //body: JSON.stringify(data),
       headers: {
           'Content-Type': 'application/json'
       }
@@ -54,7 +78,7 @@ export default class DataTable extends Component {
                             {
                               const fields = state.fields;
                               fields.push(newData);
-                              //addEntry(newData);
+                              addEntry(newData);
                               this.setState({ fields }, () => resolve());
                             }
                             resolve();
@@ -81,6 +105,7 @@ export default class DataTable extends Component {
                             let fields = state.fields;
                             const index = fields.indexOf(oldData);
                             fields.splice(index, 1);
+                            deleteEntry(index);
                             this.setState({ fields }, () => resolve());
                           }
                           resolve();
