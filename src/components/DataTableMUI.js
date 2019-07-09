@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import { Consumer } from './DataContext';
+import React, { Component } from 'react'
+import MUIDataTable from "mui-datatables";
 
 export default class DataTable extends Component {
   render() {
-    /*
-    var columns = [];
+		var columns = [];
 		var data = [];
-    
+		
 		if(this.props.state.data.fieldConfig){
 			columns = this.props.state.data.fieldConfig.map(
         fieldItem => {
@@ -32,17 +31,26 @@ export default class DataTable extends Component {
           return(item);
         }
 			);
-    }
-    
-    */
+		}
+
+    const options = {
+      filterType: "multiselect",
+      // no scrolling behaviour inside table:
+      responsive: "scrolled", 
+      rowsPerPage: 50,
+      rowsPerPageOptions: [10, 50, 100, 500],
+      textLabels: this.props.state.strings.tableTextLabels
+    };
 
     return (
-      <Consumer>
-        {value => {
-          console.log(value);
-          return <div>{value.strings.titles.datatable}</div>
-        }}
-      </Consumer>
+      <div>
+        <MUIDataTable
+          title={this.props.state.strings.titles.datatable}
+          data={data}
+          columns={columns}
+          options={options}
+      	/>
+      </div>
     )
   }
 }

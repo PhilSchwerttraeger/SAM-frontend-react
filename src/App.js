@@ -6,6 +6,7 @@ import Analysis from './components/Analysis';
 import Statistics from './components/Statistics';
 import DataTable from './components/DataTable';
 import NavBar from './components/NavBar';
+import { DataProvider } from './components/DataContext';
 
 class App extends React.Component {
   constructor(props){
@@ -49,7 +50,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <DataProvider>
         <NavBar />
         <div style={this.styleMain()}>
           <Grid container spacing={3}>
@@ -64,11 +65,11 @@ class App extends React.Component {
               </Paper>
             </Grid>
             <Grid item xs={12} sm={12}>
-              <DataTable state={this.state}/>
+              <DataTable/>
             </Grid>
           </Grid>
         </div>
-      </div>
+      </DataProvider>
     );
   }
 }
