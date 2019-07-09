@@ -8,7 +8,6 @@ import DataTable from './components/DataTable';
 import NavBar from './components/NavBar';
 
 class App extends React.Component {
-  // eslint-disable-next-line
   constructor(props){
     super(props);
     this.state = {
@@ -48,29 +47,23 @@ class App extends React.Component {
     }
   }
 
-  styleGridItem = () => {
-    return {
-      //border: "solid 1px"
-    }
-  }
-
   render() {
     return (
       <div>
         <NavBar />
         <div style={this.styleMain()}>
           <Grid container spacing={3}>
-            <Grid item style={this.styleGridItem()} xs={12} sm={6}>
+            <Grid item xs={12} sm={6}>
               <Paper style={this.stylePaper()}>
                 <Analysis state={this.state}/>
               </Paper>
             </Grid>
-            <Grid item style={this.styleGridItem()} xs={12} sm={6}>
+            <Grid item xs={12} sm={6}>
               <Paper style={this.stylePaper()}>
                 <Statistics state={this.state}/>
               </Paper>
             </Grid>
-            <Grid item style={this.styleGridItem()} xs={12} sm={12}>
+            <Grid item xs={12} sm={12}>
               <DataTable state={this.state}/>
             </Grid>
           </Grid>
