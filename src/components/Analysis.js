@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Consumer } from './DataContext';
 
 export default class Analysis extends Component {
   render() {
     return (
-      <div>
-        <h4 style={{fontWeight: 500}}>{this.props.state.strings.titles.analysis}</h4>
-      </div>
+      <Consumer>
+        {state => {
+          return (
+            <h4 style={{fontWeight: 500}}>{state.strings.titles.analysis}</h4>
+          )
+        }}
+      </Consumer>
     )
   }
-}
-
-Analysis.propTypes = {
-  state: PropTypes.object.isRequired
 }

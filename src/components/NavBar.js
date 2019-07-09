@@ -9,47 +9,50 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import InfoIcon from '@material-ui/icons/Info';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import CategoriesModal from './CategoriesModal';
+import { Consumer } from './DataContext';
 
 export default class NavBar extends Component {
   render() {
     return (
-      <div>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton edge="start" color="inherit">
-              <MenuIcon />
-            </IconButton>
-            <Typography>
-              Simple Account Manager
-            </Typography>
-            <div style={{flexGrow: 1}}/>
-            <div style={{display: 'flex'}}>
-              <IconButton color="inherit" onClick={this.handleOpen}>
-                <ViewColumnIcon />
+      <Consumer>
+        {state => 
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton edge="start" color="inherit">
+                <MenuIcon />
               </IconButton>
-              <CategoriesModal />
-              <IconButton color="inherit">
-                <SettingsIcon />
-              </IconButton>
-              {/*
-              <IconButton
-                aria-haspopup="true"
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              */}
-              <IconButton 
-                edge="end" 
-                aria-haspopup="true" 
-                color="inherit"
-              >
-                <InfoIcon />
-              </IconButton>
-            </div>
-          </Toolbar>
-        </AppBar>
-      </div>
+              <Typography>
+                {state.strings.title}
+              </Typography>
+              <div style={{flexGrow: 1}}/>
+              <div style={{display: 'flex'}}>
+                <IconButton color="inherit" onClick={this.handleOpen}>
+                  <ViewColumnIcon />
+                </IconButton>
+                <CategoriesModal />
+                <IconButton color="inherit">
+                  <SettingsIcon />
+                </IconButton>
+                {/*
+                <IconButton
+                  aria-haspopup="true"
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                */}
+                <IconButton 
+                  edge="end" 
+                  aria-haspopup="true" 
+                  color="inherit"
+                >
+                  <InfoIcon />
+                </IconButton>
+              </div>
+            </Toolbar>
+          </AppBar>
+        }
+      </Consumer>
     )
   }
 }

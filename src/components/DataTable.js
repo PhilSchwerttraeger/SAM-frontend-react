@@ -38,9 +38,9 @@ export default class DataTable extends Component {
 
     return (
       <Consumer>
-        {value => {
-          console.log(value);
-          return <div>{value.strings.titles.datatable}</div>
+        {state => {
+          console.log(state);
+          return <div>{state.strings.titles.datatable}</div>
         }}
       </Consumer>
     )

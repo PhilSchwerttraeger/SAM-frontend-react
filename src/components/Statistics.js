@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
+import { Consumer } from './DataContext'; 
 
 export default class Statistics extends Component {
     render() {
         return (
-            <div>
-                <h4 style={{fontWeight: 500}}>{this.props.state.strings.titles.statistics}</h4>
-            </div>
+            <Consumer>
+                {state => 
+                    <h4 style={{fontWeight: 500}}>{state.strings.titles.statistics}</h4>
+                }
+            </Consumer>
         )
     }
 }
