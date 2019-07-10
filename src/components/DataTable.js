@@ -43,27 +43,66 @@ export function deleteEntry(id) {
   }).catch(err => err);
 }
 
+function dateComparator(date1, date2) {
+  var date1Number = monthToComparableNumber(date1);
+  var date2Number = monthToComparableNumber(date2);
+  if (date1Number === null && date2Number === null) {
+    return 0;
+  }
+  if (date1Number === null) {
+    return -1;
+  }
+  if (date2Number === null) {
+    return 1;
+  }
+  return date1Number - date2Number;
+}
+
+function monthToComparableNumber(date) {
+  if (date === undefined || date === null || date.length !== 10) {
+    return null;
+  }
+  var yearNumber = date.substring(6, 10);
+  var monthNumber = date.substring(3, 5);
+  var dayNumber = date.substring(0, 2);
+  var result = yearNumber * 10000 + monthNumber * 100 + dayNumber;
+  return result;
+}
+
 export default class DataTable extends Component {
   mapColumns = (state) => {
     return state.fieldConfig.map(
       column => {
-        // enable checkbox if column is first column
-        let checkboxSelectionValue = false;
-        if(column.id === 0){
-          checkboxSelectionValue = true
-        }
-
-        // return column config
-        return {
+        let columnConfig = {
           headerName: column.title,
           field: column.name,
           sortable: true,
           filter: true,
-          checkboxSelection: checkboxSelectionValue
-          //type: column.type
+          editable: true
         };
+
+        // enable checkbox if column is first column
+        if(column.id === 0){
+          columnConfig.checkboxSelection = true
+        }
+
+        // enable date comparator when field type is 'date'
+        if(column.type === "date"){
+          columnConfig.comparator = dateComparator
+        }
+
+        // return column config
+        return columnConfig;
       }
     )
+  }
+  
+  onButtonClick = e => {
+    const selectedNodes = this.gridApi.getSelectedNodes()
+    console.log(selectedNodes);
+    const selectedData = selectedNodes.map( node => node.data )
+    const selectedDataStringPresentation = selectedData.map( node => node.id).join(', ')
+    alert(`Selected nodes: ${selectedDataStringPresentation}`)
   }
 
   render() {
@@ -97,13 +136,4 @@ export default class DataTable extends Component {
       </Consumer>
     )
   }
-  
-  onButtonClick = e => {
-    const selectedNodes = this.gridApi.getSelectedNodes()
-    console.log(selectedNodes);
-    const selectedData = selectedNodes.map( node => node.data )
-    const selectedDataStringPresentation = selectedData.map( node => node.id).join(', ')
-    alert(`Selected nodes: ${selectedDataStringPresentation}`)
-  }
-  
 }
