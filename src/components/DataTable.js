@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Consumer } from './DataContext';
-import MaterialTable from 'material-table';
 import Spinner from '../assets/Spinner';
 
 export function updateEntry(id, data) {
@@ -54,66 +53,7 @@ export default class DataTable extends Component {
             //console.log(state);
             return (
               <div>
-                <MaterialTable 
-                  title = {state.strings.titles.datatable}
-                  columns = {
-                    state.fieldConfig.map(
-                      column => {
-                        return {
-                          title: column.title,
-                          field: column.name,
-                          type: column.type
-                        };
-                      }
-                    )
-                  }
-                  data = {state.fields}
-                  options={{
-                    exportButton: true,
-                    filtering: true
-                  }}
-                  editable={{
-                    onRowAdd: newData =>
-                      new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            {
-                              const fields = state.fields;
-                              fields.push(newData);
-                              addEntry(newData);
-                              this.setState({ fields }, () => resolve());
-                            }
-                            resolve();
-                        }, 500);
-                      }),
-                    onRowUpdate: (newData, oldData) =>
-                      new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            {
-                              const fields = state.fields;
-                              const index = fields.indexOf(oldData);
-                              //delete newData.tableData;
-                              fields[index] = newData;
-                              updateEntry(index, newData);
-                              this.setState({ fields }, () => resolve());
-                            }
-                            resolve();
-                        }, 500);
-                      }),
-                    onRowDelete: oldData =>
-                      new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                          {
-                            let fields = state.fields;
-                            const index = fields.indexOf(oldData);
-                            fields.splice(index, 1);
-                            deleteEntry(index);
-                            this.setState({ fields }, () => resolve());
-                          }
-                          resolve();
-                        }, 500);
-                      })
-                  }}
-                />
+                
               </div>
             )
           }
