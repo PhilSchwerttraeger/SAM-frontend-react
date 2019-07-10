@@ -69,7 +69,8 @@ export default class DataTable extends Component {
                   }
                   data = {state.fields}
                   options={{
-                    exportButton: true
+                    exportButton: true,
+                    filtering: true
                   }}
                   editable={{
                     onRowAdd: newData =>
