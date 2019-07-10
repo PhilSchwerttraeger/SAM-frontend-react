@@ -69,8 +69,18 @@ function monthToComparableNumber(date) {
   return result;
 }
 
+function currencyFormatter(params) {
+  const formatter = new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: 2
+  })
+  
+  return formatter.format(params.value);
+}
+
 export default class DataTable extends Component {
-  mapColumns = (state) => {
+  createColDef = (state) => {
     return state.fieldConfig.map(
       column => {
         let columnConfig = {
@@ -78,17 +88,25 @@ export default class DataTable extends Component {
           field: column.name,
           sortable: true,
           filter: true,
-          editable: true
+          editable: true,
+          width: 130
         };
 
         // enable checkbox if column is first column
         if(column.id === 0){
-          columnConfig.checkboxSelection = true
+          columnConfig.checkboxSelection = true;
         }
 
         // enable date comparator when field type is 'date'
         if(column.type === "date"){
-          columnConfig.comparator = dateComparator
+          columnConfig.comparator = dateComparator;
+          columnConfig.suppressMenu = true;
+        }
+
+        // enable currency settings when field type is 'currency'
+        if(column.type === "currency"){
+          columnConfig.cellStyle = {'text-align': 'right'};
+          columnConfig.valueFormatter = currencyFormatter
         }
 
         // return column config
@@ -104,6 +122,15 @@ export default class DataTable extends Component {
     const selectedDataStringPresentation = selectedData.map( node => node.id).join(', ')
     alert(`Selected nodes: ${selectedDataStringPresentation}`)
   }
+
+  autoSizeAll() {
+    var allColumnIds = [];
+    this.gridColumnApi.getAllColumns().forEach(function(column) {
+      allColumnIds.push(column.colId);
+    });
+    this.gridColumnApi.autoSizeColumns(allColumnIds);
+  }
+
 
   render() {
     return (
@@ -123,10 +150,15 @@ export default class DataTable extends Component {
               >
                 <button onClick={this.onButtonClick}>Get selected rows</button>
                 <AgGridReact
-                  columnDefs={this.mapColumns(state)}
+                  columnDefs={this.createColDef(state)}
                   rowData={state.fields}
                   rowSelection="multiple"
-                  onGridReady={ params => this.gridApi = params.api }
+                  onGridReady={ 
+                    params => {
+                      this.gridApi = params.api;
+                    }
+                  }
+                  
                 >
                 </AgGridReact>
               </div>
