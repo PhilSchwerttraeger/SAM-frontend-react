@@ -47,15 +47,25 @@ export default class DataTable extends Component {
   mapColumns = (state) => {
     return state.fieldConfig.map(
       column => {
+        // enable checkbox if column is first column
+        let checkboxSelectionValue = false;
+        if(column.id === 0){
+          checkboxSelectionValue = true
+        }
+
+        // return column config
         return {
           headerName: column.title,
-          field: column.name
+          field: column.name,
+          sortable: true,
+          filter: true,
+          checkboxSelection: checkboxSelectionValue
           //type: column.type
         };
       }
     )
   }
-  
+
   render() {
     return (
       <Consumer>
@@ -72,9 +82,13 @@ export default class DataTable extends Component {
                 style={{ 
                 height: '500px'}} 
               >
+                <button onClick={this.onButtonClick}>Get selected rows</button>
                 <AgGridReact
                   columnDefs={this.mapColumns(state)}
-                  rowData={state.fields}>
+                  rowData={state.fields}
+                  rowSelection="multiple"
+                  onGridReady={ params => this.gridApi = params.api }
+                >
                 </AgGridReact>
               </div>
             )
@@ -83,4 +97,13 @@ export default class DataTable extends Component {
       </Consumer>
     )
   }
+  
+  onButtonClick = e => {
+    const selectedNodes = this.gridApi.getSelectedNodes()
+    console.log(selectedNodes);
+    const selectedData = selectedNodes.map( node => node.data )
+    const selectedDataStringPresentation = selectedData.map( node => node.id).join(', ')
+    alert(`Selected nodes: ${selectedDataStringPresentation}`)
+  }
+  
 }
