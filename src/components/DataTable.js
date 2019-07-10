@@ -97,6 +97,13 @@ export default class DataTable extends Component {
           columnConfig.checkboxSelection = true;
         }
 
+        if(column.type === "select"){
+          columnConfig.cellEditor = "agSelectCellEditor";
+          columnConfig.cellEditorParams = {
+            values: column.values
+          }
+        }
+
         // enable date comparator when field type is 'date'
         if(column.type === "date"){
           columnConfig.comparator = dateComparator;
