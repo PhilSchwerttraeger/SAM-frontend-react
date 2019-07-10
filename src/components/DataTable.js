@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Consumer } from './DataContext';
 import Spinner from '../assets/Spinner';
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-material.css';
 
 export function updateEntry(id, data) {
   delete data.tableData;
@@ -41,6 +44,18 @@ export function deleteEntry(id) {
 }
 
 export default class DataTable extends Component {
+  mapColumns = (state) => {
+    return state.fieldConfig.map(
+      column => {
+        return {
+          headerName: column.title,
+          field: column.name
+          //type: column.type
+        };
+      }
+    )
+  }
+  
   render() {
     return (
       <Consumer>
@@ -52,8 +67,15 @@ export default class DataTable extends Component {
           } else {
             //console.log(state);
             return (
-              <div>
-                
+              <div 
+                className="ag-theme-material"
+                style={{ 
+                height: '500px'}} 
+              >
+                <AgGridReact
+                  columnDefs={this.mapColumns(state)}
+                  rowData={state.fields}>
+                </AgGridReact>
               </div>
             )
           }

@@ -39,7 +39,9 @@ class App extends React.Component {
               </Paper>
             </Grid>
             <Grid item xs={12} sm={12}>
-              <DataTable/>
+              <Paper style={this.stylePaper()}>
+                <DataTable/>
+              </Paper>
             </Grid>
           </Grid>
         </div>
