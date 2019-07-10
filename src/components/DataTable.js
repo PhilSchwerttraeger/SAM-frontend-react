@@ -100,7 +100,25 @@ export default class DataTable extends Component {
         // enable date comparator when field type is 'date'
         if(column.type === "date"){
           columnConfig.comparator = dateComparator;
-          columnConfig.suppressMenu = true;
+          columnConfig.filter = "agDateColumnFilter";
+          columnConfig.filterParams = {
+            comparator: function(filterLocalDateAtMidnight, cellValue) {
+              var dateAsString = cellValue;
+              if (dateAsString == null) return -1;
+              var dateParts = dateAsString.split(".");
+              var cellDate = new Date(Number(dateParts[2]), Number(dateParts[1]) - 1, Number(dateParts[0]));
+              if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+                return 0;
+              }
+              if (cellDate < filterLocalDateAtMidnight) {
+                return -1;
+              }
+              if (cellDate > filterLocalDateAtMidnight) {
+                return 1;
+              }
+            },
+            browserDatePicker: true
+          }
         }
 
         // enable currency settings when field type is 'currency'
@@ -131,7 +149,6 @@ export default class DataTable extends Component {
     this.gridColumnApi.autoSizeColumns(allColumnIds);
   }
 
-
   render() {
     return (
       <Consumer>
@@ -158,7 +175,6 @@ export default class DataTable extends Component {
                       this.gridApi = params.api;
                     }
                   }
-                  
                 >
                 </AgGridReact>
               </div>
