@@ -5,6 +5,8 @@ import Spinner from '../assets/Spinner';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
+import {AutocompleteSelectCellEditor} from 'ag-grid-autocomplete-editor';
+import 'ag-grid-autocomplete-editor/main.css';
 
 function dateComparator(date1, date2) {
   var date1Number = monthToComparableNumber(date1);
@@ -96,6 +98,37 @@ export default class DataTable extends Component {
         if(column.type === "currency"){
           columnConfig.cellStyle = {'text-align': 'right'};
           columnConfig.valueFormatter = currencyFormatter
+        }
+
+        // enable auto-complete (npm package) on pure text-typed fields
+        if(column.type === "text"){
+          columnConfig.cellEditor = AutocompleteSelectCellEditor;
+          columnConfig.cellEditorParams = {
+              selectData: [
+                  {
+                    label: 'Canada', 
+                    value: 'CA', 
+                    group: 'North America' 
+                  },
+                  { 
+                    label: 'United States', 
+                    value: 'US', 
+                    group: 'North America' 
+                  },
+                  { 
+                    label: 'Uzbekistan', 
+                    value: 'UZ', 
+                    group: 'Asia' 
+                  },
+              ],
+              placeholder: 'Select an option',
+          };
+          columnConfig.valueFormatter = (params) => {
+              if (params.value) {
+                  return params.value.label || params.value.value || params.value;
+              }
+              return "";
+          };
         }
 
         // return column config
