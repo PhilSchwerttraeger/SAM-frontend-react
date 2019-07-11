@@ -155,12 +155,11 @@ export default class DataTable extends Component {
     this.gridColumnApi.autoSizeColumns(allColumnIds);
   }
 
-  onCellChanged = (e, state) => {
+  onCellChanged = (e) => {
     //console.log(`New value: ` + e.newValue);
     //console.log('Data ID: ' + e.data.id);
-    //updateEntry(e.data.id, e.newValue);
+    updateEntry(e.data.id, e.data);
     console.log(e);
-    console.log(state);
   }
 
   render() {
@@ -193,7 +192,7 @@ export default class DataTable extends Component {
                       //params.api.sizeColumnsToFit();
                     }
                   }
-                  onCellValueChanged = {this.onCellChanged.bind(this, state)}
+                  onCellValueChanged = {this.onCellChanged.bind(this)}
                   //onCellClicked = {this.onCellChanged.bind(this)}
                   
                 >
