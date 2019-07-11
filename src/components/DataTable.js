@@ -142,7 +142,6 @@ export default class DataTable extends Component {
   
   onButtonClick = e => {
     const selectedNodes = this.gridApi.getSelectedNodes()
-    console.log(selectedNodes);
     const selectedData = selectedNodes.map( node => node.data )
     const selectedDataStringPresentation = selectedData.map( node => node.id).join(', ')
     alert(`Selected nodes: ${selectedDataStringPresentation}`)
@@ -156,7 +155,16 @@ export default class DataTable extends Component {
     this.gridColumnApi.autoSizeColumns(allColumnIds);
   }
 
+  onCellChanged = (e, state) => {
+    //console.log(`New value: ` + e.newValue);
+    //console.log('Data ID: ' + e.data.id);
+    //updateEntry(e.data.id, e.newValue);
+    console.log(e);
+    console.log(state);
+  }
+
   render() {
+
     return (
       <Consumer>
         {state => {
@@ -165,23 +173,29 @@ export default class DataTable extends Component {
             // data not fetched yet, show spinner
             return <Spinner />
           } else {
-            //console.log(state);
             return (
               <div 
                 className="ag-theme-material"
                 style={{ 
-                height: '500px'}} 
+                  height: '500px'
+                  //height: '100%; width: 100%'
+                }} 
               >
                 <button onClick={this.onButtonClick}>Get selected rows</button>
                 <AgGridReact
+                  forwardRef="agGrid" // "React's id"
                   columnDefs={this.createColDef(state)}
                   rowData={state.fields}
                   rowSelection="multiple"
                   onGridReady={ 
                     params => {
                       this.gridApi = params.api;
+                      //params.api.sizeColumnsToFit();
                     }
                   }
+                  onCellValueChanged = {this.onCellChanged.bind(this, state)}
+                  //onCellClicked = {this.onCellChanged.bind(this)}
+                  
                 >
                 </AgGridReact>
               </div>
