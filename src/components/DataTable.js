@@ -1,47 +1,10 @@
 import React, { Component } from 'react';
-import { Consumer } from './DataContext';
+// eslint-disable-next-line
+import { Consumer, addEntry, deleteEntry, updateEntry } from './DataContext';
 import Spinner from '../assets/Spinner';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
-
-export function updateEntry(id, data) {
-  delete data.tableData;
-  return fetch('http://localhost:3001/fields/' + id, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {
-          'Content-Type': 'application/json'
-      }
-  }).then(res => {
-      return res;
-  }).catch(err => err);
-}
-
-export function addEntry(data) {
-  delete data.tableData;
-  return fetch('http://localhost:3001/fields', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-          'Content-Type': 'application/json'
-      }
-  }).then(res => {
-      return res;
-  }).catch(err => err);
-}
-
-export function deleteEntry(id) {
-  return fetch('http://localhost:3001/fields/' + id, {
-      method: 'DELETE',
-      //body: JSON.stringify(data),
-      headers: {
-          'Content-Type': 'application/json'
-      }
-  }).then(res => {
-      return res;
-  }).catch(err => err);
-}
 
 function dateComparator(date1, date2) {
   var date1Number = monthToComparableNumber(date1);
@@ -163,7 +126,6 @@ export default class DataTable extends Component {
   }
 
   render() {
-
     return (
       <Consumer>
         {state => {
