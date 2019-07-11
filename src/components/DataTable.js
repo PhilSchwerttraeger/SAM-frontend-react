@@ -104,7 +104,16 @@ export default class DataTable extends Component {
         if(column.type === "text"){
           columnConfig.cellEditor = AutocompleteSelectCellEditor;
           columnConfig.cellEditorParams = {
-              selectData: [
+              selectData: state.fields.map(field => {
+                {
+                  label: field.value,
+                  value: field.value,
+                  group: "none",
+                }
+              })
+              
+              /*
+              [
                   {
                     label: 'Canada', 
                     value: 'CA', 
@@ -120,7 +129,9 @@ export default class DataTable extends Component {
                     value: 'UZ', 
                     group: 'Asia' 
                   },
-              ],
+              ]
+              */
+              ,
               placeholder: 'Select an option',
           };
           columnConfig.valueFormatter = (params) => {
