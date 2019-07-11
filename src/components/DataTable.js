@@ -52,6 +52,7 @@ export default class DataTable extends Component {
           sortable: true,
           filter: true,
           editable: true,
+          resizable: true,
           width: 130
         };
 
@@ -110,19 +111,15 @@ export default class DataTable extends Component {
     alert(`Selected nodes: ${selectedDataStringPresentation}`)
   }
 
-  autoSizeAll() {
+  // cell in table modified -> update backend (DataContext)
+  onCellChanged = (e) => {updateEntry(e.data.id, e.data)}
+
+  onFirstDataRendered = e => {
     var allColumnIds = [];
     this.gridColumnApi.getAllColumns().forEach(function(column) {
       allColumnIds.push(column.colId);
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds);
-  }
-
-  onCellChanged = (e) => {
-    //console.log(`New value: ` + e.newValue);
-    //console.log('Data ID: ' + e.data.id);
-    updateEntry(e.data.id, e.data);
-    console.log(e);
   }
 
   render() {
@@ -142,7 +139,9 @@ export default class DataTable extends Component {
                   //height: '100%; width: 100%'
                 }} 
               >
-                <button onClick={this.onButtonClick}>Get selected rows</button>
+                <button onClick={this.onButtonClick}>
+                  Get selected rows
+                  </button>
                 <AgGridReact
                   forwardRef="agGrid" // "React's id"
                   columnDefs={this.createColDef(state)}
@@ -151,12 +150,14 @@ export default class DataTable extends Component {
                   onGridReady={ 
                     params => {
                       this.gridApi = params.api;
-                      //params.api.sizeColumnsToFit();
+                      this.gridColumnApi = params.columnApi;
+                      params.api.sizeColumnsToFit.bind(this);
                     }
                   }
-                  onCellValueChanged = {this.onCellChanged.bind(this)}
-                  //onCellClicked = {this.onCellChanged.bind(this)}
-                  
+                  onCellValueChanged = {
+                    this.onCellChanged.bind(this)
+                  }
+                  onFirstDataRendered={this.onFirstDataRendered.bind(this)}
                 >
                 </AgGridReact>
               </div>
