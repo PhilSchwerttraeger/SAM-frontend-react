@@ -92,6 +92,7 @@ export default class DataTable extends Component {
             },
             browserDatePicker: true
           }
+          columnConfig.browserDatePicker = true;
         }
 
         // enable currency settings when field type is 'currency'
@@ -207,7 +208,8 @@ export default class DataTable extends Component {
               <div 
                 className="ag-theme-material"
                 style={{ 
-                  height: '500px'
+                  height: '550px',
+                  paddingBottom: '30px'
                   //height: '100%; width: 100%'
                 }} 
               >
@@ -219,6 +221,7 @@ export default class DataTable extends Component {
                   columnDefs={this.createColDef(state)}
                   rowData={state.fields}
                   rowSelection="multiple"
+                  suppressRowClickSelectionprevents 
                   onGridReady={ 
                     params => {
                       this.gridApi = params.api;
