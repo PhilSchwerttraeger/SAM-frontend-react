@@ -131,6 +131,36 @@ export default class DataTable extends Component {
                   debounceWaitMs: 0,
               }
           };
+
+          // filter duplicate array items from autocomplete list
+          var filtered = columnConfig.cellEditorParams.selectData.filter(el => {
+            if (!this[el.label]) {
+              this[el.label] = true;
+              return true;
+            }
+            return false;
+          }, Object.create(null));
+
+          // comparing two array items with the help of its label property
+          var compare = (a, b) => {
+            const A = a.label;
+            const B = b.label;
+          
+            let comparison = 0;
+            if (A >= B) {
+              comparison = 1;
+            } else if (A < B) {
+              comparison = -1;
+            }
+            return comparison;
+          }
+          
+          // call sorting with custom comparison function
+          filtered.sort(compare);
+          //console.log(columnConfig.cellEditorParams.selectData);
+          //console.log(filtered);
+
+          // formatting cell: show label of description
           columnConfig.valueFormatter = (params) => {
               if (params.value) {
                   return params.value.label;
