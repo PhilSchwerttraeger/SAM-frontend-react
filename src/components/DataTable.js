@@ -7,6 +7,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import {AutocompleteSelectCellEditor} from 'ag-grid-autocomplete-editor';
 import 'ag-grid-autocomplete-editor/main.css';
+import MaterialDatePicker from './MaterialDatePicker';
 
 function dateComparator(date1, date2) {
   var date1Number = monthToComparableNumber(date1);
@@ -74,6 +75,7 @@ export default class DataTable extends Component {
         if(column.type === "date"){
           columnConfig.comparator = dateComparator;
           columnConfig.filter = "agDateColumnFilter";
+          columnConfig.cellEditor = "datePicker";
           columnConfig.filterParams = {
             comparator: function(filterLocalDateAtMidnight, cellValue) {
               var dateAsString = cellValue;
@@ -229,6 +231,9 @@ export default class DataTable extends Component {
                       params.api.sizeColumnsToFit.bind(this);
                     }
                   }
+                  frameworkComponents={{
+                    datePicker: MaterialDatePicker
+                  }}
                   onCellValueChanged = {
                     this.onCellChanged.bind(this)
                   }

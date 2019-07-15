@@ -1,4 +1,5 @@
 {
+    "test": "test-string",
     "title": "Simple Account Manager",
     "titles": {
         "analysis": "Analysis",
