@@ -12,6 +12,6 @@
         
     },
     "datatable": {
-        
+        "autoCompleteSelect": "Type and select"
     }
 }

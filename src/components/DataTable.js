@@ -105,41 +105,39 @@ export default class DataTable extends Component {
           columnConfig.cellEditor = AutocompleteSelectCellEditor;
           columnConfig.cellEditorParams = {
               selectData: state.fields.map(field => {
-                {
-                  label: field.value,
-                  value: field.value,
-                  group: "none",
-                }
-              })
+                if(field.description && field.description.label) {
+                  return ({
+                    label: field.description.label,
+                    value: field.description.value
+                  });
+                } else return ({
+                  label: "",
+                  value: ""
+                });
+              }),
               
-              /*
-              [
+              /*[
                   {
                     label: 'Canada', 
                     value: 'CA', 
                     group: 'North America' 
-                  },
-                  { 
-                    label: 'United States', 
-                    value: 'US', 
-                    group: 'North America' 
-                  },
-                  { 
-                    label: 'Uzbekistan', 
-                    value: 'UZ', 
-                    group: 'Asia' 
-                  },
-              ]
-              */
-              ,
-              placeholder: 'Select an option',
+                  }
+              ]*/
+              
+              placeholder: state.strings.datatable.autoCompleteSelect,
+              autocomplete: {
+                  strict: false,
+                  autoselectfirst: false,
+                  debounceWaitMs: 0,
+              }
           };
           columnConfig.valueFormatter = (params) => {
               if (params.value) {
-                  return params.value.label || params.value.value || params.value;
+                  return params.value.label;
               }
               return "";
           };
+          //columnConfig.editable = true;
         }
 
         // return column config
