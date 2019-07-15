@@ -53,6 +53,8 @@ export default class NavBar extends Component {
                   edge="end" 
                   aria-haspopup="true" 
                   color="inherit"
+                  href="https://github.com/PhilSchwerttraeger/SAM"
+                  target="_blank" 
                 >
                   <GitHubIcon />
                 </IconButton>
