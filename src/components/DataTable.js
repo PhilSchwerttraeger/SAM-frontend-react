@@ -204,6 +204,11 @@ export default class DataTable extends Component {
     this.gridColumnApi.autoSizeColumns(allColumnIds);
   }
 
+  quickSearch = props => {
+    console.log(props.target.value);
+    this.gridApi.setQuickFilter(props.target.value);
+  }
+
   render() {
     return (
       <Consumer>
@@ -242,6 +247,7 @@ export default class DataTable extends Component {
                         label="Search field"
                         type="search"
                         margin="none"
+                        onChange={this.quickSearch.bind(this)}
                       />
                     </Grid>
 
