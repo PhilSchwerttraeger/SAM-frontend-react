@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 
-const DataContext = React.createContext();
+export const DataContext = React.createContext({
+  currentlyVisibleRowData: "",
+  setCurrentlyVisibleRowData: (rows) => {
+    this.currentlyVisibleRowData = rows;
+    console.log(this.currentlyVisibleRowData);
+  }
+});
 
 export function addEntry(data) {
   delete data.tableData;

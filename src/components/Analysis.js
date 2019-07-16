@@ -9,6 +9,8 @@ export default class Analysis extends Component {
     return (
       <Consumer>
         {state => {
+          
+          // console.log(this.refs.agGrid);
           return (
             <div>
               <h4 style={{fontWeight: 500}}>{state.strings.titles.analysis}</h4>

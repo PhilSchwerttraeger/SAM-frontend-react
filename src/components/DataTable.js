@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
-// eslint-disable-next-line
-import { Consumer, addEntry, deleteEntry, updateEntry } from './DataContext';
+import { 
+  Consumer, 
+  updateEntry,
+  // eslint-disable-next-line
+  addEntry, 
+  // eslint-disable-next-line
+  deleteEntry
+} from './DataContext';
 import Spinner from '../assets/Spinner';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
@@ -53,6 +59,15 @@ function currencyFormatter(params) {
 }
 
 export default class DataTable extends Component {
+  constructor(props){
+    super(props);
+    this.dataTableRef = React.createRef();
+  }
+
+  storeRef = (state, ref) => {
+    this.setState(state);
+  }
+
   createColDef = (state) => {
     return state.fieldConfig.map(
       column => {
@@ -220,11 +235,21 @@ export default class DataTable extends Component {
     this.gridApi.setQuickFilter(props.target.value);
   }
 
+  componentDidMount(){
+
+  }
+
+  getCurrentlyVisibleRows(){
+    console.log("row data");
+  }
+
   render() {
     return (
       <Consumer>
         {state => {
-          const inputRef = React.createRef(null);
+          console.log(state);
+          //console.log(currentlyVisibleRowData);
+          //state.setCurrentlyVisibleRowData("jo");
           if(state === undefined 
             || state.fieldConfig === undefined){
             // data not fetched yet, show spinner
@@ -237,7 +262,7 @@ export default class DataTable extends Component {
                   height: '550px',
                   //height: '100%',
                   //width: 100%',
-                  paddingBottom: '30px'
+                  paddingBottom: '50px'
                 }} 
               >
                 <Grid
@@ -278,8 +303,8 @@ export default class DataTable extends Component {
                   </Grid>
                 </Grid>
                 <AgGridReact
-                  forwardRef="agGrid" // "React's id"
-                  ref={ inputRef }
+                  //forwardRef="agGrid" // "React's id"
+                  ref={this.dataTableRef}
                   columnDefs={this.createColDef(state)}
                   rowData={state.fields}
                   rowSelection="multiple"
@@ -287,6 +312,7 @@ export default class DataTable extends Component {
                   onGridReady={ 
                     params => {
                       this.gridApi = params.api;
+                      //console.log(state);
                       this.gridColumnApi = params.columnApi;
                       params.api.sizeColumnsToFit.bind(this);
                     }

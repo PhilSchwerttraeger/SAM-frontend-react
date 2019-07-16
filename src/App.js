@@ -23,6 +23,9 @@ class App extends React.Component {
     }
   }
 
+  componentDidMount(){
+  }
+
   render() {
     return (
       <DataProvider>
@@ -31,17 +34,17 @@ class App extends React.Component {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <Paper style={this.stylePaper()}>
-                <Analysis state={this.state}/>
+                <Analysis />
               </Paper>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Paper style={this.stylePaper()}>
-                <Statistics state={this.state}/>
+                <Statistics />
               </Paper>
             </Grid>
             <Grid item xs={12}>
               <Paper style={this.stylePaper()}>
-                <DataTable/>
+                <DataTable />
               </Paper>
             </Grid>
           </Grid>
