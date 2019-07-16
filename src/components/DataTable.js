@@ -205,7 +205,7 @@ export default class DataTable extends Component {
   }
 
   quickSearch = props => {
-    console.log(props.target.value);
+    //console.log(props.target.value);
     this.gridApi.setQuickFilter(props.target.value);
   }
 

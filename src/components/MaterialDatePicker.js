@@ -3,8 +3,6 @@ import ReactDOM from "react-dom";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
 import {DatePicker} from "@material-ui/pickers";
-import deLocale from "date-fns/locale/de";
-import format from "date-fns/format";
 
 var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
 
@@ -92,6 +90,10 @@ export default class MaterialDatePicker extends Component {
   // Gets called once when editing is finished (eg if enter is pressed).
   // If you return true, then the result of the edit will be ignored.
   isCancelAfterEnd = () => {
+    return false;
+  }
+
+  isPopup = () => {
     return false;
   }
 
