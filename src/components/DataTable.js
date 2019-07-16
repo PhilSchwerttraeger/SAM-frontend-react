@@ -178,6 +178,13 @@ export default class DataTable extends Component {
               return "";
           };
           //columnConfig.editable = true;
+
+          columnConfig.getQuickFilterText = (params) => {
+            if (params.value) {
+              return params.value.label;
+            }
+            return "";
+          }
         }
 
         // return column config
