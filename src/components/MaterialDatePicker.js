@@ -5,14 +5,19 @@ import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 import deLocale from "date-fns/locale/de";
 import {DatePicker} from "@material-ui/pickers";
 
+var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+
 export default class MoodEditor extends Component {
   constructor(props) {
     super(props);
 
     this.onDateChange = this.onDateChange.bind(this);
 
+    let dateNow = new Date (Date.now());
+    dateNow.toLocaleDateString('de-DE', options);
+
     this.state = {
-      date: "01.01.1900"
+      date: dateNow
     }
 
     try {
@@ -48,8 +53,6 @@ export default class MoodEditor extends Component {
   }
 
   onDateChange(date) {
-    var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-
     if(date){
       let parsedDate = date.toLocaleDateString('de-DE', options);
       
