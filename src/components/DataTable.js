@@ -44,7 +44,11 @@ function currencyFormatter(params) {
     minimumFractionDigits: 2
   })
   
-  return formatter.format(params.value);
+  if(params.value){
+    return formatter.format(params.value);
+  } else {
+    return
+  }
 }
 
 export default class DataTable extends Component {
