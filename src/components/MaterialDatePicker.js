@@ -1,23 +1,23 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from "@date-io/date-fns"; // choose your lib
-import deLocale from "date-fns/locale/de";
+import DateFnsUtils from "@date-io/date-fns";
 import {DatePicker} from "@material-ui/pickers";
+import deLocale from "date-fns/locale/de";
+import format from "date-fns/format";
 
 var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
 
-export default class MoodEditor extends Component {
+export default class MaterialDatePicker extends Component {
   constructor(props) {
     super(props);
 
     this.onDateChange = this.onDateChange.bind(this);
 
-    let dateNow = new Date (Date.now());
-    dateNow.toLocaleDateString('de-DE', options);
+    //let dateNow = new Date();
 
     this.state = {
-      date: dateNow
+      date: ""
     }
 
     try {
@@ -29,6 +29,8 @@ export default class MoodEditor extends Component {
     catch (e) {
       console.log(e);
     }
+
+    //console.log(this.state.date); // correct
   }
 
   componentDidMount() {
@@ -36,7 +38,6 @@ export default class MoodEditor extends Component {
   }
 
   componentDidUpdate() {
-    this.focus();
   }
 
   focus() {
@@ -49,13 +50,21 @@ export default class MoodEditor extends Component {
   }
 
   getValue() {
-    return this.state.date;
+    let parsedDate = this.state.date;
+    //console.log(parsedDate); return;
+    if(typeof parsedDate.getMonth === 'function'){
+      parsedDate = parsedDate.toLocaleDateString('de-DE', options);
+    }
+    //parsedDate = parsedDate.toLocaleDateString('de-DE', options);
+    console.log(parsedDate); //correct
+    return parsedDate;
   }
 
   onDateChange(date) {
     if(date){
       let parsedDate = date.toLocaleDateString('de-DE', options);
       
+      //console.log(parsedDate); //correct
       this.setState(
         {
           date: parsedDate
@@ -65,12 +74,19 @@ export default class MoodEditor extends Component {
     } else {
       this.setState(
         {
-          date: "30.05.1990"
+          date: ""
         },
         () => this.props.api.stopEditing()
       ); 
     }
-    
+  }
+
+  isCancelBeforeStart = () => {
+    return false;
+  }
+
+  isCancelAfterEnd = () => {
+    return false;
   }
 
   render() {
@@ -80,12 +96,11 @@ export default class MoodEditor extends Component {
       >
         <MuiPickersUtilsProvider 
           utils={DateFnsUtils}
-          locale = {deLocale}
         >
           <DatePicker 
             placeholder="Format: 31.10.2018"
-            format="dd.MM.yyyy"
             clearable
+            format="dd.MM.yyyy"
             autoOk
             views={["year", "month", "date"]}
             value={this.state.date} 
