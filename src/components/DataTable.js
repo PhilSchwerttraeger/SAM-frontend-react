@@ -10,6 +10,7 @@ import 'ag-grid-autocomplete-editor/main.css';
 import MaterialDatePicker from './MaterialDatePicker';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 function dateComparator(date1, date2) {
   var date1Number = monthToComparableNumber(date1);
@@ -248,6 +249,7 @@ export default class DataTable extends Component {
                 </Grid>
                 <AgGridReact
                   forwardRef="agGrid" // "React's id"
+                  ref={ inputRef }
                   columnDefs={this.createColDef(state)}
                   rowData={state.fields}
                   rowSelection="multiple"
