@@ -14,16 +14,14 @@ export default class MaterialDatePicker extends Component {
 
     this.onDateChange = this.onDateChange.bind(this);
 
-    //let dateNow = new Date();
-
     this.state = {
       date: ""
     }
 
+    // if passed value is dd.mm.yyyy format -> make date type
     try {
       var parts = props.value.match(/(\d+)/g);
       let parsedDate = new Date(parts[2], parts[1]-1, parts[0]);
-
       this.state.date = parsedDate;
     }
     catch (e) {
@@ -49,17 +47,21 @@ export default class MaterialDatePicker extends Component {
     })
   }
 
+  // Should return the final value to the grid, the result of the editing
   getValue() {
     let parsedDate = this.state.date;
     //console.log(parsedDate); return;
+
+    // Check whether parsedDate is Date-type (-> has getMonth function), otherwise it's an already parsed string
+    // state.date can be Date (when abord editing) or be String (when successfully close widget)
     if(typeof parsedDate.getMonth === 'function'){
       parsedDate = parsedDate.toLocaleDateString('de-DE', options);
     }
-    //parsedDate = parsedDate.toLocaleDateString('de-DE', options);
-    console.log(parsedDate); //correct
+    //console.log(parsedDate); //correct
     return parsedDate;
   }
 
+  // Called whenever the widget has a new date to save
   onDateChange(date) {
     if(date){
       let parsedDate = date.toLocaleDateString('de-DE', options);
@@ -81,10 +83,14 @@ export default class MaterialDatePicker extends Component {
     }
   }
 
+  // Gets called once before editing starts, to give editor a chance to
+  // cancel the editing before it even starts.
   isCancelBeforeStart = () => {
     return false;
   }
 
+  // Gets called once when editing is finished (eg if enter is pressed).
+  // If you return true, then the result of the edit will be ignored.
   isCancelAfterEnd = () => {
     return false;
   }
