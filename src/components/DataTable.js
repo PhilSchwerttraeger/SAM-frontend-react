@@ -199,6 +199,10 @@ export default class DataTable extends Component {
     const selectedDataStringPresentation = selectedData.map( node => node.id).join(', ')
     alert(`Selected nodes: ${selectedDataStringPresentation}`)
   }
+  
+  addNewItem = e => {
+    //TODO
+  }
 
   // cell in table modified -> update backend (DataContext)
   onCellChanged = (e) => {updateEntry(e.data.id, e.data)}
@@ -243,10 +247,23 @@ export default class DataTable extends Component {
                   alignItems="center"
                 >
                   <Grid item>
-                    <Button variant="outlined" onClick={this.onButtonClick}>
-                      Get selected rows
-                    </Button>
+                    <Grid container>
+
+                      <Grid item>
+                        <Button variant="outlined" onClick={this.onButtonClick}>
+                          Get selected rows
+                        </Button>
+                      </Grid>
+
+                      <Grid item>
+                        <Button variant="outlined" onClick={this.addNewItem}>
+                          Add New
+                        </Button>
+                      </Grid>
+                    </Grid>
                   </Grid>
+
+                  <Grid item></Grid>
                   <Grid item>
                     <Grid container alignItems="flex-end" style={{height: "48px"}}>
                       <TextField
