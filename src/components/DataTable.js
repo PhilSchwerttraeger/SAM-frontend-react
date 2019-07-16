@@ -68,7 +68,7 @@ export default class DataTable extends Component {
 
         // enable checkbox if column is first column
         if(column.id === 0){
-          columnConfig.checkboxSelection = true;
+          //columnConfig.checkboxSelection = true;
         }
 
         if(column.type === "select"){
