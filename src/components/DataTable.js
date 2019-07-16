@@ -8,6 +8,8 @@ import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import {AutocompleteSelectCellEditor} from 'ag-grid-autocomplete-editor';
 import 'ag-grid-autocomplete-editor/main.css';
 import MaterialDatePicker from './MaterialDatePicker';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
 function dateComparator(date1, date2) {
   var date1Number = monthToComparableNumber(date1);
@@ -201,6 +203,7 @@ export default class DataTable extends Component {
     return (
       <Consumer>
         {state => {
+          const inputRef = React.createRef(null);
           if(state === undefined 
             || state.fieldConfig === undefined){
             // data not fetched yet, show spinner
@@ -211,13 +214,34 @@ export default class DataTable extends Component {
                 className="ag-theme-material"
                 style={{ 
                   height: '550px',
+                  //height: '100%',
+                  //width: 100%',
                   paddingBottom: '30px'
-                  //height: '100%; width: 100%'
                 }} 
               >
-                <button onClick={this.onButtonClick}>
-                  Get selected rows
-                  </button>
+                <Grid
+                  container 
+                  justify='space-between'
+                  direction="row"
+                  alignItems="center"
+                >
+                  <Grid item>
+                    <Button variant="outlined" onClick={this.onButtonClick}>
+                      Get selected rows
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Grid container alignItems="flex-end" style={{height: "48px"}}>
+                      <TextField
+                        id="standard-search"
+                        label="Search field"
+                        type="search"
+                        margin="none"
+                      />
+                    </Grid>
+
+                  </Grid>
+                </Grid>
                 <AgGridReact
                   forwardRef="agGrid" // "React's id"
                   columnDefs={this.createColDef(state)}

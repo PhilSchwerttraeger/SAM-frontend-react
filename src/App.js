@@ -12,7 +12,8 @@ class App extends React.Component {
   styleMain = () => {
     return {
       flexGrow: 1,
-      padding: 16
+      padding: 16,
+      backgroundColor: '#F8F8F8'
     }
   }
   
@@ -38,7 +39,7 @@ class App extends React.Component {
                 <Statistics state={this.state}/>
               </Paper>
             </Grid>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={12}>
               <Paper style={this.stylePaper()}>
                 <DataTable/>
               </Paper>
