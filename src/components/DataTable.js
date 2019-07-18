@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import { 
-  Consumer, 
-  updateEntry,
-  // eslint-disable-next-line
-  addEntry, 
-  // eslint-disable-next-line
-  deleteEntry
-} from './DataContext';
+import { Consumer } from './DataContext';
 import Spinner from '../assets/Spinner';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
@@ -18,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Snackbars from './Snackbars';
+import { DataContext } from './DataContext';
 
 function dateComparator(date1, date2) {
   var date1Number = monthToComparableNumber(date1);
@@ -65,13 +59,11 @@ export function getCurrentlyVisibleRows(){
 }
 
 export default class DataTable extends Component {
+  static context = DataContext;
+
   constructor(props){
     super(props);
     this.dataTableRef = React.createRef();
-
-    this.state = {
-      showError: false
-    }
   }
 
   createColDef = (state) => {
@@ -229,7 +221,7 @@ export default class DataTable extends Component {
     if(typeof(value) === 'string'){
       value = Number(value);
       //console.log("TypeCast: " + typeof(data.value));
-      console.log(value);
+      //console.log(value);
       if(isNaN(value)) 
         this.setState({
           showError: true
@@ -239,9 +231,10 @@ export default class DataTable extends Component {
   }
 
   // cell in table modified -> update backend (DataContext)
-  onCellChanged = (e) => {
+  onCellChanged = (state, e) => {
     this.validateValueCell(e.data.value);
-    updateEntry(e.data.id, e.data);
+    //console.log("e: ", e, " state: ", state);
+    state.updateEntry(e.data.id, e.data);
   }
 
   onFirstDataRendered = e => {
@@ -336,14 +329,13 @@ export default class DataTable extends Component {
                       this.gridApi = params.api;
                       this.gridColumnApi = params.columnApi;
                       params.api.sizeColumnsToFit.bind(this);
-                      state.setDataTableRef(this.dataTableRef);
                     }
                   }
                   frameworkComponents={{
                     datePicker: MaterialDatePicker
                   }}
                   onCellValueChanged = {
-                    this.onCellChanged.bind(this)
+                    this.onCellChanged.bind(this, state)
                   }
                   onFirstDataRendered={this.onFirstDataRendered.bind(this)}
                   onModelUpdated={
@@ -358,7 +350,7 @@ export default class DataTable extends Component {
                 >
                 </AgGridReact>
 
-                <Snackbars isClicked={this.state.showError}/>
+                <Snackbars />
               </div>
             )
           }

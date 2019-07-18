@@ -2,53 +2,6 @@ import React, {Component} from 'react';
 
 export const DataContext = React.createContext();
 
-export function addEntry(data) {
-  delete data.tableData;
-  return fetch('http://localhost:3001/fields', {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then(res => {
-    console.log(res);
-    return res;
-  }).catch(err => {
-    console.log(err);
-  });
-}
-
-export function deleteEntry(id) {
-  return fetch('http://localhost:3001/fields/' + id, {
-    method: 'DELETE',
-    //body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-    }).then(res => {
-      console.log(res);
-      return res;
-    }).catch(err => {
-      console.log(err);
-    });
-}
-
-export function updateEntry(id, data) {
-  delete data.tableData;
-  return fetch('http://localhost:3001/fields/' + id, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then(res => {
-    console.log(res);
-    return res;
-  }).catch(err => {
-    console.log(err);
-  });
-}
-
 export class DataProvider extends Component {
   state = {
     generalConfig: {},
@@ -60,24 +13,14 @@ export class DataProvider extends Component {
     }
   }
 
-  setDataTableRef = (ref) => {
-    this.setState(
-      {
-        runtime: {
-        dataTableRef: ref
-        }
-      }
-    );
-  }
-
-  getDataTableRef= () => {
-    return this.state.runtime.dataTableRef;
-  }
-
   componentWillMount(){
+    this.fetchFromRestApi();
+  }
+  
+  fetchFromRestApi(){
     fetch('http://localhost:3001/generalConfig')
-      .then(res => res.json())
-      .then(data => {this.setState({generalConfig: data});});
+    .then(res => res.json())
+    .then(data => {this.setState({generalConfig: data});});
       
     fetch('http://localhost:3001/fieldConfig')
     .then(res => res.json())
@@ -94,23 +37,91 @@ export class DataProvider extends Component {
     );
   }
 
+  updateEntry = (id, data) => {
+    delete data.tableData;
+    return fetch('http://localhost:3001/fields/' + id, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      console.log(res);
+      return res;
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
+  addEntry = (data) => {
+    delete data.tableData;
+    return fetch('http://localhost:3001/fields', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      console.log(res);
+      return res;
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
+  createEmptyEntry = () => {
+    return fetch('http://localhost:3001/fields', {
+      method: 'POST',
+      body: JSON.stringify(),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      console.log(res);
+      return res;
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+  
+  deleteEntries = (id) => {
+    return fetch('http://localhost:3001/fields/' + id, {
+      method: 'DELETE',
+      //body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+      }).then(res => {
+        console.log(res);
+        return res;
+      }).catch(err => {
+        console.log(err);
+      });
+  }
+
+  setSelectedEntries = (entries) => {
+    this.setState({
+      runtime: {
+        visibleEntries: entries
+      }
+    });
+  }
+
+  getSelectedEntries = () => {
+    //console.log(this.state.runtime.visibleEntries);
+    return this.state.runtime.visibleEntries;
+  }
+
   render(){
     const contextValue = {
       data: this.state,
-      setDataTableRef: this.setDataTableRef,
-      getDataTableRef: this.getDataTableRef,
-      setSelectedEntries: (entries) => {
-        this.setState({
-          runtime: {
-            visibleEntries: entries
-          }
-        });
-      },
-      getSelectedEntries: () => {
-        //console.log(this.state.runtime.visibleEntries);
-        return this.state.runtime.visibleEntries;
-      }
-      };
+      updateEntry: this.updateEntry,
+      addEntry: this.addEntry,
+      createEmptyEntry: this.createEmptyEntry,
+      deleteEntries: this.addEntries,
+      setSelectedEntries: this.setSelectedEntries,
+      getSelectedEntries: this.getSelectedEntries
+    };
 
     return(
       <DataContext.Provider value={contextValue}>
