@@ -13,8 +13,8 @@ export default class Analysis extends Component {
           // console.log(this.refs.agGrid);
           return (
             <div>
-              <h4 style={{fontWeight: 500}}>{state.strings.titles.analysis}</h4>
               <Button variant="outlined" onClick={() => {this.refs.agGrid.api.deselectAll()}}>Clear Selection</Button>
+              <h4 style={{fontWeight: 500}}>{state.data.strings.titles.analysis}</h4>
             </div>
           )
         }}

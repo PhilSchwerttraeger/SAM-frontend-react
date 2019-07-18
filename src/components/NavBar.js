@@ -24,7 +24,7 @@ export default class NavBar extends Component {
                 <MenuIcon />
               </IconButton>
               <Typography>
-                {state.strings.title}
+                {state.data.strings.title}
               </Typography>
               <div style={{flexGrow: 1}}/>
               <div style={{display: 'flex'}}>

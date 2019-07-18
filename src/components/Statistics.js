@@ -6,7 +6,7 @@ export default class Statistics extends Component {
         return (
             <Consumer>
                 {state => 
-                    <h4 style={{fontWeight: 500}}>{state.strings.titles.statistics}</h4>
+                    <h4 style={{fontWeight: 500}}>{state.data.strings.titles.statistics}</h4>
                 }
             </Consumer>
         )

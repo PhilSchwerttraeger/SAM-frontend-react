@@ -1,12 +1,6 @@
 import React, {Component} from 'react';
 
-export const DataContext = React.createContext({
-  currentlyVisibleRowData: "",
-  setCurrentlyVisibleRowData: (rows) => {
-    this.currentlyVisibleRowData = rows;
-    console.log(this.currentlyVisibleRowData);
-  }
-});
+export const DataContext = React.createContext();
 
 export function addEntry(data) {
   delete data.tableData;
@@ -60,7 +54,12 @@ export class DataProvider extends Component {
     generalConfig: {},
     fieldConfig: [],
     fields: [],
-    strings: []
+    strings: [],
+    runtime: {
+      visibleEntries: []
+    }
+  }
+
   }
 
   componentWillMount(){
@@ -84,8 +83,25 @@ export class DataProvider extends Component {
   }
 
   render(){
+    const contextValue = {
+      data: this.state,
+      setDataTableRef: this.setDataTableRef,
+      getDataTableRef: this.getDataTableRef,
+      setSelectedEntries: (entries) => {
+        this.setState({
+          runtime: {
+            visibleEntries: entries
+          }
+        });
+      },
+      getSelectedEntries: () => {
+        //console.log(this.state.runtime.visibleEntries);
+        return this.state.runtime.visibleEntries
+      }
+      };
+
     return(
-      <DataContext.Provider value={this.state}>
+      <DataContext.Provider value={contextValue}>
         {this.props.children}
       </DataContext.Provider>
     );

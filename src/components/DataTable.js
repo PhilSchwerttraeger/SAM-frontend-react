@@ -247,11 +247,11 @@ export default class DataTable extends Component {
     return (
       <Consumer>
         {state => {
-          console.log(state);
+          //console.log(state);
           //console.log(currentlyVisibleRowData);
           //state.setCurrentlyVisibleRowData("jo");
-          if(state === undefined 
-            || state.fieldConfig === undefined){
+          if(state.data === undefined 
+            || state.data.fieldConfig === undefined){
             // data not fetched yet, show spinner
             return <Spinner />
           } else {
@@ -305,8 +305,8 @@ export default class DataTable extends Component {
                 <AgGridReact
                   //forwardRef="agGrid" // "React's id"
                   ref={this.dataTableRef}
-                  columnDefs={this.createColDef(state)}
-                  rowData={state.fields}
+                  columnDefs={this.createColDef(state.data)}
+                  rowData={state.data.fields}
                   rowSelection="multiple"
                   suppressRowClickSelectionprevents 
                   onGridReady={ 
