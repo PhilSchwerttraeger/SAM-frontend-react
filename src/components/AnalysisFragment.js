@@ -1,20 +1,33 @@
 import React, { Component } from 'react'
 
 export default class AnalysisFragment extends Component {
-  render() {
-    // eslint-disable-next-line
+  sum(array){
     let result = 0;
+    array.forEach(element => {
+      result += element;
+    });
+    if(result) return result;
+  }
 
+  average(array){
+    let sum = this.sum(array);
+    let numberOfEntries = array.length;
+    let result = sum/numberOfEntries;
+    if(result) return result;
+  }
+
+  render(){
     switch (this.props.type) {
       case "sum":
-        this.result = 0;
-        this.props.values.forEach(element => {
-          this.result += element;
-        });
-      
-      break;
+        this.result = this.sum(this.props.values);
+        break;
+        
+      case "average":
+        this.result = this.average(this.props.values);
+        break;
     
       default:
+        this.result = 0;
         break;
     }
 
