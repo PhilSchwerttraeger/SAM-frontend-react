@@ -17,6 +17,7 @@ import MaterialDatePicker from './MaterialDatePicker';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Snackbars from './Snackbars';
 
 function dateComparator(date1, date2) {
   var date1Number = monthToComparableNumber(date1);
@@ -67,6 +68,10 @@ export default class DataTable extends Component {
   constructor(props){
     super(props);
     this.dataTableRef = React.createRef();
+
+    this.state = {
+      showError: false
+    }
   }
 
   createColDef = (state) => {
@@ -220,8 +225,22 @@ export default class DataTable extends Component {
     //TODO
   }
 
+  validateValueCell(value){
+    if(typeof(value) === 'string'){
+      value = Number(value);
+      //console.log("TypeCast: " + typeof(data.value));
+      console.log(value);
+      if(isNaN(value)) 
+        this.setState({
+          showError: true
+        })
+        //alert("Invalid value input. Please insert Numbers with format 1337 or 1337.99 only.");
+    }
+  }
+
   // cell in table modified -> update backend (DataContext)
   onCellChanged = (e) => {
+    this.validateValueCell(e.data.value);
     updateEntry(e.data.id, e.data);
   }
 
@@ -338,6 +357,8 @@ export default class DataTable extends Component {
                   }
                 >
                 </AgGridReact>
+
+                <Snackbars isClicked={this.state.showError}/>
               </div>
             )
           }
