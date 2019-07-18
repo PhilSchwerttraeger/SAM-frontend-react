@@ -108,7 +108,7 @@ export class DataProvider extends Component {
       },
       getSelectedEntries: () => {
         //console.log(this.state.runtime.visibleEntries);
-        return this.state.runtime.visibleEntries
+        return this.state.runtime.visibleEntries;
       }
       };
 

@@ -221,7 +221,9 @@ export default class DataTable extends Component {
   }
 
   // cell in table modified -> update backend (DataContext)
-  onCellChanged = (e) => {updateEntry(e.data.id, e.data)}
+  onCellChanged = (e) => {
+    updateEntry(e.data.id, e.data);
+  }
 
   onFirstDataRendered = e => {
     var allColumnIds = [];
@@ -322,15 +324,7 @@ export default class DataTable extends Component {
                     datePicker: MaterialDatePicker
                   }}
                   onCellValueChanged = {
-                    params => {
-                      this.onCellChanged.bind(this)
-
-                      this.gridApi = params.api;
-                      this.gridColumnApi = params.columnApi;
-
-                      //params.api.sizeColumnsToFit.bind(this);
-                      state.setSelectedEntries(this.gridApi.getModel().rowsToDisplay)
-                    }
+                    this.onCellChanged.bind(this)
                   }
                   onFirstDataRendered={this.onFirstDataRendered.bind(this)}
                   onModelUpdated={
