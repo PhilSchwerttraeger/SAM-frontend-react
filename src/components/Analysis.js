@@ -17,27 +17,48 @@ export default class Analysis extends Component {
     }
   }
 
+  getAndValidateValues = (state) => {
+    //console.log(state.getSelectedEntries());
+    let selectedEntries = state.getSelectedEntries();
+    let ids = [];
+    let values = [];
+    if(selectedEntries){
+      selectedEntries.forEach(element => {
+
+        // If not undefined... 
+        if(
+          !(element.data === undefined)
+          && !(element.data.id === undefined)
+          && !(element.data.value === undefined)
+        )
+        // (Cast strings to number)
+        {
+          if(typeof(element.data.value) == "string"){
+            let castedNumber = Number(element.data.value);
+            if(isNaN(castedNumber)){
+              return;
+            }
+            element.data.value = castedNumber;
+          }
+
+          // ... add to list
+          //console.log(Number(element.data.value));
+          ids.push(element.data.value);
+          values.push(element.data.value);
+        }
+      }); 
+    }
+    
+    return {ids, values};
+  }
+
   render() {
     return (
       <Consumer>
         {state => {
-          //console.log(state.getSelectedEntries());
-          let selectedEntries = state.getSelectedEntries();
-          let visibleRowsIDs = [];
-          let visibleRowsValues = [];
-          if(selectedEntries){
-            selectedEntries.forEach(element => {
-              if(
-                element.data === undefined
-                || element.data.id === undefined
-                || element.data.value === undefined
-              ) return;
-              visibleRowsIDs.push(element.data.id);
-              visibleRowsValues.push(element.data.value);
-            }); 
-          }
-          console.log(visibleRowsIDs);
-          console.log(visibleRowsValues);
+          let visibleRows = this.getAndValidateValues(state);
+          //console.log(visibleRowsIDs);
+          //console.log(visibleRowsValues);
           return (
             <div>
               <h2>{state.data.strings.titles.analysis}</h2>
@@ -63,7 +84,7 @@ export default class Analysis extends Component {
                   <Paper style={this.stylePaper()}>
                     <AnalysisFragment 
                       type="sum"
-                      values={visibleRowsValues}
+                      values={visibleRows.ids}
                     />
                   </Paper>
                 </Grid>
@@ -71,7 +92,7 @@ export default class Analysis extends Component {
                   <Paper style={this.stylePaper()}>
                     <AnalysisFragment 
                       type="average"
-                      values={visibleRowsValues}
+                      values={visibleRows.values}
                     />
                   </Paper>
                 </Grid>
