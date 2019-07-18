@@ -14,7 +14,22 @@ export default class Analysis extends Component {
     return (
       <Consumer>
         {state => {
-          //console.log(state.getDataTableRef());
+          //console.log(state.getSelectedEntries());
+          let selectedEntries = state.getSelectedEntries();
+          let visibleRowsIDs = [];
+          let visibleRowsValues = [];
+          if(selectedEntries){
+            selectedEntries.forEach(element => {
+              if(
+                element.data === undefined
+                || element.data.id === undefined
+                || element.data.value === undefined
+              ) return;
+              visibleRowsIDs.push(element.data.id);
+              visibleRowsValues.push(element.data.value);
+            }); 
+          }
+          //console.log(visibleIDs);
           return (
             <div>
               <h4 style={{fontWeight: 500}}>{state.data.strings.titles.analysis}</h4>
@@ -26,7 +41,22 @@ export default class Analysis extends Component {
                 }
               }>Button
               </Button>
-              <p>{console.log(state.getSelectedEntries())}</p>
+              {/*
+              <p>
+                IDs: {
+                  visibleRowsIDs.map(
+                    item => {return item + " "}
+                  )
+                }
+              </p>
+              <p>
+                Values: {
+                  visibleRowsValues.map(
+                    item => {return item + " "}
+                  )
+                }
+              </p>
+              */}
             </div>
           )
         }}
