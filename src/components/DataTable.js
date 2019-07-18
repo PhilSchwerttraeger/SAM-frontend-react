@@ -58,14 +58,15 @@ function currencyFormatter(params) {
   }
 }
 
+export function getCurrentlyVisibleRows(){
+  console.log("row data");
+  return "row data";
+}
+
 export default class DataTable extends Component {
   constructor(props){
     super(props);
     this.dataTableRef = React.createRef();
-  }
-
-  storeRef = (state, ref) => {
-    this.setState(state);
   }
 
   createColDef = (state) => {
@@ -238,9 +239,9 @@ export default class DataTable extends Component {
   componentDidMount(){
 
   }
+  
+  componentDidUpdate(){
 
-  getCurrentlyVisibleRows(){
-    console.log("row data");
   }
 
   render() {
@@ -312,18 +313,35 @@ export default class DataTable extends Component {
                   onGridReady={ 
                     params => {
                       this.gridApi = params.api;
-                      //console.log(state);
                       this.gridColumnApi = params.columnApi;
                       params.api.sizeColumnsToFit.bind(this);
+                      state.setDataTableRef(this.dataTableRef);
                     }
                   }
                   frameworkComponents={{
                     datePicker: MaterialDatePicker
                   }}
                   onCellValueChanged = {
-                    this.onCellChanged.bind(this)
+                    params => {
+                      this.onCellChanged.bind(this)
+
+                      this.gridApi = params.api;
+                      this.gridColumnApi = params.columnApi;
+
+                      //params.api.sizeColumnsToFit.bind(this);
+                      state.setSelectedEntries(this.gridApi.getModel().rowsToDisplay)
+                    }
                   }
                   onFirstDataRendered={this.onFirstDataRendered.bind(this)}
+                  onModelUpdated={
+                    params => {
+                      this.gridApi = params.api;
+                      this.gridColumnApi = params.columnApi;
+
+                      //params.api.sizeColumnsToFit.bind(this);
+                      state.setSelectedEntries(this.gridApi.getModel().rowsToDisplay)
+                    }
+                  }
                 >
                 </AgGridReact>
               </div>

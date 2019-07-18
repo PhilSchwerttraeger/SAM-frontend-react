@@ -60,6 +60,18 @@ export class DataProvider extends Component {
     }
   }
 
+  setDataTableRef = (ref) => {
+    this.setState(
+      {
+        runtime: {
+        dataTableRef: ref
+        }
+      }
+    );
+  }
+
+  getDataTableRef= () => {
+    return this.state.runtime.dataTableRef;
   }
 
   componentWillMount(){
