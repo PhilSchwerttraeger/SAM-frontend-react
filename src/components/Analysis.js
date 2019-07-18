@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import { Consumer } from './DataContext';
-import Button from '@material-ui/core/Button';
-//import Grid from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import AnalysisFragment from './AnalysisFragment';
 //import TextField from '@material-ui/core/TextField';
 
 export default class Analysis extends Component {
   constructor(props){
     super(props);
     this.state = {};
+  }
+  
+  stylePaper = () => {
+    return {
+      padding: 16
+    }
   }
 
   render() {
@@ -29,18 +36,11 @@ export default class Analysis extends Component {
               visibleRowsValues.push(element.data.value);
             }); 
           }
-          //console.log(visibleIDs);
+          console.log(visibleRowsIDs);
+          console.log(visibleRowsValues);
           return (
             <div>
-              <h4 style={{fontWeight: 500}}>{state.data.strings.titles.analysis}</h4>
-              <Button 
-              variant="outlined" 
-              onClick={
-                () => {
-                  state.getDataTableRef().getCurrentlyVisibleRows()
-                }
-              }>Button
-              </Button>
+              <h2>{state.data.strings.titles.analysis}</h2>
               {/*
               <p>
                 IDs: {
@@ -57,6 +57,25 @@ export default class Analysis extends Component {
                 }
               </p>
               */}
+              
+              <Grid container spacing={3}>
+                <Grid item>
+                  <Paper style={this.stylePaper()}>
+                    <AnalysisFragment 
+                      type="sum"
+                      values={visibleRowsValues}
+                    />
+                  </Paper>
+                </Grid>
+                <Grid item>
+                  <Paper style={this.stylePaper()}>
+                    <AnalysisFragment 
+                      type="average"
+                      values={visibleRowsValues}
+                    />
+                  </Paper>
+                </Grid>
+              </Grid>
             </div>
           )
         }}
