@@ -21,6 +21,22 @@ export default class AnalysisFragment extends Component {
     } else return 0;
   }
 
+  minimum(array){
+    if(Math.min.apply(Math, array) === Infinity
+      || Math.min.apply(Math, array) === -Infinity){
+        return 0;
+    }
+    return Math.min.apply(Math, array);
+  }
+  
+  maximum(array){
+    if(Math.max.apply(Math, array) === Infinity
+      || Math.max.apply(Math, array) === -Infinity){
+        return 0;
+    }
+    return Math.max.apply(Math, array);
+  }
+
   render(){
     //console.log(this.props.visibleRows.values);
     switch (this.props.type) {
@@ -31,6 +47,14 @@ export default class AnalysisFragment extends Component {
       case "average":
         this.result = this.average(this.props.visibleRows.values);
         break;
+
+      case "minimum":
+          this.result = this.minimum(this.props.visibleRows.values);
+          break;
+
+      case "maximum":
+          this.result = this.maximum(this.props.visibleRows.values);
+          break;
     
       default:
         this.result = 0;

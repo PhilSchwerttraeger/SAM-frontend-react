@@ -57,7 +57,7 @@ export default class Analysis extends Component {
       <Consumer>
         {state => {
           let validatedValues = this.getAndValidateValues(state);
-          console.log(validatedValues);
+          //console.log(validatedValues);
           return (
             <div>
               <h2>{state.data.strings.titles.analysis}</h2>              
@@ -75,6 +75,22 @@ export default class Analysis extends Component {
                   <Paper style={this.stylePaper()}>
                     <AnalysisFragment 
                       type="average"
+                      visibleRows={validatedValues}
+                    />
+                  </Paper>
+                </Grid>
+                <Grid item>
+                  <Paper style={this.stylePaper()}>
+                    <AnalysisFragment 
+                      type="minimum"
+                      visibleRows={validatedValues}
+                    />
+                  </Paper>
+                </Grid>
+                <Grid item>
+                  <Paper style={this.stylePaper()}>
+                    <AnalysisFragment 
+                      type="maximum"
                       visibleRows={validatedValues}
                     />
                   </Paper>
