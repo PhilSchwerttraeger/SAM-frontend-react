@@ -56,35 +56,18 @@ export default class Analysis extends Component {
     return (
       <Consumer>
         {state => {
-          let visibleRows = this.getAndValidateValues(state);
-          //console.log(visibleRowsIDs);
-          //console.log(visibleRowsValues);
+          let validatedValues = this.getAndValidateValues(state);
+          console.log(validatedValues);
           return (
             <div>
-              <h2>{state.data.strings.titles.analysis}</h2>
-              {/*
-              <p>
-                IDs: {
-                  visibleRowsIDs.map(
-                    item => {return item + " "}
-                  )
-                }
-              </p>
-              <p>
-                Values: {
-                  visibleRowsValues.map(
-                    item => {return item + " "}
-                  )
-                }
-              </p>
-              */}
-              
+              <h2>{state.data.strings.titles.analysis}</h2>              
               <Grid container spacing={3}>
+                {/*state.generalConfig.analysisSections.map(section)} */}
                 <Grid item>
                   <Paper style={this.stylePaper()}>
                     <AnalysisFragment 
                       type="sum"
-                      values={visibleRows.ids}
+                      visibleRows={validatedValues}
                     />
                   </Paper>
                 </Grid>
@@ -92,7 +75,7 @@ export default class Analysis extends Component {
                   <Paper style={this.stylePaper()}>
                     <AnalysisFragment 
                       type="average"
-                      values={visibleRows.values}
+                      visibleRows={validatedValues}
                     />
                   </Paper>
                 </Grid>

@@ -17,13 +17,14 @@ export default class AnalysisFragment extends Component {
   }
 
   render(){
+    //console.log(this.props.visibleRows.values);
     switch (this.props.type) {
       case "sum":
-        this.result = this.sum(this.props.values);
+        this.result = this.sum(this.props.visibleRows.values);
         break;
         
       case "average":
-        this.result = this.average(this.props.values);
+        this.result = this.average(this.props.visibleRows.values);
         break;
     
       default:
