@@ -7,14 +7,18 @@ export default class AnalysisFragment extends Component {
     array.forEach(element => {
       result += element;
     });
-    if(result) return result;
+    if(result){
+      return result;
+    } else return 0;
   }
 
   average(array){
     let sum = this.sum(array);
     let numberOfEntries = array.length;
     let result = sum/numberOfEntries;
-    if(result) return result;
+    if(result){
+      return result;
+    } else return 0;
   }
 
   render(){
