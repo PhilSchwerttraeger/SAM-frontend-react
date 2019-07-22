@@ -20,15 +20,27 @@ export class DataProvider extends Component {
   fetchFromRestApi(){
     fetch('http://localhost:3001/generalConfig')
     .then(res => res.json())
-    .then(data => {this.setState({generalConfig: data});});
+    .then(data => {
+      this.setState({
+        generalConfig: data
+      });
+    });
       
     fetch('http://localhost:3001/fieldConfig')
     .then(res => res.json())
-    .then(data => {this.setState({fieldConfig: data});});
+    .then(data => {
+      this.setState({
+        fieldConfig: data
+      });
+    });
     
     fetch('http://localhost:3001/fields')
     .then(res => res.json())
-    .then(data => {this.setState({fields: data});});
+    .then(data => {
+      this.setState({
+        fields: data
+      });
+    });
 
     this.setState(
       { 
@@ -46,7 +58,14 @@ export class DataProvider extends Component {
         'Content-Type': 'application/json'
       }
     }).then(res => {
+      this.setState(oldState => ({
+        // eslint-disable-next-line
+        fields: oldState.fields.map(el => 
+          el.id === id ? data : el
+        )
+      }));
       console.log(res);
+      //console.log(this.state.fields);
       return res;
     }).catch(err => {
       console.log(err);
