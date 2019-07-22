@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { numberFormat } from './NumberFormat';
 
 export default class AnalysisFragment extends Component {
   sum(array){
@@ -37,7 +38,7 @@ export default class AnalysisFragment extends Component {
         <h3 style={{textTransform: "capitalize"}}>
           {this.props.type}
         </h3>
-        <p>{this.result}</p>
+        <p>{numberFormat(this.result)}</p>
       </div>
     )
   }
