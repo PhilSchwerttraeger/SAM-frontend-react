@@ -5,12 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import AnalysisFragment from './AnalysisFragment';
 //import TextField from '@material-ui/core/TextField';
 
-export default class Analysis extends Component {
-  constructor(props){
-    super(props);
-    this.state = {};
-  }
-  
+export default class Analysis extends Component {  
   stylePaper = () => {
     return {
       padding: 16
@@ -43,8 +38,13 @@ export default class Analysis extends Component {
 
           // ... add to list
           //console.log(Number(element.data.value));
-          ids.push(element.data.value);
-          values.push(element.data.value);
+          ids.push(element.data.id);
+          if(element.data.type === "In"){
+            values.push(element.data.value);
+          } else if (element.data.type === "Out"){
+            values.push(-element.data.value);
+          }
+          
         }
       }); 
     }
