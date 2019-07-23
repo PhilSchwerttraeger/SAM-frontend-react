@@ -9,10 +9,13 @@
     "analysis": {
 
     },
-    "statistics": {
-        
-    },
     "datatable": {
         "autoCompleteSelect": "Type and select"
+    },
+    "modalFieldConfig": {
+        "title": "Column Configuration",
+        "description": "Configure the columns to fit individual purposes and needs.",
+        "save": "Save",
+        "cancel": "cancel"
     }
 }

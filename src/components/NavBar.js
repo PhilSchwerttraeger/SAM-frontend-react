@@ -7,11 +7,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 //import AccountCircle from '@material-ui/icons/AccountCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
 import InfoIcon from '@material-ui/icons/Info';
-import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import GitHubIcon from '../assets/GitHubIcon';
-import SimpleDialogDemo from './FieldConfigDialog';
-
-import CategoriesModal from './CategoriesModal';
+//import SimpleDialogDemo from './FieldConfigDialog';
+import CategoriesModal from './CategoryConfig/CategoriesModal';
 import { Consumer } from './DataContext';
 
 export default class NavBar extends Component {
@@ -29,22 +27,10 @@ export default class NavBar extends Component {
               </Typography>
               <div style={{flexGrow: 1}}/>
               <div style={{display: 'flex'}}>
-                <IconButton color="inherit" onClick={this.handleOpen}>
-                  <ViewColumnIcon />
-                </IconButton>
                 <CategoriesModal />
-                <SimpleDialogDemo />
                 <IconButton color="inherit">
                   <SettingsIcon />
                 </IconButton>
-                {/*
-                <IconButton
-                  aria-haspopup="true"
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                */}
                 <IconButton 
                   aria-haspopup="true" 
                   color="inherit"
