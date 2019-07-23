@@ -9,6 +9,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import InfoIcon from '@material-ui/icons/Info';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import GitHubIcon from '../assets/GitHubIcon';
+import SimpleDialogDemo from './FieldConfigDialog';
 
 import CategoriesModal from './CategoriesModal';
 import { Consumer } from './DataContext';
@@ -32,6 +33,7 @@ export default class NavBar extends Component {
                   <ViewColumnIcon />
                 </IconButton>
                 <CategoriesModal />
+                <SimpleDialogDemo />
                 <IconButton color="inherit">
                   <SettingsIcon />
                 </IconButton>
