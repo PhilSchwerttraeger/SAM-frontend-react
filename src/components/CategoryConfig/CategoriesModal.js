@@ -32,8 +32,6 @@ export default function CategoriesModal() {
     
   }
 
-    console.log("ready");
-
   return (
     <Consumer>
       {state => { 

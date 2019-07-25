@@ -59,12 +59,12 @@ export function getCurrentlyVisibleRows(){
 }
 
 export default class DataTable extends Component {
-  static context = DataContext;
-
   constructor(props){
     super(props);
     this.dataTableRef = React.createRef();
   }
+
+  static context = DataContext;
 
   createColDef = (state) => {
     return state.fieldConfig.map(
@@ -213,8 +213,15 @@ export default class DataTable extends Component {
     alert(`Selected nodes: ${selectedDataStringPresentation}`)
   }
   
-  addNewItem = e => {
-    //TODO
+  addNewItem = () => {
+    // 1. Create new empty row
+    let data = {};
+    this.contextState.data.fieldConfig.map(fieldConfig => {
+      return data[fieldConfig.name] = '';
+    });
+
+    // 2. Add to backend
+    this.contextState.addEntry(data);
   }
 
   validateValueCell(value){
@@ -251,7 +258,7 @@ export default class DataTable extends Component {
   }
 
   componentDidMount(){
-
+    
   }
   
   componentDidUpdate(){
@@ -262,6 +269,7 @@ export default class DataTable extends Component {
     return (
       <Consumer>
         {state => {
+          this.contextState = state;
           //console.log(state);
           //console.log(currentlyVisibleRowData);
           //state.setCurrentlyVisibleRowData("jo");
