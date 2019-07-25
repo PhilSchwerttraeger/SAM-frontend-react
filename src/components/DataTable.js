@@ -313,7 +313,7 @@ export default class DataTable extends Component {
 
                   <Grid item></Grid>
                   <Grid item>
-                    <Grid container alignItems="flex-end" style={{height: "48px"}}>
+                    <Grid container alignItems="flex-end">
                       <TextField
                         id="standard-search"
                         label="Search field"
@@ -336,7 +336,7 @@ export default class DataTable extends Component {
                     params => {
                       this.gridApi = params.api;
                       this.gridColumnApi = params.columnApi;
-                      params.api.sizeColumnsToFit.bind(this);
+                      this.autoSizeColumns.bind(this);
                     }
                   }
                   frameworkComponents={{
@@ -345,14 +345,15 @@ export default class DataTable extends Component {
                   onCellValueChanged = {
                     this.onCellChanged.bind(this, state)
                   }
-                  onFirstDataRendered={this.onFirstDataRendered.bind(this)}
+                  onFirstDataRendered={
+                    this.autoSizeColumns.bind(this)
+                  }
                   onModelUpdated={
                     params => {
                       this.gridApi = params.api;
-                      this.gridColumnApi = params.columnApi;
-
-                      //params.api.sizeColumnsToFit.bind(this);
-                      state.setSelectedEntries(this.gridApi.getModel().rowsToDisplay)
+                      this.gridApi.sizeColumnsToFit.bind(this);
+                      state.setSelectedEntries(this.gridApi.getModel().rowsToDisplay);
+                      this.autoSizeColumns.bind(this);
                     }
                   }
                 >
