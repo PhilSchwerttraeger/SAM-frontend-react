@@ -25,7 +25,7 @@ export class DataProvider extends Component {
   }
   
   fetchFromRestApi = () => {
-    fetch('http://localhost:3001/generalConfig')
+    fetch('http://localhost:3009/generalConfig')
     .then(res => res.json())
     .then(data => {
       this.setState({
@@ -33,7 +33,7 @@ export class DataProvider extends Component {
       });
     });
       
-    fetch('http://localhost:3001/fieldConfig')
+    fetch('http://localhost:3009/fieldConfig')
     .then(res => res.json())
     .then(data => {
       this.setState({
@@ -41,7 +41,7 @@ export class DataProvider extends Component {
       });
     });
     
-    fetch('http://localhost:3001/fields')
+    fetch('http://localhost:3009/fields')
     .then(res => res.json())
     .then(data => {
       this.setState({
@@ -55,7 +55,7 @@ export class DataProvider extends Component {
   }
 
   fetchFieldsDataFromRestApi = () => {
-    fetch('http://localhost:3001/fields')
+    fetch('http://localhost:3009/fields')
     .then(res => res.json())
     .then(res => {
       this.setState({
@@ -70,7 +70,7 @@ export class DataProvider extends Component {
 
   updateEntry = (id, data) => {
     delete data.tableData;
-    return fetch('http://localhost:3001/fields/' + id, {
+    return fetch('http://localhost:3009/fields/' + id, {
       method: 'PUT',
       body: JSON.stringify(data),
       headers: {
@@ -91,7 +91,7 @@ export class DataProvider extends Component {
 
   addEntry = (data) => {
     //delete data.tableData;
-    return fetch('http://localhost:3001/fields', {
+    return fetch('http://localhost:3009/fields', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
