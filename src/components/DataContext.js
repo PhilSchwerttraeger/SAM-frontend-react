@@ -109,35 +109,30 @@ export class DataProvider extends Component {
       return err;
     });
   }
-
-  createEmptyEntry = () => {
-    return fetch('http://localhost:3001/fields', {
-      method: 'POST',
-      body: JSON.stringify(),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => {
-      console.log(res);
-      return res;
-    }).catch(err => {
-      console.log(err);
-    });
-  }
   
-  deleteEntries = (id) => {
-    return fetch('http://localhost:3001/fields/' + id, {
-      method: 'DELETE',
-      //body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+  deleteEntries = (Ids) => {
+    Ids.map(id => {
+      return fetch('http://localhost:3009/fields/' + id, {
+        method: 'DELETE',
+        //body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }).then(res => {
+        this.setState({
+          fields: this.state.fields.map(item => {
+            if(item.id !== id){
+              return item
+            } return;
+          })
+        });
+        this.fetchFieldsDataFromRestApi();
         console.log(res);
         return res;
       }).catch(err => {
         console.log(err);
       });
+    });
   }
 
   setSelectedEntries = (entries) => {
@@ -158,8 +153,7 @@ export class DataProvider extends Component {
       data: this.state,
       updateEntry: this.updateEntry,
       addEntry: this.addEntry,
-      createEmptyEntry: this.createEmptyEntry,
-      deleteEntries: this.addEntries,
+      deleteEntries: this.deleteEntries,
       setSelectedEntries: this.setSelectedEntries,
       getSelectedEntries: this.getSelectedEntries,
       fetchFromRestApi: this.fetchFromRestApi,

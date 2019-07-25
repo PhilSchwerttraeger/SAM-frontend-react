@@ -8,10 +8,13 @@ import {AutocompleteSelectCellEditor} from 'ag-grid-autocomplete-editor';
 import 'ag-grid-autocomplete-editor/main.css';
 import MaterialDatePicker from './MaterialDatePicker';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Snackbars from './Snackbars';
 import { DataContext } from './DataContext';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
 function dateComparator(date1, date2) {
   var date1Number = monthToComparableNumber(date1);
@@ -225,6 +228,20 @@ export default class DataTable extends Component {
 
     // 2. Add to backend
     this.contextState.addEntry(data);
+  }
+  
+  deleteSelectedItem = () => {
+    // 1. Get selected items
+    const selectedNodes = this.gridApi.getSelectedNodes();
+    const selectedIds = selectedNodes.map( node => node.id );
+    //const selectedDataStringPresentation = selectedData.map( node => node.id);
+    //alert(selectedDataStringPresentation.join(', '));
+    
+    this.contextState.deleteEntries(selectedIds);
+  }
+  
+  downloadCSV = () => {
+
   }
 
   validateValueCell(value){
