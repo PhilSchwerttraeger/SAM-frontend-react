@@ -75,8 +75,7 @@ export default class DataTable extends Component {
           sortable: true,
           filter: true,
           editable: true,
-          resizable: true,
-          width: 130
+          resizable: true
         };
 
         // enable checkbox if column is first column
@@ -89,6 +88,7 @@ export default class DataTable extends Component {
           columnConfig.cellEditorParams = {
             values: column.values
           }
+          columnConfig.width = 110
         }
 
         // enable date comparator when field type is 'date'
@@ -115,12 +115,14 @@ export default class DataTable extends Component {
             browserDatePicker: true
           }
           columnConfig.browserDatePicker = true;
+          columnConfig.width = 120
         }
 
         // enable currency settings when field type is 'currency'
         if(column.type === "currency"){
           columnConfig.cellStyle = {'text-align': 'right'};
           columnConfig.valueFormatter = currencyFormatter
+          columnConfig.width = 120
         }
 
         // enable auto-complete (npm package) on pure text-typed fields
@@ -198,6 +200,7 @@ export default class DataTable extends Component {
             }
             return "";
           }
+          columnConfig.width = 220
         }
 
         // return column config
@@ -244,7 +247,7 @@ export default class DataTable extends Component {
     state.updateEntry(e.data.id, e.data);
   }
 
-  onFirstDataRendered = e => {
+  autoSizeColumns = e => {
     var allColumnIds = [];
     this.gridColumnApi.getAllColumns().forEach(function(column) {
       allColumnIds.push(column.colId);
@@ -298,16 +301,38 @@ export default class DataTable extends Component {
                     <Grid container>
 
                       <Grid item>
-                        <Button variant="outlined" onClick={this.onButtonClick}>
-                          Get selected rows
-                        </Button>
+                        <IconButton 
+                          variant="outlined" 
+                          onClick={this.addNewItem}
+                          color="primary"  
+                        >
+                        <AddIcon />
+                          
+                        </IconButton>
                       </Grid>
 
                       <Grid item>
-                        <Button variant="outlined" onClick={this.addNewItem}>
-                          Add New
-                        </Button>
+                        <IconButton 
+                          variant="outlined" 
+                          onClick={this.deleteSelectedItem}
+                          color="secondary"  
+                        >
+                          <DeleteIcon />
+                          
+                        </IconButton>
                       </Grid>
+
+                      <Grid item>
+                        <IconButton 
+                          variant="outlined" 
+                          onClick={this.downloadCSV}
+                          color="primary"
+                        >
+                          <SaveAltIcon />
+                          
+                        </IconButton>
+                      </Grid>
+
                     </Grid>
                   </Grid>
 
