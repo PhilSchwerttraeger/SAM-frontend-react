@@ -223,7 +223,12 @@ export default class DataTable extends Component {
     // 1. Create new empty row
     let data = {};
     this.contextState.data.fieldConfig.map(fieldConfig => {
-      return data[fieldConfig.name] = '';
+      if(fieldConfig.type === "text"){
+        return data[fieldConfig.name] = {label: ""};
+      } else{
+        return data[fieldConfig.name] = '';
+      }
+      
     });
 
     // 2. Add to backend
@@ -233,9 +238,8 @@ export default class DataTable extends Component {
   deleteSelectedItem = () => {
     // 1. Get selected items
     const selectedNodes = this.gridApi.getSelectedNodes();
-    const selectedIds = selectedNodes.map( node => node.id );
-    //const selectedDataStringPresentation = selectedData.map( node => node.id);
-    //alert(selectedDataStringPresentation.join(', '));
+    const selectedIds = selectedNodes.map(node => node.data.id);
+    alert(selectedIds.join(', '));
     
     this.contextState.deleteEntries(selectedIds);
   }

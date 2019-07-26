@@ -112,6 +112,7 @@ export class DataProvider extends Component {
   
   deleteEntries = (Ids) => {
     Ids.map(id => {
+      console.log(id + " was deleted from db.");
       return fetch('http://localhost:3009/fields/' + id, {
         method: 'DELETE',
         //body: JSON.stringify(data),
@@ -123,7 +124,10 @@ export class DataProvider extends Component {
           fields: this.state.fields.map(item => {
             if(item.id !== id){
               return item
-            } return;
+            } else {
+              console.log(id + " was deleted from state.");
+              return
+            }
           })
         });
         this.fetchFieldsDataFromRestApi();
