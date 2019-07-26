@@ -60,7 +60,9 @@ export default class Analysis extends Component {
           //console.log(validatedValues);
           return (
             <div>
+              {/*
               <h2>{state.data.strings.titles.analysis}</h2>              
+              */}
               <Grid container spacing={3}>
                 {/*state.generalConfig.analysisSections.map(section)} */}
                 <Grid item>
