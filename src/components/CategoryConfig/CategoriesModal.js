@@ -32,8 +32,6 @@ export default function CategoriesModal() {
     
   }
 
-    console.log("ready");
-
   return (
     <Consumer>
       {state => { 
@@ -53,11 +51,11 @@ export default function CategoriesModal() {
               <ConfigRow value="preset value" onChange={handleInputUpdate}/>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleSave} color="primary">
-              {state.data.strings.modalFieldConfig.save}
-              </Button>
               <Button onClick={handleClose} color="secondary">
               {state.data.strings.modalFieldConfig.cancel}
+              </Button>
+              <Button onClick={handleSave} color="primary">
+              {state.data.strings.modalFieldConfig.save}
               </Button>
             </DialogActions>
           </Dialog>

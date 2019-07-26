@@ -3,13 +3,20 @@ import React, {Component} from 'react';
 export const DataContext = React.createContext();
 
 export class DataProvider extends Component {
-  state = {
-    generalConfig: {},
-    fieldConfig: [],
-    fields: [],
-    strings: [],
-    runtime: {
-      visibleEntries: []
+  constructor(props){
+    super(props);
+    
+    //this.fetchFromRestApi.bind(this);
+    this.fetchFieldsDataFromRestApi.bind(this);
+
+    this.state = {
+      generalConfig: {},
+      fieldConfig: [],
+      fields: [],
+      strings: [],
+      runtime: {
+        visibleEntries: []
+      }
     }
   }
 
@@ -17,8 +24,8 @@ export class DataProvider extends Component {
     this.fetchFromRestApi();
   }
   
-  fetchFromRestApi(){
-    fetch('http://localhost:3001/generalConfig')
+  fetchFromRestApi = () => {
+    fetch('http://localhost:3009/generalConfig')
     .then(res => res.json())
     .then(data => {
       this.setState({
@@ -26,7 +33,7 @@ export class DataProvider extends Component {
       });
     });
       
-    fetch('http://localhost:3001/fieldConfig')
+    fetch('http://localhost:3009/fieldConfig')
     .then(res => res.json())
     .then(data => {
       this.setState({
@@ -34,7 +41,7 @@ export class DataProvider extends Component {
       });
     });
     
-    fetch('http://localhost:3001/fields')
+    fetch('http://localhost:3009/fields')
     .then(res => res.json())
     .then(data => {
       this.setState({
@@ -42,16 +49,28 @@ export class DataProvider extends Component {
       });
     });
 
-    this.setState(
-      { 
-        strings: require('../languages/english.json') 
-      }
-    );
+    this.setState({ 
+      strings: require('../languages/english.json') 
+    });
+  }
+
+  fetchFieldsDataFromRestApi = () => {
+    fetch('http://localhost:3009/fields')
+    .then(res => res.json())
+    .then(res => {
+      this.setState({
+        fields: res
+      });
+      console.log(res);
+      return res;
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   updateEntry = (id, data) => {
     delete data.tableData;
-    return fetch('http://localhost:3001/fields/' + id, {
+    return fetch('http://localhost:3009/fields/' + id, {
       method: 'PUT',
       body: JSON.stringify(data),
       headers: {
@@ -59,13 +78,11 @@ export class DataProvider extends Component {
       }
     }).then(res => {
       this.setState(oldState => ({
-        // eslint-disable-next-line
         fields: oldState.fields.map(el => 
           el.id === id ? data : el
         )
       }));
       console.log(res);
-      //console.log(this.state.fields);
       return res;
     }).catch(err => {
       console.log(err);
@@ -73,49 +90,53 @@ export class DataProvider extends Component {
   }
 
   addEntry = (data) => {
-    delete data.tableData;
-    return fetch('http://localhost:3001/fields', {
+    //delete data.tableData;
+    return fetch('http://localhost:3009/fields', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json'
       }
     }).then(res => {
+      this.setState(oldState => ({
+        fields: [...oldState.fields, data]
+      }));
+      this.fetchFieldsDataFromRestApi();
       console.log(res);
       return res;
     }).catch(err => {
       console.log(err);
-    });
-  }
-
-  createEmptyEntry = () => {
-    return fetch('http://localhost:3001/fields', {
-      method: 'POST',
-      body: JSON.stringify(),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => {
-      console.log(res);
-      return res;
-    }).catch(err => {
-      console.log(err);
+      return err;
     });
   }
   
-  deleteEntries = (id) => {
-    return fetch('http://localhost:3001/fields/' + id, {
-      method: 'DELETE',
-      //body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+  deleteEntries = (Ids) => {
+    Ids.map(id => {
+      console.log(id + " was deleted from db.");
+      return fetch('http://localhost:3009/fields/' + id, {
+        method: 'DELETE',
+        //body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }).then(res => {
+        this.setState({
+          fields: this.state.fields.map(item => {
+            if(item.id !== id){
+              return item
+            } else {
+              console.log(id + " was deleted from state.");
+              return
+            }
+          })
+        });
+        this.fetchFieldsDataFromRestApi();
         console.log(res);
         return res;
       }).catch(err => {
         console.log(err);
       });
+    });
   }
 
   setSelectedEntries = (entries) => {
@@ -136,10 +157,11 @@ export class DataProvider extends Component {
       data: this.state,
       updateEntry: this.updateEntry,
       addEntry: this.addEntry,
-      createEmptyEntry: this.createEmptyEntry,
-      deleteEntries: this.addEntries,
+      deleteEntries: this.deleteEntries,
       setSelectedEntries: this.setSelectedEntries,
-      getSelectedEntries: this.getSelectedEntries
+      getSelectedEntries: this.getSelectedEntries,
+      fetchFromRestApi: this.fetchFromRestApi,
+      fetchFieldsDataFromRestApi: this.fetchFieldsDataFromRestApi
     };
 
     return(

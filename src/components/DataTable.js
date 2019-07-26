@@ -8,10 +8,13 @@ import {AutocompleteSelectCellEditor} from 'ag-grid-autocomplete-editor';
 import 'ag-grid-autocomplete-editor/main.css';
 import MaterialDatePicker from './MaterialDatePicker';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Snackbars from './Snackbars';
 import { DataContext } from './DataContext';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
 function dateComparator(date1, date2) {
   var date1Number = monthToComparableNumber(date1);
@@ -59,12 +62,12 @@ export function getCurrentlyVisibleRows(){
 }
 
 export default class DataTable extends Component {
-  static context = DataContext;
-
   constructor(props){
     super(props);
     this.dataTableRef = React.createRef();
   }
+
+  static context = DataContext;
 
   createColDef = (state) => {
     return state.fieldConfig.map(
@@ -75,8 +78,7 @@ export default class DataTable extends Component {
           sortable: true,
           filter: true,
           editable: true,
-          resizable: true,
-          width: 130
+          resizable: true
         };
 
         // enable checkbox if column is first column
@@ -89,6 +91,7 @@ export default class DataTable extends Component {
           columnConfig.cellEditorParams = {
             values: column.values
           }
+          columnConfig.width = 110
         }
 
         // enable date comparator when field type is 'date'
@@ -115,12 +118,14 @@ export default class DataTable extends Component {
             browserDatePicker: true
           }
           columnConfig.browserDatePicker = true;
+          columnConfig.width = 120
         }
 
         // enable currency settings when field type is 'currency'
         if(column.type === "currency"){
           columnConfig.cellStyle = {'text-align': 'right'};
           columnConfig.valueFormatter = currencyFormatter
+          columnConfig.width = 120
         }
 
         // enable auto-complete (npm package) on pure text-typed fields
@@ -198,6 +203,7 @@ export default class DataTable extends Component {
             }
             return "";
           }
+          columnConfig.width = 220
         }
 
         // return column config
@@ -213,8 +219,33 @@ export default class DataTable extends Component {
     alert(`Selected nodes: ${selectedDataStringPresentation}`)
   }
   
-  addNewItem = e => {
-    //TODO
+  addNewItem = () => {
+    // 1. Create new empty row
+    let data = {};
+    this.contextState.data.fieldConfig.map(fieldConfig => {
+      if(fieldConfig.type === "text"){
+        return data[fieldConfig.name] = {label: ""};
+      } else{
+        return data[fieldConfig.name] = '';
+      }
+      
+    });
+
+    // 2. Add to backend
+    this.contextState.addEntry(data);
+  }
+  
+  deleteSelectedItem = () => {
+    // 1. Get selected items
+    const selectedNodes = this.gridApi.getSelectedNodes();
+    const selectedIds = selectedNodes.map(node => node.data.id);
+    alert(selectedIds.join(', '));
+    
+    this.contextState.deleteEntries(selectedIds);
+  }
+  
+  downloadCSV = () => {
+
   }
 
   validateValueCell(value){
@@ -237,7 +268,7 @@ export default class DataTable extends Component {
     state.updateEntry(e.data.id, e.data);
   }
 
-  onFirstDataRendered = e => {
+  autoSizeColumns = e => {
     var allColumnIds = [];
     this.gridColumnApi.getAllColumns().forEach(function(column) {
       allColumnIds.push(column.colId);
@@ -251,7 +282,7 @@ export default class DataTable extends Component {
   }
 
   componentDidMount(){
-
+    
   }
   
   componentDidUpdate(){
@@ -262,6 +293,7 @@ export default class DataTable extends Component {
     return (
       <Consumer>
         {state => {
+          this.contextState = state;
           //console.log(state);
           //console.log(currentlyVisibleRowData);
           //state.setCurrentlyVisibleRowData("jo");
@@ -290,22 +322,44 @@ export default class DataTable extends Component {
                     <Grid container>
 
                       <Grid item>
-                        <Button variant="outlined" onClick={this.onButtonClick}>
-                          Get selected rows
-                        </Button>
+                        <IconButton 
+                          variant="outlined" 
+                          onClick={this.addNewItem}
+                          color="primary"  
+                        >
+                        <AddIcon />
+                          
+                        </IconButton>
                       </Grid>
 
                       <Grid item>
-                        <Button variant="outlined" onClick={this.addNewItem}>
-                          Add New
-                        </Button>
+                        <IconButton 
+                          variant="outlined" 
+                          onClick={this.deleteSelectedItem}
+                          color="secondary"  
+                        >
+                          <DeleteIcon />
+                          
+                        </IconButton>
                       </Grid>
+
+                      <Grid item>
+                        <IconButton 
+                          variant="outlined" 
+                          onClick={this.downloadCSV}
+                          color="primary"
+                        >
+                          <SaveAltIcon />
+                          
+                        </IconButton>
+                      </Grid>
+
                     </Grid>
                   </Grid>
 
                   <Grid item></Grid>
                   <Grid item>
-                    <Grid container alignItems="flex-end" style={{height: "48px"}}>
+                    <Grid container alignItems="flex-end">
                       <TextField
                         id="standard-search"
                         label="Search field"
@@ -328,7 +382,7 @@ export default class DataTable extends Component {
                     params => {
                       this.gridApi = params.api;
                       this.gridColumnApi = params.columnApi;
-                      params.api.sizeColumnsToFit.bind(this);
+                      this.autoSizeColumns.bind(this);
                     }
                   }
                   frameworkComponents={{
@@ -337,14 +391,15 @@ export default class DataTable extends Component {
                   onCellValueChanged = {
                     this.onCellChanged.bind(this, state)
                   }
-                  onFirstDataRendered={this.onFirstDataRendered.bind(this)}
+                  onFirstDataRendered={
+                    this.autoSizeColumns.bind(this)
+                  }
                   onModelUpdated={
                     params => {
                       this.gridApi = params.api;
-                      this.gridColumnApi = params.columnApi;
-
-                      //params.api.sizeColumnsToFit.bind(this);
-                      state.setSelectedEntries(this.gridApi.getModel().rowsToDisplay)
+                      this.gridApi.sizeColumnsToFit.bind(this);
+                      state.setSelectedEntries(this.gridApi.getModel().rowsToDisplay);
+                      this.autoSizeColumns.bind(this);
                     }
                   }
                 >
