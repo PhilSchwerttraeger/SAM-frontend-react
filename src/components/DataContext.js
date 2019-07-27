@@ -114,8 +114,7 @@ export class DataProvider extends Component {
   }
   
   deleteEntries = (Ids) => {
-    Ids.map(id => {
-      console.log(id + " was deleted from db.");
+    Ids.forEach((id) => {
       return fetch(serverURL + '/fields/' + id, {
         method: 'DELETE',
         //body: JSON.stringify(data),
@@ -123,18 +122,22 @@ export class DataProvider extends Component {
           'Content-Type': 'application/json'
         }
       }).then(res => {
-        this.setState({
+        console.log(res);
+        console.log(id + " was deleted from db.");
+        this.setState(oldState => {
           // eslint-disable-next-line
-          fields: this.state.fields.map(item => {
-            if(item.id !== id){
-              return item
-            } else {
-              console.log(id + " was deleted from state.");
-            }
-          })
+          return {
+            fields: oldState.fields.filter(item => {
+              if(item.id !== id){
+                return true;
+              } else {
+                console.log(id + " was deleted from state.");
+                return false;
+              }
+            })
+          };
         });
         this.fetchFieldsDataFromRestApi();
-        console.log(res);
         return res;
       }).catch(err => {
         console.log(err);
