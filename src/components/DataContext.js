@@ -104,6 +104,7 @@ export class DataProvider extends Component {
       this.setState(oldState => ({
         fields: [...oldState.fields, data]
       }));
+      this.fetchFieldsDataFromRestApi();
       //console.log(res.status);
       return res;
     }).catch(err => {
