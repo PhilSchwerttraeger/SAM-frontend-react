@@ -32,9 +32,7 @@ class App extends React.Component {
         <div style={this.styleMain()}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <Paper style={this.stylePaper()}>
-                <Analysis />
-              </Paper>
+              <Analysis />
             </Grid>
             <Grid item xs={12}>
               <Paper style={this.stylePaper()}>
