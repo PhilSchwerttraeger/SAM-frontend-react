@@ -104,8 +104,7 @@ export class DataProvider extends Component {
       this.setState(oldState => ({
         fields: [...oldState.fields, data]
       }));
-      this.fetchFieldsDataFromRestApi();
-      console.log(res);
+      //console.log(res.status);
       return res;
     }).catch(err => {
       console.log(err);
@@ -124,12 +123,12 @@ export class DataProvider extends Component {
         }
       }).then(res => {
         this.setState({
+          // eslint-disable-next-line
           fields: this.state.fields.map(item => {
             if(item.id !== id){
               return item
             } else {
               console.log(id + " was deleted from state.");
-              return
             }
           })
         });

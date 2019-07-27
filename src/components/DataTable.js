@@ -268,7 +268,8 @@ export default class DataTable extends Component {
     state.updateEntry(e.data.id, e.data);
   }
 
-  autoSizeColumns = e => {
+  autoSizeColumns = () => {
+    //alert("autosized");
     var allColumnIds = [];
     this.gridColumnApi.getAllColumns().forEach(function(column) {
       allColumnIds.push(column.colId);
@@ -382,26 +383,37 @@ export default class DataTable extends Component {
                     params => {
                       this.gridApi = params.api;
                       this.gridColumnApi = params.columnApi;
-                      this.autoSizeColumns.bind(this);
+                      //this.autoSizeColumns.bind(this);
                     }
                   }
                   frameworkComponents={{
                     datePicker: MaterialDatePicker
                   }}
-                  onCellValueChanged = {
-                    this.onCellChanged.bind(this, state)
+                  onCellValueChanged = {() => {
+                    this.onCellChanged.bind(this, state);
+                    //this.autoSizeColumns.bind(this);
+                    //this.autoSizeColumns();
                   }
+                  }
+                  /*
                   onFirstDataRendered={
                     this.autoSizeColumns.bind(this)
                   }
+                  */
                   onModelUpdated={
                     params => {
                       this.gridApi = params.api;
                       this.gridApi.sizeColumnsToFit.bind(this);
                       state.setSelectedEntries(this.gridApi.getModel().rowsToDisplay);
-                      this.autoSizeColumns.bind(this);
+                      //this.autoSizeColumns.bind(this);
                     }
                   }
+                  /*
+                  onRowDataUpdated={
+                    //this.autoSizeColumns.bind(this)
+                  }
+                  */
+                  animateRows={true}
                 >
                 </AgGridReact>
 
