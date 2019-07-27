@@ -400,11 +400,10 @@ export default class DataTable extends Component {
                   frameworkComponents={{
                     datePicker: MaterialDatePicker
                   }}
-                  onCellValueChanged = {() => {
-                    this.onCellChanged.bind(this, state);
+                  onCellValueChanged = {
+                    this.onCellChanged.bind(this, state)
                     //this.autoSizeColumns.bind(this);
                     //this.autoSizeColumns();
-                  }
                   }
                   /*
                   onFirstDataRendered={
