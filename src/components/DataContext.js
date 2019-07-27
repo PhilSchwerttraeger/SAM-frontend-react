@@ -2,10 +2,13 @@ import React, {Component} from 'react';
 
 export const DataContext = React.createContext();
 
+const serverURL = 'http://localhost:3009';
+
 export class DataProvider extends Component {
   constructor(props){
     super(props);
     
+
     //this.fetchFromRestApi.bind(this);
     this.fetchFieldsDataFromRestApi.bind(this);
 
@@ -25,7 +28,7 @@ export class DataProvider extends Component {
   }
   
   fetchFromRestApi = () => {
-    fetch('http://localhost:3009/generalConfig')
+    fetch(serverURL + '/generalConfig')
     .then(res => res.json())
     .then(data => {
       this.setState({
@@ -33,7 +36,7 @@ export class DataProvider extends Component {
       });
     });
       
-    fetch('http://localhost:3009/fieldConfig')
+    fetch(serverURL + '/fieldConfig')
     .then(res => res.json())
     .then(data => {
       this.setState({
@@ -41,7 +44,7 @@ export class DataProvider extends Component {
       });
     });
     
-    fetch('http://localhost:3009/fields')
+    fetch(serverURL + '/fields')
     .then(res => res.json())
     .then(data => {
       this.setState({
@@ -55,7 +58,7 @@ export class DataProvider extends Component {
   }
 
   fetchFieldsDataFromRestApi = () => {
-    fetch('http://localhost:3009/fields')
+    fetch(serverURL + '/fields')
     .then(res => res.json())
     .then(res => {
       this.setState({
@@ -70,7 +73,7 @@ export class DataProvider extends Component {
 
   updateEntry = (id, data) => {
     delete data.tableData;
-    return fetch('http://localhost:3009/fields/' + id, {
+    return fetch(serverURL + '/fields/' + id, {
       method: 'PUT',
       body: JSON.stringify(data),
       headers: {
@@ -91,7 +94,7 @@ export class DataProvider extends Component {
 
   addEntry = (data) => {
     //delete data.tableData;
-    return fetch('http://localhost:3009/fields', {
+    return fetch(serverURL + '/fields', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -113,7 +116,7 @@ export class DataProvider extends Component {
   deleteEntries = (Ids) => {
     Ids.map(id => {
       console.log(id + " was deleted from db.");
-      return fetch('http://localhost:3009/fields/' + id, {
+      return fetch(serverURL + '/fields/' + id, {
         method: 'DELETE',
         //body: JSON.stringify(data),
         headers: {
