@@ -222,14 +222,7 @@ export default class DataTable extends Component {
       }
     )
   }
-  
-  onButtonClick = e => {
-    const selectedNodes = this.gridApi.getSelectedNodes()
-    const selectedData = selectedNodes.map( node => node.data )
-    const selectedDataStringPresentation = selectedData.map( node => node.id).join(', ')
-    alert(`Selected nodes: ${selectedDataStringPresentation}`)
-  }
-  
+    
   addNewItem = () => {
     // 1. Create new empty row
     let data = {};
