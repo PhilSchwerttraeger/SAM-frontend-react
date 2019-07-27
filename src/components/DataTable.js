@@ -169,6 +169,7 @@ export default class DataTable extends Component {
           };
 
           // filter duplicate array items from autocomplete list
+          // eslint-disable-next-line
           var filtered = columnConfig.cellEditorParams.selectData.filter(el => {
             if(el){
               if (!this[el.label]) {
@@ -257,6 +258,7 @@ export default class DataTable extends Component {
   
   downloadCSV = () => {
 
+    this.gridApi.exportDataAsCsv(params);
   }
 
   validateValueCell(value){
