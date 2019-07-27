@@ -132,41 +132,51 @@ export default class DataTable extends Component {
         if(column.type === "text"){
           columnConfig.cellEditor = AutocompleteSelectCellEditor;
           columnConfig.cellEditorParams = {
-              selectData: state.fields.map(field => {
-                if(field.description && field.description.label) {
-                  return ({
-                    label: field.description.label,
-                    value: field.description.value
-                  });
+            // eslint-disable-next-line 
+            selectData: state.fields.map(field => {
+              if(field){
+                if(field.description) {
+                  if(field.description.label){
+                    return ({
+                      label: field.description.label,
+                      value: field.description.value
+                    });
+                  } else return ({
+                    label: "",
+                    value: ""
+                  })
                 } else return ({
                   label: "",
                   value: ""
                 });
-              }),
-              
-              /*[
-                  {
-                    label: 'Canada', 
-                    value: 'CA', 
-                    group: 'North America' 
-                  }
-              ]*/
-              
-              placeholder: state.strings.datatable.autoCompleteSelect,
-              autocomplete: {
-                  strict: false,
-                  autoselectfirst: false,
-                  debounceWaitMs: 0,
-              }
+              } else console.log(state);
+            }),
+            
+            /*[
+                {
+                  label: 'Canada', 
+                  value: 'CA', 
+                  group: 'North America' 
+                }
+            ]*/
+            
+            placeholder: state.strings.datatable.autoCompleteSelect,
+            autocomplete: {
+                strict: false,
+                autoselectfirst: false,
+                debounceWaitMs: 0,
+            }
           };
 
           // filter duplicate array items from autocomplete list
           var filtered = columnConfig.cellEditorParams.selectData.filter(el => {
-            if (!this[el.label]) {
-              this[el.label] = true;
-              return true;
+            if(el){
+              if (!this[el.label]) {
+                this[el.label] = true;
+                return true;
+              }
+              return false;
             }
-            return false;
           }, Object.create(null));
 
           // comparing two array items with the help of its label property
@@ -239,7 +249,8 @@ export default class DataTable extends Component {
     // 1. Get selected items
     const selectedNodes = this.gridApi.getSelectedNodes();
     const selectedIds = selectedNodes.map(node => node.data.id);
-    alert(selectedIds.join(', '));
+    let deleteMessage = this.contextState.data.strings.datatable.confirmDelete + " " + selectedIds.join(', ') + "?";
+    alert(deleteMessage);
     
     this.contextState.deleteEntries(selectedIds);
   }
