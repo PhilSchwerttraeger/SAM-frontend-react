@@ -14,6 +14,7 @@ import Snackbars from './Snackbars';
 import { DataContext } from './DataContext';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+import DuplicateIcon from '@material-ui/icons/ControlPointDuplicate';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
 function dateComparator(date1, date2) {
@@ -149,7 +150,7 @@ export default class DataTable extends Component {
                   label: "",
                   value: ""
                 });
-              } else console.log(state);
+              } else return null;
             }),
             
             /*[
@@ -238,12 +239,7 @@ export default class DataTable extends Component {
     // 2. Add to backend
     this.contextState.addEntry(data);
   }
-  
-    // 1. Get selected items
-    const selectedNodes = this.gridApi.getSelectedNodes();
-    const selectedIds = selectedNodes.map(node => node.data.id);
-    let deleteMessage = this.contextState.data.strings.datatable.confirmDelete + " " + selectedIds.join(', ') + "?";
-    alert(deleteMessage);
+
   deleteSelectedItem = () => {
     // 1. Get selected items
     const selectedNodes = this.gridApi.getSelectedNodes();
@@ -256,6 +252,28 @@ export default class DataTable extends Component {
     if(userConfirmation) {
       this.contextState.deleteEntries(selectedIds);
     }
+  }
+  
+  duplicateSelectedItem = () => {
+    // 1. Get selected items
+    const selectedNodes = this.gridApi.getSelectedNodes();
+    const selectedIds = selectedNodes.map(node => node.data.id);
+
+    // 2. For each selected item...
+    selectedIds.forEach(id => {
+    //let id = selectedIds[0];
+      this.contextState.data.fields.forEach(field => {
+        // ... check if id matches...
+        if(field.id === id){
+
+          // ... and remove id property ...
+          delete field.id;
+
+          // ... to then add to backend.
+          this.contextState.addEntry(field);
+        }
+      });
+    });
   }
   
   downloadCSV = () => {
@@ -351,6 +369,17 @@ export default class DataTable extends Component {
                           color="primary"  
                         >
                         <AddIcon />
+                          
+                        </IconButton>
+                      </Grid>
+                      
+                      <Grid item>
+                        <IconButton 
+                          variant="outlined" 
+                          onClick={this.duplicateSelectedItem}
+                          color="primary"  
+                        >
+                        <DuplicateIcon />
                           
                         </IconButton>
                       </Grid>
