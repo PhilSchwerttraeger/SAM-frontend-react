@@ -257,7 +257,14 @@ export default class DataTable extends Component {
   }
   
   downloadCSV = () => {
-
+    var params = {
+      processCellCallback: cell => {
+        console.log(cell);
+        if(cell.value.label){
+          return cell.value.label;
+        } else return cell.value;
+      }
+    }
     this.gridApi.exportDataAsCsv(params);
   }
 
