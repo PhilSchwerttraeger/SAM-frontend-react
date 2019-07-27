@@ -246,14 +246,22 @@ export default class DataTable extends Component {
     this.contextState.addEntry(data);
   }
   
-  deleteSelectedItem = () => {
     // 1. Get selected items
     const selectedNodes = this.gridApi.getSelectedNodes();
     const selectedIds = selectedNodes.map(node => node.data.id);
     let deleteMessage = this.contextState.data.strings.datatable.confirmDelete + " " + selectedIds.join(', ') + "?";
     alert(deleteMessage);
+  deleteSelectedItem = () => {
+    // 1. Get selected items
+    const selectedNodes = this.gridApi.getSelectedNodes();
+    const selectedIds = selectedNodes.map(node => node.data.id);
+    let deleteMessage = this.contextState.data.strings.datatable.confirmDelete + " " + selectedIds.join(', ') + "?";
+    let userConfirmation = window.confirm(deleteMessage);
     
-    this.contextState.deleteEntries(selectedIds);
+    // Invoke delete action on context component
+    if(userConfirmation) {
+      this.contextState.deleteEntries(selectedIds);
+    }
   }
   
   downloadCSV = () => {
@@ -342,7 +350,7 @@ export default class DataTable extends Component {
                   <Grid item>
                     <Grid container>
 
-                      <Grid item>
+                    <Grid item>
                         <IconButton 
                           variant="outlined" 
                           onClick={this.addNewItem}
