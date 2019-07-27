@@ -11,7 +11,7 @@
     },
     "datatable": {
         "autoCompleteSelect": "Type and select",
-        "confirmDelete": "Do you really want to delete entries"
+        "confirmDelete": "Do you really want to delete following entries?"
     },
     "modalFieldConfig": {
         "title": "Column Configuration",

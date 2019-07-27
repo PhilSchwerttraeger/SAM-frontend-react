@@ -249,7 +249,7 @@ export default class DataTable extends Component {
     const selectedNodes = this.gridApi.getSelectedNodes();
     const selectedIds = selectedNodes.map(node => node.data.id);
     const selectedDescriptions = selectedNodes.map(node => node.data.description.label);
-    let deleteMessage = this.contextState.data.strings.datatable.confirmDelete + " '" + selectedDescriptions.join("', '") + "'?";
+    let deleteMessage = this.contextState.data.strings.datatable.confirmDelete + " \n- " + selectedDescriptions.join("\n- ");
     let userConfirmation = window.confirm(deleteMessage);
     
     // Invoke delete action on context component
