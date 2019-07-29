@@ -21,15 +21,11 @@ export default class ConfigRow extends Component {
 
   componentDidMount(){
     this.setState({
+      id: this.props.value.id,
       title: this.props.value.title,
       type: this.props.value.type,
       enable: this.props.value.enable
     });
-    if(this.props.value.id !== undefined){
-      this.setState({
-        id: this.props.value.id
-      })
-    }
   }  
 
   componentDidUpdate(){

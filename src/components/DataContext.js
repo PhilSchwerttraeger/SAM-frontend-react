@@ -176,9 +176,33 @@ export class DataProvider extends Component {
       console.log(err);
       return err;
     });
+  }
 
+  addEmptyFieldConfig = () => {
+    let emptyFieldConfig = {
+      "name": "",
+      "title": "",
+      "type": "text",
+      "enable": "true"
+    };
 
-
+    return fetch(serverURL + '/fieldConfig', {
+      method: 'POST',
+      body: JSON.stringify(emptyFieldConfig),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      this.setState(oldState => ({
+        fieldConfig: [...oldState.fieldConfig, emptyFieldConfig]
+      }));
+      this.fetchFieldsDataFromRestApi();
+      console.log(res);
+      return res;
+    }).catch(err => {
+      console.log(err);
+      return err;
+    });
   }
 
   render(){
@@ -191,7 +215,8 @@ export class DataProvider extends Component {
       getSelectedEntries: this.getSelectedEntries,
       fetchFromRestApi: this.fetchFromRestApi,
       fetchFieldsDataFromRestApi: this.fetchFieldsDataFromRestApi,
-      setFieldsConfig: this.setFieldsConfig
+      setFieldsConfig: this.setFieldsConfig,
+      addEmptyFieldConfig: this.addEmptyFieldConfig
     };
 
     return(

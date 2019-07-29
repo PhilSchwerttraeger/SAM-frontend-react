@@ -10,6 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { Consumer } from '../DataContext';
 import ConfigRow from './ConfigRow';
 import { Grid } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 
 export default function CategoriesModal() {
   const [open, setOpen] = useState(true);
@@ -61,7 +62,7 @@ export default function CategoriesModal() {
 
   return (
     <Consumer>
-      {state => { 
+      {state => {
       return(
         <div>
           <IconButton color="inherit" onClick={handleClickOpen}>
@@ -96,12 +97,14 @@ export default function CategoriesModal() {
                 ))}
 
                 <Grid item>
-                  {/* 
-                  Button for adding new field 
-                  (add to backend and state 
-                  
-                  isNew={true}
-                  */}
+                  <Button 
+                    onClick={state.addEmptyFieldConfig} 
+                    color="primary"
+                    variant="outlined" 
+                    fullWidth
+                  >
+                    <AddIcon />
+                  </Button>
                       
                 </Grid>
 

@@ -21,6 +21,7 @@
         "select": "Select",
         "date": "Date",
         "text": "Text",
-        "currency": "Currency"
+        "currency": "Currency",
+        "addNewRowToForm": "Add New"
     }
 }
