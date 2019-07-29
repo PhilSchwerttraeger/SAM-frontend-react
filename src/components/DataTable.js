@@ -5,7 +5,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import {AutocompleteSelectCellEditor} from 'ag-grid-autocomplete-editor';
-import 'ag-grid-autocomplete-editor/main.css';
+import './autocomplete.css';
 import MaterialDatePicker from './MaterialDatePicker';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
