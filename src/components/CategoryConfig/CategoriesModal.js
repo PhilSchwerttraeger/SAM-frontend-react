@@ -26,18 +26,33 @@ export default function CategoriesModal() {
 
 
   function handleSave() {
-    // save fieldConfig array to context api state
-    //fieldConfig;
-
     setOpen(false);
   }
 
 
-  function handleInputUpdate(props) {
-    if(!fieldConfig.includes(props)){
-      fieldConfig.push(props);
+  function handleInputUpdate(field, isNew) {
+    // newly added field (with no id)
+    if(isNew){
+      fieldConfig.push(field);
+    } 
+    
+    // no new field: field update with id
+    else {
+      let alreadyAdded = false;
+      fieldConfig = fieldConfig.map(oldField => {
+        if(oldField.id === field.id){
+          alreadyAdded = true;
+          return field;
+        } else {
+          return oldField;
+        }
+      });
+
+      if(!alreadyAdded){
+        fieldConfig.push(field);
+      }
     }
-    console.log(fieldConfig);
+    //console.log(fieldConfig);
   }
 
   function deleteItem(){
@@ -72,22 +87,46 @@ export default function CategoriesModal() {
                     <ConfigRow 
                       value={fieldConfig} 
                       strings={state.data.strings.modalFieldConfig}
+                      isNew={false}
 
                       onChange={handleInputUpdate}
                       deleteItem={deleteItem}
                     />
                   </Grid>
                 ))}
+
+                <Grid item>
+                  {/* 
+                  Button for adding new field 
+                  (add to backend and state 
+                  
+                  isNew={true}
+                  */}
+                      
+                </Grid>
+
               </Grid>
 
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose} color="secondary">
-              {state.data.strings.modalFieldConfig.cancel}
+              
+              <Button 
+                onClick={handleClose} 
+                color="secondary"
+              >
+                {state.data.strings.modalFieldConfig.cancel}
               </Button>
-              <Button onClick={handleSave} color="primary">
-              {state.data.strings.modalFieldConfig.save}
+              
+              <Button 
+                onClick={() => {
+                  handleSave();
+                  state.setFieldsConfig(fieldConfig);
+                }}
+                color="primary"
+              >
+                {state.data.strings.modalFieldConfig.save}
               </Button>
+
             </DialogActions>
           </Dialog>
         </div>

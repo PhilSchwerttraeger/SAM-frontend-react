@@ -158,6 +158,29 @@ export class DataProvider extends Component {
     return this.state.runtime.visibleEntries;
   }
 
+  setFieldsConfig = (newConfig) => {
+    return fetch(serverURL + '/fieldConfig', {
+      method: 'PUT',
+      body: JSON.stringify(newConfig),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      this.setState({
+        fieldConfig: newConfig
+      });
+      console.log(newConfig);
+      console.log(res);
+      return res;
+    }).catch(err => {
+      console.log(err);
+      return err;
+    });
+
+
+
+  }
+
   render(){
     const contextValue = {
       data: this.state,
@@ -167,7 +190,8 @@ export class DataProvider extends Component {
       setSelectedEntries: this.setSelectedEntries,
       getSelectedEntries: this.getSelectedEntries,
       fetchFromRestApi: this.fetchFromRestApi,
-      fetchFieldsDataFromRestApi: this.fetchFieldsDataFromRestApi
+      fetchFieldsDataFromRestApi: this.fetchFieldsDataFromRestApi,
+      setFieldsConfig: this.setFieldsConfig
     };
 
     return(

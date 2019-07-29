@@ -15,20 +15,25 @@ import CurrencyIcon from '@material-ui/icons/AttachMoney';
 export default class ConfigRow extends Component {
   state = {
     id: "",
-    name: "",
+    title: "",
     type: ""
   }
 
   componentDidMount(){
     this.setState({
-      id: this.props.value.id,
-      name: this.props.value.title,
-      type: this.props.value.type
+      title: this.props.value.title,
+      type: this.props.value.type,
+      enable: this.props.value.enable
     });
+    if(this.props.value.id !== undefined){
+      this.setState({
+        id: this.props.value.id
+      })
+    }
   }  
 
   componentDidUpdate(){
-    this.props.onChange(this.state);
+    this.props.onChange(this.state, this.props.isNew);
   }
 
   toTitleCase(str) {
@@ -49,10 +54,10 @@ export default class ConfigRow extends Component {
             id="name"
             label="Column Title"
             type="text"
-            value={this.state.name}
+            value={this.state.title}
             onChange = {(e) => {
               this.setState({
-                name: e.target.value
+                title: e.target.value
               });
             }}
           />
