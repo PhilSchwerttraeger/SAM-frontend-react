@@ -17,6 +17,10 @@
         "title": "Column Configuration",
         "description": "Configure the columns to fit individual purposes and needs.",
         "save": "Save",
-        "cancel": "cancel"
+        "cancel": "Close",
+        "select": "Select",
+        "date": "Date",
+        "text": "Text",
+        "currency": "Currency"
     }
 }

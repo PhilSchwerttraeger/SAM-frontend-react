@@ -9,10 +9,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Consumer } from '../DataContext';
 import ConfigRow from './ConfigRow';
+import { Grid } from '@material-ui/core';
 
 export default function CategoriesModal() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [maxWidth] = useState('lg');
+  let fieldConfig = [];
 
   function handleClickOpen() {
     setOpen(true);
@@ -24,12 +26,22 @@ export default function CategoriesModal() {
 
 
   function handleSave() {
+    // save fieldConfig array to context api state
+    //fieldConfig;
+
     setOpen(false);
   }
 
 
-  function handleInputUpdate() {
-    
+  function handleInputUpdate(props) {
+    if(!fieldConfig.includes(props)){
+      fieldConfig.push(props);
+    }
+    console.log(fieldConfig);
+  }
+
+  function deleteItem(){
+
   }
 
   return (
@@ -48,7 +60,26 @@ export default function CategoriesModal() {
             <DialogTitle id="form-dialog-title">{state.data.strings.modalFieldConfig.title}</DialogTitle>
             <DialogContent>
               <DialogContentText>{state.data.strings.modalFieldConfig.description}</DialogContentText>
-              <ConfigRow value="preset value" onChange={handleInputUpdate}/>
+
+              <Grid container
+                direction={'column'}
+                spacing={3}
+              >
+                {state.data.fieldConfig.map(fieldConfig => (
+                  <Grid item
+                    key={fieldConfig.id}
+                  >
+                    <ConfigRow 
+                      value={fieldConfig} 
+                      strings={state.data.strings.modalFieldConfig}
+
+                      onChange={handleInputUpdate}
+                      deleteItem={deleteItem}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose} color="secondary">
