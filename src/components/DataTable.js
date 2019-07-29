@@ -132,26 +132,68 @@ export default class DataTable extends Component {
         // enable auto-complete (npm package) on pure text-typed fields
         if(column.type === "text"){
           columnConfig.cellEditor = AutocompleteSelectCellEditor;
-          columnConfig.cellEditorParams = {
-            // eslint-disable-next-line 
-            selectData: state.fields.map(field => {
-              if(field){
-                if(field.description) {
-                  if(field.description.label){
-                    return ({
-                      label: field.description.label,
-                      value: field.description.value
-                    });
-                  } else return ({
-                    label: "",
-                    value: ""
-                  })
+
+          // build fields array (with label and value child items)
+          let autocompleteData = state.fields.map(field => {
+            if(field){
+              if(field.description) {
+                if(field.description.label){
+                  return ({
+                    label: field.description.label,
+                    value: field.description.value
+                  });
                 } else return ({
                   label: "",
                   value: ""
-                });
-              } else return null;
-            }),
+                })
+              } else return ({
+                label: "",
+                value: ""
+              });
+            } else return null;
+          });
+
+
+          // filter duplicate array items from autocomplete list
+          let filtered = autocompleteData.filter(el => {
+            if(el){
+              if (el.label) {
+                return el.label;
+              } else return false;
+            } else return false;
+          });
+          
+
+          // comparing two array items with the help of its label property
+          let compare = (a, b) => {
+            const A = a.label;
+            const B = b.label;
+          
+            let comparison = 0;
+            if (A >= B) {
+              comparison = 1;
+            } else if (A < B) {
+              comparison = -1;
+            }
+            return comparison;
+          }
+
+          function getUnique(arr, comp) {
+            const unique = arr
+              .map(e => e[comp])
+              .map((e, i, final) => final.indexOf(e) === i && i)
+              .filter(e => arr[e]).map(e => arr[e]);
+             return unique;
+          }
+          
+          // call sorting with custom comparison function
+          let processedData = filtered.sort(compare);
+          let processedDataSet = getUnique(processedData, 'label');
+
+          columnConfig.cellEditorParams = {
+            // Add autocompleteData to cell editor
+            // eslint-disable-next-line 
+            selectData: processedDataSet,
             
             /*[
                 {
@@ -168,37 +210,6 @@ export default class DataTable extends Component {
                 debounceWaitMs: 0,
             }
           };
-
-          // filter duplicate array items from autocomplete list
-          // eslint-disable-next-line
-          var filtered = columnConfig.cellEditorParams.selectData.filter(el => {
-            if(el){
-              if (!this[el.label]) {
-                this[el.label] = true;
-                return true;
-              }
-              return false;
-            }
-          }, Object.create(null));
-
-          // comparing two array items with the help of its label property
-          var compare = (a, b) => {
-            const A = a.label;
-            const B = b.label;
-          
-            let comparison = 0;
-            if (A >= B) {
-              comparison = 1;
-            } else if (A < B) {
-              comparison = -1;
-            }
-            return comparison;
-          }
-          
-          // call sorting with custom comparison function
-          filtered.sort(compare);
-          //console.log(columnConfig.cellEditorParams.selectData);
-          //console.log(filtered);
 
           // formatting cell: show label of description
           columnConfig.valueFormatter = (params) => {
