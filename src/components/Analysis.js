@@ -8,7 +8,7 @@ import AnalysisFragment from './AnalysisFragment';
 export default class Analysis extends Component {  
   stylePaper = () => {
     return {
-      padding: 16
+      padding: 14
     }
   }
 
@@ -63,41 +63,41 @@ export default class Analysis extends Component {
               {/*
               <h2>{state.data.strings.titles.analysis}</h2>              
               */}
-              <Grid container spacing={3}>
-                {/*state.generalConfig.analysisSections.map(section)} */}
-                <Grid item>
-                  <Paper style={this.stylePaper()}>
-                    <AnalysisFragment 
-                      type="sum"
-                      visibleRows={validatedValues}
-                    />
-                  </Paper>
+              <Paper style={this.stylePaper()}>
+                <Grid 
+                  container 
+                  spacing={3}
+                  direction="row"
+                  alignItems="flex-start"
+                  justify="space-between"
+                >
+                  {/*state.generalConfig.analysisSections.map(section)} */}
+                  <Grid item xs={6} sm={4} md={3} lg={2}>
+                      <AnalysisFragment 
+                        type="sum"
+                        visibleRows={validatedValues}
+                      />
+                  </Grid>
+                  <Grid item xs={6} sm={4} md={3} lg={2}>
+                      <AnalysisFragment 
+                        type="average"
+                        visibleRows={validatedValues}
+                      />
+                  </Grid>
+                  <Grid item xs={6} sm={4} md={3} lg={2}>
+                      <AnalysisFragment 
+                        type="minimum"
+                        visibleRows={validatedValues}
+                      />
+                  </Grid>
+                  <Grid item xs={6} sm={4} md={3} lg={2}>
+                      <AnalysisFragment 
+                        type="maximum"
+                        visibleRows={validatedValues}
+                      />
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <Paper style={this.stylePaper()}>
-                    <AnalysisFragment 
-                      type="average"
-                      visibleRows={validatedValues}
-                    />
-                  </Paper>
-                </Grid>
-                <Grid item>
-                  <Paper style={this.stylePaper()}>
-                    <AnalysisFragment 
-                      type="minimum"
-                      visibleRows={validatedValues}
-                    />
-                  </Paper>
-                </Grid>
-                <Grid item>
-                  <Paper style={this.stylePaper()}>
-                    <AnalysisFragment 
-                      type="maximum"
-                      visibleRows={validatedValues}
-                    />
-                  </Paper>
-                </Grid>
-              </Grid>
+              </Paper>
             </div>
           )
         }}
