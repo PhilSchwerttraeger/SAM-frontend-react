@@ -37,7 +37,18 @@ class App extends React.Component {
     });
   }
 
+  handleClose = () => {
+    this.setState({
+      SnackbarClicked: false
+    });
+  }
+
   render() {
+    let snackbar = "";
+    if(this.state.SnackbarClicked){
+      snackbar = <Snackbar close={this.handleClose} message="Hey!"/>;
+    }
+
     return (
       <DataProvider>
         <NavBar />
@@ -53,7 +64,7 @@ class App extends React.Component {
             </Grid>
           </Grid>
           <Button onClick={this.handleSnackbarClick}>Hit Me</Button>
-          <Snackbar />
+          {snackbar}
         </div>
       </DataProvider>
     );

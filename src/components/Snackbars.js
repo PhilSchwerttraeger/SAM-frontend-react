@@ -18,6 +18,7 @@ export default function SimpleSnackbar(props) {
       return;
     }
     setOpen(false);
+    props.close();
   }
   
   return (
@@ -41,7 +42,7 @@ export default function SimpleSnackbar(props) {
                 onClick={handleClose}
               >
                 <CloseIcon />
-              </IconButton>,
+              </IconButton>
             ]}
           />
         )}}
