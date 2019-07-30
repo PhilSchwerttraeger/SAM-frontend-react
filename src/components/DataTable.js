@@ -276,13 +276,16 @@ export default class DataTable extends Component {
 
     // 2. For each selected item...
     selectedIds.forEach(id => {
-    //let id = selectedIds[0];
       this.contextState.data.fields.forEach(field => {
         // ... check if id matches...
         if(field.id === id){
 
           // ... and remove id property ...
           delete field.id;
+
+          // ... and generate a fresh id ...
+          const uuid = require('uuid/v1');
+          field.id = uuid();
 
           // ... to then add to backend.
           this.contextState.addEntry(field);
