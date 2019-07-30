@@ -133,24 +133,27 @@ export default class DataTable extends Component {
           columnConfig.cellEditor = AutocompleteSelectCellEditor;
 
           // build fields array (with label and value child items)
-          let autocompleteData = state.fields.map(field => {
-            if(field){
-              if(field.description) {
-                if(field.description.label){
-                  return ({
-                    label: field.description.label,
-                    value: field.description.value
-                  });
+          let autocompleteData = [];
+          if(state.fields){
+            autocompleteData = state.fields.map(field => {
+              if(field){
+                if(field.description) {
+                  if(field.description.label){
+                    return ({
+                      label: field.description.label,
+                      value: field.description.value
+                    });
+                  } else return ({
+                    label: "",
+                    value: ""
+                  })
                 } else return ({
                   label: "",
                   value: ""
-                })
-              } else return ({
-                label: "",
-                value: ""
-              });
-            } else return null;
-          });
+                });
+              } else return null;
+            });
+          }
 
 
           // filter duplicate array items from autocomplete list
@@ -242,9 +245,11 @@ export default class DataTable extends Component {
         return data[fieldConfig.name] = {label: ""};
       } else{
         return data[fieldConfig.name] = '';
-      }
-      
+      }      
     });
+    
+    const uuid = require('uuid/v1');
+    data.id = uuid();
 
     // 2. Add to backend
     this.contextState.addEntry(data);

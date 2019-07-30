@@ -28,6 +28,12 @@
         "entryadded": "Entry added",
         "entrydeleted": "Entry deleted",
         "entryupdated": "Entry updated",
-        "newFieldConfigSet": "Field configuration updated"
+        "newfieldconfigset": "Field configuration updated",
+        "emptyentryadded": "New empty entry created",
+        "entryaddederror": "Error: Can not add entry",
+        "entrydeletederror": "Error: Can not delete entry",
+        "entryupdatederror": "Error: Can not update entry",
+        "newfieldconfigseterror": "Error: Can not update field configuration",
+        "emptyentryaddederror": "Error: Can not create new empty entry"
     }
 }
