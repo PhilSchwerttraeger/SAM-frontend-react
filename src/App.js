@@ -6,8 +6,14 @@ import Analysis from './components/Analysis';
 import DataTable from './components/DataTable';
 import NavBar from './components/NavBar';
 import { DataProvider } from './components/DataContext';
+import Snackbar from './components/Snackbars';
+import Button from '@material-ui/core/Button';
 
 class App extends React.Component {
+  state = {
+    SnackbarClicked: false
+  }
+
   styleMain = () => {
     return {
       flexGrow: 1,
@@ -25,6 +31,12 @@ class App extends React.Component {
   componentDidMount(){
   }
 
+  handleSnackbarClick = () => {
+    this.setState({
+      SnackbarClicked: true
+    });
+  }
+
   render() {
     return (
       <DataProvider>
@@ -40,6 +52,8 @@ class App extends React.Component {
               </Paper>
             </Grid>
           </Grid>
+          <Button onClick={this.handleSnackbarClick}>Hit Me</Button>
+          <Snackbar />
         </div>
       </DataProvider>
     );

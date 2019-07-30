@@ -10,7 +10,6 @@ import MaterialDatePicker from './MaterialDatePicker';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import Snackbars from './Snackbars';
 import { DataContext } from './DataContext';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
@@ -477,8 +476,6 @@ export default class DataTable extends Component {
                   animateRows={true}
                 >
                 </AgGridReact>
-
-                <Snackbars />
               </div>
             )
           }

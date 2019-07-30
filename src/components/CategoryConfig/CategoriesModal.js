@@ -13,7 +13,7 @@ import { Grid } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 export default function CategoriesModal() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [maxWidth] = useState('lg');
   let fieldConfig = [];
 

@@ -205,6 +205,10 @@ export class DataProvider extends Component {
     });
   }
 
+  openSnackbar = () => {
+    
+  }
+
   render(){
     const contextValue = {
       data: this.state,
@@ -216,7 +220,8 @@ export class DataProvider extends Component {
       fetchFromRestApi: this.fetchFromRestApi,
       fetchFieldsDataFromRestApi: this.fetchFieldsDataFromRestApi,
       setFieldsConfig: this.setFieldsConfig,
-      addEmptyFieldConfig: this.addEmptyFieldConfig
+      addEmptyFieldConfig: this.addEmptyFieldConfig,
+      openSnackbar: this.openSnackbar
     };
 
     return(
