@@ -357,7 +357,7 @@ export default class DataTable extends Component {
               <div 
                 className="ag-theme-material"
                 style={{ 
-                  height: '550px',
+                  //height: '550px',
                   //height: '100%',
                   //width: 100%',
                   paddingBottom: '50px'
@@ -435,6 +435,7 @@ export default class DataTable extends Component {
                 </Grid>
                 <AgGridReact
                   //forwardRef="agGrid" // "React's id"
+                  domLayout='autoHeight'
                   ref={this.dataTableRef}
                   columnDefs={this.createColDef(state.data)}
                   rowData={state.data.fields}
