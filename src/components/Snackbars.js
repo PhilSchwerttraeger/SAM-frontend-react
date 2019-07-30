@@ -6,12 +6,6 @@ import { Consumer } from './DataContext';
 
 export default function SimpleSnackbar(props) {
   const [open, setOpen] = React.useState(true);
-  const [message, setMessage] = React.useState("Notification");
-
-  function openSnackbar(message) {
-    setMessage(message);
-    setOpen(true);
-  }
 
   function handleClose(event, reason) {
     if (reason === 'clickaway') {
@@ -33,7 +27,7 @@ export default function SimpleSnackbar(props) {
             open={open}
             autoHideDuration={3000}
             onClose={handleClose}
-            message={<span>{message}</span>}
+            message={<span>{props.message}</span>}
             action={[
               <IconButton
                 key="close"

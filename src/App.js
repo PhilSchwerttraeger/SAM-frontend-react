@@ -6,12 +6,11 @@ import Analysis from './components/Analysis';
 import DataTable from './components/DataTable';
 import NavBar from './components/NavBar';
 import { DataProvider } from './components/DataContext';
-import Snackbar from './components/Snackbars';
-import Button from '@material-ui/core/Button';
 
 class App extends React.Component {
   state = {
-    SnackbarClicked: false
+    SnackbarClicked: false,
+    SnackbarText: ""
   }
 
   styleMain = () => {
@@ -31,24 +30,7 @@ class App extends React.Component {
   componentDidMount(){
   }
 
-  handleSnackbarClick = () => {
-    this.setState({
-      SnackbarClicked: true
-    });
-  }
-
-  handleClose = () => {
-    this.setState({
-      SnackbarClicked: false
-    });
-  }
-
   render() {
-    let snackbar = "";
-    if(this.state.SnackbarClicked){
-      snackbar = <Snackbar close={this.handleClose} message="Hey!"/>;
-    }
-
     return (
       <DataProvider>
         <NavBar />
@@ -63,8 +45,6 @@ class App extends React.Component {
               </Paper>
             </Grid>
           </Grid>
-          <Button onClick={this.handleSnackbarClick}>Hit Me</Button>
-          {snackbar}
         </div>
       </DataProvider>
     );

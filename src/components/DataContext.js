@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
+import Snackbar from './Snackbars'
 
 export const DataContext = React.createContext();
 
@@ -86,6 +87,7 @@ export class DataProvider extends Component {
         )
       }));
       console.log(res);
+      this.callSnackbar(this.state.strings.snackbar.entryupdated);
       return res;
     }).catch(err => {
       console.log(err);
@@ -106,7 +108,9 @@ export class DataProvider extends Component {
       }));
       this.fetchFieldsDataFromRestApi();
       console.log(res);
+      this.callSnackbar(this.state.strings.snackbar.entryadded);
       return res;
+      
     }).catch(err => {
       console.log(err);
       return err;
@@ -138,6 +142,7 @@ export class DataProvider extends Component {
           };
         });
         this.fetchFieldsDataFromRestApi();
+        this.callSnackbar(this.state.strings.snackbar.entrydeleted);
         return res;
       }).catch(err => {
         console.log(err);
@@ -171,6 +176,7 @@ export class DataProvider extends Component {
       });
       console.log(newConfig);
       console.log(res);
+      this.callSnackbar(this.state.strings.snackbar.newFieldConfigSet);
       return res;
     }).catch(err => {
       console.log(err);
@@ -204,12 +210,28 @@ export class DataProvider extends Component {
       return err;
     });
   }
+  
+  callSnackbar = (message) => {
+    console.log(message);
+    this.setState({
+      SnackbarClicked: true,
+      SnackbarText: message
+    });
+  }
 
-  openSnackbar = () => {
-    
+  handleClose = () => {
+    this.setState({
+      SnackbarClicked: false,
+      SnackbarText: ""
+    });
   }
 
   render(){
+    let snackbar = "";
+    if(this.state.SnackbarClicked){
+      snackbar = <Snackbar close={this.handleClose} message={this.state.SnackbarText}/>;
+    }
+    
     const contextValue = {
       data: this.state,
       updateEntry: this.updateEntry,
@@ -226,6 +248,7 @@ export class DataProvider extends Component {
 
     return(
       <DataContext.Provider value={contextValue}>
+        {snackbar}
         {this.props.children}
       </DataContext.Provider>
     );
