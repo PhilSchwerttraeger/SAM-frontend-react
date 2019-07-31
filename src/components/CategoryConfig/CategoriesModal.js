@@ -123,6 +123,21 @@ export default function CategoriesModal() {
               <Button 
                 onClick={() => {
                   handleSave();
+                  fieldConfig.map(field => {
+                    // generate names + make first letter lowercase and remove spaces
+                    field.name = field.title.replace(" ", "");
+                    field.name = field.name.charAt(0).toLowerCase() + field.name.slice(1);
+
+                    // copy over values property
+                    field.values = state.data.fieldConfig.find(fieldConfig => {
+                      if(fieldConfig.name === field.name){
+                        console.log(fieldConfig.values.values);
+                        return fieldConfig.values.values;
+                      }
+                      return null
+                    })
+                    return field;
+                  });
                   state.setFieldsConfig(fieldConfig);
                 }}
                 color="primary"
