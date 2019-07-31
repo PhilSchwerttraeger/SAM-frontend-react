@@ -12,10 +12,12 @@ import ConfigRow from './ConfigRow';
 import { Grid } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
-export default function CategoriesModal() {
+export default function CategoriesModal(props) {
   const [open, setOpen] = useState(false);
   const [maxWidth] = useState('lg');
   let fieldConfig = [];
+  let fullScreen = false;
+  if(window.innerWidth < 600) fullScreen = true;
 
   function handleClickOpen() {
     setOpen(true);
@@ -72,6 +74,7 @@ export default function CategoriesModal() {
             open={open}
             onClose={handleClose}
             maxWidth={maxWidth}
+            fullScreen={fullScreen}
           >
             <DialogTitle id="form-dialog-title">{state.data.strings.modalFieldConfig.title}</DialogTitle>
             <DialogContent>

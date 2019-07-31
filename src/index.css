@@ -20,10 +20,10 @@ h3 {
 
 .stat_value {
   font-weight: 400;
-  font-size: 1.2em;
+  font-size: 1.1em;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 508px) {
   .hideonmobile {
     display: none !important;
   }
