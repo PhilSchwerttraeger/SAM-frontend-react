@@ -63,7 +63,6 @@ export default class Analysis extends Component {
               {/*
               <h2>{state.data.strings.titles.analysis}</h2>              
               */}
-              <Paper style={this.stylePaper()}>
                 <Grid 
                   container 
                   spacing={3}

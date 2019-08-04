@@ -1,4 +1,10 @@
+html {
+  height: 100%;
+  background-color: #ededee;
+}
+
 body {
+  height: 100%;
   margin: 0;
   font-family: "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -20,11 +26,26 @@ h3 {
 
 .stat_value {
   font-weight: 400;
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 
 @media (max-width: 508px) {
   .hideonmobile {
     display: none !important;
   }
+}
+
+.main {
+  flex-grow: 1;
+  padding: 16px !important;
+}
+
+.AnalysisIcons {
+  margin: 0px;
+  color: '#fff';
+  background-color: #3f51b5 !important;
+}
+
+.MuiAvatar-root {
+  font-size: 1.5rem !important;
 }

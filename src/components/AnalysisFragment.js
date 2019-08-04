@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { numberFormat } from './NumberFormat';
 import { Grid } from '@material-ui/core';
-import { FaSort, FaSortUp, FaSortDown, FaPlus } from 'react-icons/fa';
-import Fab from '@material-ui/core/Fab';
+//import { FaSort, FaSortUp, FaSortDown, FaPlus } from 'react-icons/fa';
+import Icon from '@material-ui/core/Icon';
+import Avatar from '@material-ui/core/Avatar';
 
 export default class AnalysisFragment extends Component {
   sum(array){
@@ -42,11 +43,11 @@ export default class AnalysisFragment extends Component {
 
   getIcon(){
     switch(this.icon) {
-      case "sum": return <FaPlus />
-      case "average": return <FaSort />;
-      case "minimum": return <FaSortDown />;
-      case "maximum": return <FaSortUp />;
-      default: return <FaPlus />
+      case "sum": return "+"
+      case "average": return "~"
+      case "minimum": return "⭳"
+      case "maximum": return "⭱"
+      default: return
     }
   }
 
@@ -80,22 +81,19 @@ export default class AnalysisFragment extends Component {
 
     return (
       <div>
-        <Grid container>
-          <Grid item style={{paddingRight: "12px"}}>
-            <Fab 
-              size="small" 
-              color="primary"
-            >
-              {this.getIcon()}
-            </Fab>
+        <Grid container spacing="3">
+          <Grid item style={{paddingRight: "0px"}}>
+            <Avatar className="AnalysisIcons" >
+                {this.getIcon()}
+            </Avatar>
           </Grid>
           <Grid item>
-            <span className="stat_value">
-              {numberFormat(this.result)}
-            </span>
             <h3 style={{textTransform: "capitalize"}}>
               {this.props.type}
             </h3>
+            <span className="stat_value">
+              {numberFormat(this.result)}
+            </span>
           </Grid>
         </Grid>
       </div>

@@ -34,7 +34,7 @@ class App extends React.Component {
     return (
       <DataProvider>
         <NavBar />
-        <div style={this.styleMain()}>
+        <div className="main">
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Analysis />

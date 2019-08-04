@@ -368,7 +368,7 @@ export default class DataTable extends Component {
                   //height: '550px',
                   //height: '100%',
                   //width: 100%',
-                  paddingBottom: '50px'
+                  paddingBottom: '10px'
                 }} 
               >
                 <Grid
