@@ -3,8 +3,21 @@ import Snackbar from './Snackbars'
 
 export const DataContext = React.createContext();
 
-const serverURL = 'https://api-dashboard-5chw.firebaseio.com/';
-const endPhrase = '.json';
+let serverURL;
+let endPhrase;
+
+const backend = "JSONSERVER"; // aka self-hosted
+//const backend = "FIREBASE";
+//const backend = "NETLIFY";
+
+if(backend === "FIREBASE"){
+  serverURL = 'https://api-dashboard-5chw.firebaseio.com/';
+  endPhrase = '.json';
+}
+if(backend === "JSONSERVER"){
+  serverURL = 'http://localhost:3009';
+  endPhrase = '';
+}
 
 export class DataProvider extends Component {
   constructor(props){
@@ -27,6 +40,12 @@ export class DataProvider extends Component {
   }
   
   fetchFromRestApi = () => {
+    if(backend === "FIREBASE") {
+      // preprocess data if needed
+    }
+    if(backend === "JSONSERVER") {
+      // preprocess data if needed
+    }
     fetch(serverURL + '/generalConfig' + endPhrase)
     .then(res => res.json())
     .then(data => {
@@ -50,16 +69,7 @@ export class DataProvider extends Component {
     fetch(serverURL + '/fields' + endPhrase)
     .then(res => res.json())
     .then(res => {
-      let data = Object.values(res);
-
-      /*
-      let counter = 0;
-      processedData.map(item => {
-        item.id = Object.keys(data)[counter];
-        counter++;
-      })
-      */
-
+      let data = Object.values(res);  
       this.setState({
         fields: data
       });
@@ -73,6 +83,13 @@ export class DataProvider extends Component {
   }
 
   fetchFieldsDataFromRestApi = () => {
+    if(backend === "FIREBASE") {
+      // preprocess data if needed
+    }
+    if(backend === "JSONSERVER") {
+      // preprocess data if needed
+    }
+
     fetch(serverURL + '/fields' + endPhrase)
     .then(res => res.json())
     .then(res => {
@@ -87,6 +104,13 @@ export class DataProvider extends Component {
   }
 
   updateEntry = (id, data) => {
+    if(backend === "FIREBASE") {
+      // preprocess data if needed
+    }
+    if(backend === "JSONSERVER") {
+      // preprocess data if needed
+    }
+
     delete data.tableData;
     return fetch(serverURL + '/fields/' + id + endPhrase, {
       method: 'PUT',
@@ -113,8 +137,20 @@ export class DataProvider extends Component {
   }
 
   addEntry = (data) => {
-    return fetch(serverURL + '/fields/' + data.id + endPhrase, {
-      method: 'PUT',
+    let preEndPhrase;
+    let selectedMethod;
+
+    if(backend === "FIREBASE") {
+      preEndPhrase = '/' + data.id;
+      selectedMethod = 'PUT';
+    }
+    if(backend === "JSONSERVER") {
+      preEndPhrase = '';
+      selectedMethod = 'POST';
+    }
+
+    return fetch(serverURL + '/fields' + preEndPhrase + endPhrase, {
+      method: selectedMethod,
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json'
@@ -139,6 +175,13 @@ export class DataProvider extends Component {
   }
   
   deleteEntries = (Ids) => {
+    if(backend === "FIREBASE") {
+      // preprocess data if needed
+    }
+    if(backend === "JSONSERVER") {
+      // preprocess data if needed
+    }
+
     Ids.forEach((id) => {
       return fetch(serverURL + '/fields/' + id + endPhrase, {
         method: 'DELETE',
@@ -189,6 +232,13 @@ export class DataProvider extends Component {
   }
 
   setFieldsConfig = (newConfig) => {
+    if(backend === "FIREBASE") {
+      // preprocess data if needed
+    }
+    if(backend === "JSONSERVER") {
+      // preprocess data if needed
+    }
+
     return fetch(serverURL + '/fieldConfig' + endPhrase, {
       method: 'PUT',
       body: JSON.stringify(newConfig),
@@ -220,6 +270,14 @@ export class DataProvider extends Component {
       "type": "text",
       "enable": "true"
     };
+
+    
+    if(backend === "FIREBASE") {
+      // preprocess data if needed
+    }
+    if(backend === "JSONSERVER") {
+      // preprocess data if needed
+    }
 
     return fetch(serverURL + '/fieldConfig' + endPhrase, {
       method: 'POST',
