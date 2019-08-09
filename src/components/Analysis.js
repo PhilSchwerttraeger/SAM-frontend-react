@@ -5,7 +5,11 @@ import Paper from '@material-ui/core/Paper';
 import AnalysisFragment from './AnalysisFragment';
 //import TextField from '@material-ui/core/TextField';
 
-export default class Analysis extends Component {  
+export default class Analysis extends Component {
+  state = {
+    enabledTypes: ["sum", "average", "minimum", "maximum"]
+  }
+
   stylePaper = () => {
     return {
       padding: 14
@@ -53,6 +57,8 @@ export default class Analysis extends Component {
   }
 
   render() {
+    let xs = 12, sm = 6, md = 6, lg = 3, xl = 3;
+
     return (
       <Consumer>
         {state => {
@@ -63,7 +69,6 @@ export default class Analysis extends Component {
               {/*
               <h2>{state.data.strings.titles.analysis}</h2>              
               */}
-              <Paper style={this.stylePaper()}>
                 <Grid 
                   container 
                   spacing={3}
@@ -71,33 +76,19 @@ export default class Analysis extends Component {
                   alignItems="flex-start"
                   justify="space-between"
                 >
-                  {/*state.generalConfig.analysisSections.map(section)} */}
-                  <Grid item xs={6} sm={4} md={3} lg={2}>
-                      <AnalysisFragment 
-                        type="sum"
-                        visibleRows={validatedValues}
-                      />
-                  </Grid>
-                  <Grid item xs={6} sm={4} md={3} lg={2}>
-                      <AnalysisFragment 
-                        type="average"
-                        visibleRows={validatedValues}
-                      />
-                  </Grid>
-                  <Grid item xs={6} sm={4} md={3} lg={2}>
-                      <AnalysisFragment 
-                        type="minimum"
-                        visibleRows={validatedValues}
-                      />
-                  </Grid>
-                  <Grid item xs={6} sm={4} md={3} lg={2}>
-                      <AnalysisFragment 
-                        type="maximum"
-                        visibleRows={validatedValues}
-                      />
-                  </Grid>
+                  {this.state.enabledTypes.map(type => {
+                    return (
+                      <Grid key={type} item xs={xs} sm={sm} md={md} lg={lg} xl={xl}>
+                        <Paper style={this.stylePaper()}>
+                          <AnalysisFragment 
+                            type={type}
+                            visibleRows={validatedValues}
+                          />
+                        </Paper>
+                      </Grid>
+                    )
+                  })}
                 </Grid>
-              </Paper>
             </div>
           )
         }}

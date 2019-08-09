@@ -28,12 +28,16 @@ export default class NavBar extends Component {
               <div style={{flexGrow: 1}}/>
               <div style={{display: 'flex'}}>
                 <CategoriesModal />
-                <IconButton color="inherit">
+                <IconButton 
+                  color="inherit"
+                  className="hideonmobile"
+                >
                   <SettingsIcon />
                 </IconButton>
                 <IconButton 
                   aria-haspopup="true" 
                   color="inherit"
+                  className="hideonmobile"
                 >
                   <InfoIcon />
                 </IconButton>
@@ -42,7 +46,8 @@ export default class NavBar extends Component {
                   aria-haspopup="true" 
                   color="inherit"
                   href="https://github.com/PhilSchwerttraeger/SAM"
-                  target="_blank" 
+                  target="_blank"
+                  className="hideonmobile"
                 >
                   <GitHubIcon />
                 </IconButton>

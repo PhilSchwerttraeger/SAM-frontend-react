@@ -3,14 +3,12 @@ import Snackbar from './Snackbars'
 
 export const DataContext = React.createContext();
 
-const serverURL = 'http://localhost:3009';
+const serverURL = 'https://api-dashboard-5chw.firebaseio.com/';
+const endPhrase = '.json';
 
 export class DataProvider extends Component {
   constructor(props){
     super(props);
-    
-
-    //this.fetchFromRestApi.bind(this);
     this.fetchFieldsDataFromRestApi.bind(this);
 
     this.state = {
@@ -29,29 +27,45 @@ export class DataProvider extends Component {
   }
   
   fetchFromRestApi = () => {
-    fetch(serverURL + '/generalConfig')
+    fetch(serverURL + '/generalConfig' + endPhrase)
     .then(res => res.json())
     .then(data => {
       this.setState({
         generalConfig: data
       });
-    });
+    }).catch(err => {
+      console.log(err);
+    });;
       
-    fetch(serverURL + '/fieldConfig')
+    fetch(serverURL + '/fieldConfig' + endPhrase)
     .then(res => res.json())
     .then(data => {
       this.setState({
         fieldConfig: data
       });
-    });
+    }).catch(err => {
+      console.log(err);
+    });;
     
-    fetch(serverURL + '/fields')
+    fetch(serverURL + '/fields' + endPhrase)
     .then(res => res.json())
-    .then(data => {
+    .then(res => {
+      let data = Object.values(res);
+
+      /*
+      let counter = 0;
+      processedData.map(item => {
+        item.id = Object.keys(data)[counter];
+        counter++;
+      })
+      */
+
       this.setState({
         fields: data
       });
-    });
+    }).catch(err => {
+      if(!err.ok) console.log(err);
+    });;
 
     this.setState({ 
       strings: require('../languages/english.json') 
@@ -59,14 +73,14 @@ export class DataProvider extends Component {
   }
 
   fetchFieldsDataFromRestApi = () => {
-    fetch(serverURL + '/fields')
+    fetch(serverURL + '/fields' + endPhrase)
     .then(res => res.json())
     .then(res => {
+      let data = Object.values(res);
+      console.log(data);
       this.setState({
-        fields: res
+        fields: data
       });
-      console.log(res);
-      return res;
     }).catch(err => {
       console.log(err);
     });
@@ -74,7 +88,7 @@ export class DataProvider extends Component {
 
   updateEntry = (id, data) => {
     delete data.tableData;
-    return fetch(serverURL + '/fields/' + id, {
+    return fetch(serverURL + '/fields/' + id + endPhrase, {
       method: 'PUT',
       body: JSON.stringify(data),
       headers: {
@@ -87,7 +101,11 @@ export class DataProvider extends Component {
         )
       }));
       console.log(res);
-      this.callSnackbar(this.state.strings.snackbar.entryupdated);
+      if(res.ok){
+        this.callSnackbar(this.state.strings.snackbar.entryupdated);
+      } else {
+        this.callSnackbar(this.state.strings.snackbar.entryupdatederror);
+      }
       return res;
     }).catch(err => {
       console.log(err);
@@ -95,9 +113,8 @@ export class DataProvider extends Component {
   }
 
   addEntry = (data) => {
-    //delete data.tableData;
-    return fetch(serverURL + '/fields', {
-      method: 'POST',
+    return fetch(serverURL + '/fields/' + data.id + endPhrase, {
+      method: 'PUT',
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json'
@@ -108,7 +125,11 @@ export class DataProvider extends Component {
       }));
       this.fetchFieldsDataFromRestApi();
       console.log(res);
-      this.callSnackbar(this.state.strings.snackbar.entryadded);
+      if(res.ok){
+        this.callSnackbar(this.state.strings.snackbar.entryadded);
+      } else {
+        this.callSnackbar(this.state.strings.snackbar.entryaddederror);
+      }
       return res;
       
     }).catch(err => {
@@ -119,7 +140,7 @@ export class DataProvider extends Component {
   
   deleteEntries = (Ids) => {
     Ids.forEach((id) => {
-      return fetch(serverURL + '/fields/' + id, {
+      return fetch(serverURL + '/fields/' + id + endPhrase, {
         method: 'DELETE',
         //body: JSON.stringify(data),
         headers: {
@@ -142,7 +163,11 @@ export class DataProvider extends Component {
           };
         });
         this.fetchFieldsDataFromRestApi();
-        this.callSnackbar(this.state.strings.snackbar.entrydeleted);
+        if(res.ok){
+          this.callSnackbar(this.state.strings.snackbar.entrydeleted);
+        } else {
+          this.callSnackbar(this.state.strings.snackbar.entrydeletederror);
+        }
         return res;
       }).catch(err => {
         console.log(err);
@@ -164,7 +189,7 @@ export class DataProvider extends Component {
   }
 
   setFieldsConfig = (newConfig) => {
-    return fetch(serverURL + '/fieldConfig', {
+    return fetch(serverURL + '/fieldConfig' + endPhrase, {
       method: 'PUT',
       body: JSON.stringify(newConfig),
       headers: {
@@ -176,7 +201,11 @@ export class DataProvider extends Component {
       });
       console.log(newConfig);
       console.log(res);
-      this.callSnackbar(this.state.strings.snackbar.newFieldConfigSet);
+      if(res.ok){
+        this.callSnackbar(this.state.strings.snackbar.newfieldconfigset);
+      } else {
+        this.callSnackbar(this.state.strings.snackbar.newfieldconfigseterror);
+      }
       return res;
     }).catch(err => {
       console.log(err);
@@ -192,7 +221,7 @@ export class DataProvider extends Component {
       "enable": "true"
     };
 
-    return fetch(serverURL + '/fieldConfig', {
+    return fetch(serverURL + '/fieldConfig' + endPhrase, {
       method: 'POST',
       body: JSON.stringify(emptyFieldConfig),
       headers: {
@@ -203,6 +232,11 @@ export class DataProvider extends Component {
         fieldConfig: [...oldState.fieldConfig, emptyFieldConfig]
       }));
       this.fetchFieldsDataFromRestApi();
+      if(res.ok){
+        this.callSnackbar(this.state.strings.snackbar.emptyentryadded);
+      } else {
+        this.callSnackbar(this.state.strings.snackbar.emptyentryaddederror);
+      }
       console.log(res);
       return res;
     }).catch(err => {
@@ -212,7 +246,6 @@ export class DataProvider extends Component {
   }
   
   callSnackbar = (message) => {
-    console.log(message);
     this.setState({
       SnackbarClicked: true,
       SnackbarText: message

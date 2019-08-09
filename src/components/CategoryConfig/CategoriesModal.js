@@ -12,10 +12,12 @@ import ConfigRow from './ConfigRow';
 import { Grid } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
-export default function CategoriesModal() {
+export default function CategoriesModal(props) {
   const [open, setOpen] = useState(false);
   const [maxWidth] = useState('lg');
   let fieldConfig = [];
+  let fullScreen = false;
+  if(window.innerWidth < 600) fullScreen = true;
 
   function handleClickOpen() {
     setOpen(true);
@@ -72,6 +74,7 @@ export default function CategoriesModal() {
             open={open}
             onClose={handleClose}
             maxWidth={maxWidth}
+            fullScreen={fullScreen}
           >
             <DialogTitle id="form-dialog-title">{state.data.strings.modalFieldConfig.title}</DialogTitle>
             <DialogContent>
@@ -98,7 +101,8 @@ export default function CategoriesModal() {
 
                 <Grid item>
                   <Button 
-                    onClick={state.addEmptyFieldConfig} 
+                    onClick={{/* state.addEmptyFieldConfig*/}} 
+                    
                     color="primary"
                     variant="outlined" 
                     fullWidth
@@ -122,8 +126,25 @@ export default function CategoriesModal() {
               
               <Button 
                 onClick={() => {
+                  {/*
                   handleSave();
+                  fieldConfig.map(field => {
+                    // generate names + make first letter lowercase and remove spaces
+                    field.name = field.title.replace(" ", "");
+                    field.name = field.name.charAt(0).toLowerCase() + field.name.slice(1);
+
+                    // copy over values property
+                    field.values = state.data.fieldConfig.find(fieldConfig => {
+                      if(fieldConfig.name === field.name){
+                        console.log(fieldConfig.values.values);
+                        return fieldConfig.values.values;
+                      }
+                      return null
+                    })
+                    return field;
+                  });
                   state.setFieldsConfig(fieldConfig);
+                */}
                 }}
                 color="primary"
               >
