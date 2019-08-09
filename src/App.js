@@ -8,11 +8,6 @@ import NavBar from './components/NavBar';
 import { DataProvider } from './components/DataContext';
 
 class App extends React.Component {
-  state = {
-    SnackbarClicked: false,
-    SnackbarText: ""
-  }
-
   styleMain = () => {
     return {
       flexGrow: 1,

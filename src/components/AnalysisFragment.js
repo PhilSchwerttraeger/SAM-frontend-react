@@ -80,7 +80,7 @@ export default class AnalysisFragment extends Component {
 
     return (
       <div>
-        <Grid container spacing="3">
+        <Grid container spacing={3}>
           <Grid item style={{paddingRight: "0px"}}>
             <Avatar className="AnalysisIcons" >
                 {this.getIcon()}

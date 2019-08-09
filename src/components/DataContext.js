@@ -6,8 +6,8 @@ export const DataContext = React.createContext();
 let serverURL;
 let endPhrase;
 
-const backend = "JSONSERVER"; // aka self-hosted
-//const backend = "FIREBASE";
+//const backend = "JSONSERVER"; // aka self-hosted
+const backend = "FIREBASE";
 //const backend = "NETLIFY";
 
 if(backend === "FIREBASE"){
