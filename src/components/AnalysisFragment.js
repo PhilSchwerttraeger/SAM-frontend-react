@@ -3,6 +3,7 @@ import { numberFormat } from './NumberFormat';
 import { Grid } from '@material-ui/core';
 //import { FaSort, FaSortUp, FaSortDown, FaPlus } from 'react-icons/fa';
 import Avatar from '@material-ui/core/Avatar';
+import { withTheme  } from '@material-ui/styles';
 
 export default class AnalysisFragment extends Component {
   sum(array){
@@ -51,7 +52,6 @@ export default class AnalysisFragment extends Component {
   }
 
   render(){
-    //console.log(this.props.visibleRows.values);
     switch (this.props.type) {
       case "sum":
         this.result = this.sum(this.props.visibleRows.values);
@@ -82,7 +82,12 @@ export default class AnalysisFragment extends Component {
       <div>
         <Grid container spacing={3}>
           <Grid item style={{paddingRight: "0px"}}>
-            <Avatar className="AnalysisIcons" >
+            <Avatar 
+              className="AnalysisIcons"
+              style={{
+                backgroundColor: "primary"
+              }}
+            >
                 {this.getIcon()}
             </Avatar>
           </Grid>
