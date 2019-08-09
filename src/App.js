@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Analysis from './components/Analysis';
