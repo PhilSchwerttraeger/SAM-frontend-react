@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/800492e2-0ac6-4989-83b0-e5b9d45a7d52/deploy-status)](https://app.netlify.com/sites/sam-6156ec/deploys)
+
 # SAM (Simple Account Manager)
 
 SAM is a React-based web tool for managing recurring income and expenditure items.
