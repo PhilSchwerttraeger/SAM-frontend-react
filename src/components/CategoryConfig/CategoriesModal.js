@@ -101,7 +101,8 @@ export default function CategoriesModal(props) {
 
                 <Grid item>
                   <Button 
-                    onClick={state.addEmptyFieldConfig} 
+                    onClick={{/* state.addEmptyFieldConfig*/}} 
+                    
                     color="primary"
                     variant="outlined" 
                     fullWidth
@@ -125,6 +126,7 @@ export default function CategoriesModal(props) {
               
               <Button 
                 onClick={() => {
+                  {/*
                   handleSave();
                   fieldConfig.map(field => {
                     // generate names + make first letter lowercase and remove spaces
@@ -142,6 +144,7 @@ export default function CategoriesModal(props) {
                     return field;
                   });
                   state.setFieldsConfig(fieldConfig);
+                */}
                 }}
                 color="primary"
               >

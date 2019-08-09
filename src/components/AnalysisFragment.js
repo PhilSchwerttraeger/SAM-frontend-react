@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { numberFormat } from './NumberFormat';
 import { Grid } from '@material-ui/core';
 //import { FaSort, FaSortUp, FaSortDown, FaPlus } from 'react-icons/fa';
-import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
 
 export default class AnalysisFragment extends Component {
