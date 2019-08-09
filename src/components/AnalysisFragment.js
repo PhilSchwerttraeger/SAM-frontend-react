@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import { withTheme  } from '@material-ui/styles';
 
-export default class AnalysisFragment extends Component {
+class AnalysisFragment extends Component {
   sum(array){
     let result = 0;
     array.forEach(element => {
@@ -85,7 +85,8 @@ export default class AnalysisFragment extends Component {
             <Avatar 
               className="AnalysisIcons"
               style={{
-                backgroundColor: "primary"
+                color: this.props.theme.palette.primary.contrastText,
+                backgroundColor: this.props.theme.palette.primary.main
               }}
             >
                 {this.getIcon()}
@@ -104,3 +105,5 @@ export default class AnalysisFragment extends Component {
     )
   }
 }
+
+export default withTheme(AnalysisFragment);
