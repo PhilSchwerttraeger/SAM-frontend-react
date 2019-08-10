@@ -1,9 +1,16 @@
-import React, { Component } from 'react';
-import { numberFormat } from './NumberFormat';
-import { Grid } from '@material-ui/core';
+import React, { Component } from 'react'
+import { numberFormat } from './NumberFormat'
+import { Grid } from '@material-ui/core'
 //import { FaSort, FaSortUp, FaSortDown, FaPlus } from 'react-icons/fa';
-import Avatar from '@material-ui/core/Avatar';
-import { withTheme  } from '@material-ui/styles';
+import Avatar from '@material-ui/core/Avatar'
+import { withTheme  } from '@material-ui/styles'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardMedia from '@material-ui/core/CardMedia'
+import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
+import IconButton from '@material-ui/core/IconButton'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 
 class AnalysisFragment extends Component {
   sum(array){
@@ -79,9 +86,11 @@ class AnalysisFragment extends Component {
     }
 
     return (
-      <div>
-        <Grid container spacing={3}>
-          <Grid item style={{paddingRight: "0px"}}>
+      
+      <Card>
+        
+        <CardHeader
+          avatar={
             <Avatar 
               className="AnalysisIcons"
               style={{
@@ -91,17 +100,20 @@ class AnalysisFragment extends Component {
             >
                 {this.getIcon()}
             </Avatar>
-          </Grid>
-          <Grid item>
+          }
+          title={
             <h3 style={{textTransform: "capitalize"}}>
               {this.props.type}
             </h3>
+          }
+          subheader={
             <span className="stat_value">
               {numberFormat(this.result)}
             </span>
-          </Grid>
-        </Grid>
-      </div>
+          }
+        />
+
+      </Card>
     )
   }
 }

@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
 import { Consumer } from './DataContext';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import AnalysisFragment from './AnalysisFragment';
 //import TextField from '@material-ui/core/TextField';
 
 export default class Analysis extends Component {
   state = {
     enabledTypes: ["sum", "average", "minimum", "maximum"]
-  }
-
-  stylePaper = () => {
-    return {
-      padding: 14
-    }
   }
 
   getAndValidateValues = (state) => {
@@ -79,12 +72,10 @@ export default class Analysis extends Component {
                   {this.state.enabledTypes.map(type => {
                     return (
                       <Grid key={type} item xs={xs} sm={sm} md={md} lg={lg} xl={xl}>
-                        <Paper style={this.stylePaper()}>
                           <AnalysisFragment 
                             type={type}
                             visibleRows={validatedValues}
                           />
-                        </Paper>
                       </Grid>
                     )
                   })}
