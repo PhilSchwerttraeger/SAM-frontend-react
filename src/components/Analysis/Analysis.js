@@ -5,10 +5,6 @@ import AnalysisFragment from './AnalysisFragment';
 //import TextField from '@material-ui/core/TextField';
 
 export default class Analysis extends Component {
-  state = {
-    enabledTypes: ["sum", "average", "minimum", "maximum", "totalin", "totalout"]
-  }
-
   getAndValidateValues = (state) => {
     
     let selectedEntries = state.getSelectedEntries();

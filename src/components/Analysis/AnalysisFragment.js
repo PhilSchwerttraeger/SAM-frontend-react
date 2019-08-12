@@ -37,9 +37,15 @@ class AnalysisFragment extends Component {
       anchor: null,
       menuOpen: false
     });
-    //console.log("Remove: " + this.props.type);
-    //console.log(this.contextState);
     this.contextState.removeAnalysisFragment(this.props.type);
+  }
+  
+  handleRestore = event => {
+    this.setState({
+      anchor: null,
+      menuOpen: false
+    });
+    this.contextState.restoreAnalysisFragment();
   }
 
   sum(array){
@@ -203,7 +209,10 @@ class AnalysisFragment extends Component {
                 }}
               >
                   <MenuItem onClick={this.handleRemove.bind(this)}>
-                    Remove
+                    {state.data.strings.analysis.remove}
+                  </MenuItem>
+                  <MenuItem onClick={this.handleRestore.bind(this)}>
+                  {state.data.strings.analysis.restore}
                   </MenuItem>
               </Menu>
 

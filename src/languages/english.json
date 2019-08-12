@@ -15,7 +15,10 @@
         "minimum": "Minimum",
         "maximum": "Maximum",
         "totalin": "Total In",
-        "totalout": "Total Out"
+        "totalout": "Total Out",
+
+        "remove": "Remove",
+        "restore": "Restore default config"
     },
     "datatable": {
         "autoCompleteSelect": "Type and select",

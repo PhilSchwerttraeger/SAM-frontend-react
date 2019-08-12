@@ -19,6 +19,8 @@ if(backend === "JSONSERVER"){
   endPhrase = '';
 }
 
+const defaultAnalysisConfig = ["sum", "average", "minimum", "maximum", "totalin", "totalout"];
+
 export class DataProvider extends Component {
   constructor(props){
     super(props);
@@ -351,6 +353,16 @@ export class DataProvider extends Component {
     console.log(this.state);
   }
 
+  restoreAnalysisFragment = () => {
+    let newState = this.state.generalConfig;
+    newState.analysisSections = defaultAnalysisConfig;
+    this.setState({
+      generalConfig: newState
+    });
+    this.setAnalysisSections();
+    console.log(this.state);
+  }
+
   handleClose = () => {
     this.setState({
       SnackbarClicked: false,
@@ -382,7 +394,8 @@ export class DataProvider extends Component {
 
       openSnackbar: this.openSnackbar,
 
-      removeAnalysisFragment: this.removeAnalysisFragment
+      removeAnalysisFragment: this.removeAnalysisFragment,
+      restoreAnalysisFragment: this.restoreAnalysisFragment
     };
 
     return(
