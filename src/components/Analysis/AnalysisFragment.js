@@ -19,7 +19,6 @@ class AnalysisFragment extends Component {
   }
 
   handleClick = event => {
-    console.log(event.currentTarget);
     this.setState({
       anchor: event.currentTarget,
       menuOpen: true
@@ -27,11 +26,20 @@ class AnalysisFragment extends Component {
   }
 
   handleClose = event => {
-    console.log(event.currentTarget);
     this.setState({
       anchor: null,
       menuOpen: false
     });
+  }
+
+  handleRemove = event => {
+    this.setState({
+      anchor: null,
+      menuOpen: false
+    });
+    //console.log("Remove: " + this.props.type);
+    //console.log(this.contextState);
+    this.contextState.removeAnalysisFragment(this.props.type);
   }
 
   sum(array){
@@ -145,6 +153,8 @@ class AnalysisFragment extends Component {
     return (
       <Consumer>
         {state => {
+          // define contextState to access global state functions in functions above 
+          this.contextState = state;
           return (
             <Card>
               <CardHeader
@@ -192,7 +202,7 @@ class AnalysisFragment extends Component {
                   },
                 }}
               >
-                  <MenuItem onClick={this.handleClose}>
+                  <MenuItem onClick={this.handleRemove.bind(this)}>
                     Remove
                   </MenuItem>
               </Menu>

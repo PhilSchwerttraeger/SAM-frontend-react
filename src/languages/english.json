@@ -42,6 +42,7 @@
         "entrydeletederror": "Error: Can not delete entry",
         "entryupdatederror": "Error: Can not update entry",
         "newfieldconfigseterror": "Error: Can not update field configuration",
-        "emptyentryaddederror": "Error: Can not create new empty entry"
+        "emptyentryaddederror": "Error: Can not create new empty entry",
+        "newanalysissectionserror": "Error: Can not save new analysis configuration"
     }
 }
