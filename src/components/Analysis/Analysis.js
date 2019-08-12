@@ -5,12 +5,8 @@ import AnalysisFragment from './AnalysisFragment';
 //import TextField from '@material-ui/core/TextField';
 
 export default class Analysis extends Component {
-  state = {
-    enabledTypes: ["sum", "average", "minimum", "maximum", "totalin", "totalout"]
-  }
-
   getAndValidateValues = (state) => {
-    //console.log(state.getSelectedEntries());
+    
     let selectedEntries = state.getSelectedEntries();
     let ids = [];
     let values = [];
@@ -34,7 +30,6 @@ export default class Analysis extends Component {
           }
 
           // ... add to list
-          //console.log(Number(element.data.value));
           ids.push(element.data.id);
           if(element.data.type === "In"){
             values.push(element.data.value);
@@ -57,7 +52,6 @@ export default class Analysis extends Component {
         {state => {
           let analysisSections = state.data.generalConfig.analysisSections;
           if(!analysisSections) analysisSections = [""];
-          //console.log(state.data.generalConfig.analysisSections);
           let validatedValues = this.getAndValidateValues(state);
           
           return (
