@@ -28,7 +28,7 @@ export default function CategoriesModal(props) {
     setOpen(false);
   }
 
-
+  // eslint-disable-next-line
   function handleSave() {
     setOpen(false);
   }
@@ -130,6 +130,7 @@ export default function CategoriesModal(props) {
               
               <Button 
                 onClick={() => {
+                  // eslint-disable-next-line
                   {/*
                   handleSave();
                   fieldConfig.map(field => {

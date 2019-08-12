@@ -55,8 +55,11 @@ export default class Analysis extends Component {
     return (
       <Consumer>
         {state => {
+          let analysisSections = state.data.generalConfig.analysisSections;
+          if(!analysisSections) analysisSections = [""];
+          //console.log(state.data.generalConfig.analysisSections);
           let validatedValues = this.getAndValidateValues(state);
-          //console.log(validatedValues);
+          
           return (
             <div>
               {/*
@@ -69,7 +72,7 @@ export default class Analysis extends Component {
                   alignItems="flex-start"
                   justify="flex-start"
                 >
-                  {this.state.enabledTypes.map(type => {
+                  {analysisSections.map(type => {
                     return (
                       <Grid key={type} item xs={xs} sm={sm} md={md} lg={lg} xl={xl}>
                           <AnalysisFragment 

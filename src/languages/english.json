@@ -10,7 +10,7 @@
         "github": "Go to GitHub page"
     },
     "analysis": {
-        "sum": "sum",
+        "sum": "Sum",
         "average": "Average",
         "minimum": "Minimum",
         "maximum": "Maximum",
