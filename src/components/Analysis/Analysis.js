@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Consumer } from './DataContext';
+import { Consumer } from '../DataContext';
 import Grid from '@material-ui/core/Grid';
 import AnalysisFragment from './AnalysisFragment';
 //import TextField from '@material-ui/core/TextField';
 
 export default class Analysis extends Component {
   state = {
-    enabledTypes: ["sum", "average", "minimum", "maximum"]
+    enabledTypes: ["sum", "average", "minimum", "maximum", "totalin", "totalout"]
   }
 
   getAndValidateValues = (state) => {

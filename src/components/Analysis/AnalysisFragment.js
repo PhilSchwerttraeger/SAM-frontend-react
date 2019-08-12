@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { numberFormat } from './NumberFormat'
+import { Consumer } from '../DataContext';
+import { numberFormat } from '../NumberFormat'
 import { Grid } from '@material-ui/core'
 //import { FaSort, FaSortUp, FaSortDown, FaPlus } from 'react-icons/fa';
 import Avatar from '@material-ui/core/Avatar'
@@ -54,6 +55,8 @@ class AnalysisFragment extends Component {
       case "average": return "~"
       case "minimum": return "⭳"
       case "maximum": return "⭱"
+      case "totalin": return <InIcon />
+      case "totalout": return <OutIcon />
       default: return
     }
   }
@@ -71,49 +74,58 @@ class AnalysisFragment extends Component {
         break;
 
       case "minimum":
-          this.result = this.minimum(this.props.visibleRows.values);
-          this.icon = "minimum";
-          break;
+        this.result = this.minimum(this.props.visibleRows.values);
+        this.icon = "minimum";
+        break;
 
       case "maximum":
-          this.result = this.maximum(this.props.visibleRows.values);
-          this.icon = "maximum";
-          break;
-    
-      default:
-        this.result = 0;
+        this.result = this.maximum(this.props.visibleRows.values);
+        this.icon = "maximum";
+        break;
+
+      case "totalin":
+        this.result = this.totalIn(this.props.visibleRows.values);
+        this.icon = "totalin"
         break;
     }
 
     return (
-      
-      <Card>
-        
-        <CardHeader
-          avatar={
-            <Avatar 
-              className="AnalysisIcons"
-              style={{
-                color: this.props.theme.palette.primary.contrastText,
-                backgroundColor: this.props.theme.palette.primary.main
-              }}
-            >
-                {this.getIcon()}
-            </Avatar>
-          }
-          title={
-            <h3 style={{textTransform: "capitalize"}}>
-              {this.props.type}
-            </h3>
-          }
-          subheader={
-            <span className="stat_value">
-              {numberFormat(this.result)}
-            </span>
-          }
-        />
-
-      </Card>
+      <Consumer>
+        {state => {
+          return (
+            <Card>
+              <CardHeader
+                avatar={
+                  <Avatar 
+                    className="AnalysisIcons"
+                    style={{
+                      color: this.props.theme.palette.primary.contrastText,
+                      backgroundColor: this.props.theme.palette.primary.main
+                    }}
+                  >
+                      {this.getIcon()}
+                  </Avatar>
+                }
+                action={
+                  <IconButton aria-label="settings">
+                    <MoreVertIcon />
+                  </IconButton>
+                }
+                title={
+                  <h3>
+                    {state.data.strings.analysis[this.props.type]}
+                  </h3>
+                }
+                subheader={
+                  <span className="stat_value">
+                    {numberFormat(this.result)}
+                  </span>
+                }
+              />
+            </Card>
+          )
+        }}
+      </Consumer>
     )
   }
 }

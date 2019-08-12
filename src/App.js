@@ -1,8 +1,8 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Analysis from './components/Analysis';
-import DataTable from './components/DataTable';
+import Analysis from './components/Analysis/Analysis';
+import DataTable from './components/DataTable/DataTable';
 import NavBar from './components/NavBar';
 import { DataProvider } from './components/DataContext';
 import { ThemeProvider } from '@material-ui/styles';

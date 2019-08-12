@@ -16,7 +16,8 @@ export default class ConfigRow extends Component {
   state = {
     id: "",
     title: "",
-    type: ""
+    type: "",
+    isDisabled: false
   }
 
   componentDidMount(){
@@ -24,8 +25,17 @@ export default class ConfigRow extends Component {
       id: this.props.value.id,
       title: this.props.value.title,
       type: this.props.value.type,
-      enable: this.props.value.enable
+      enable: this.props.value.enable,
+      isDisabled: false
     });
+    
+    // check if type cannot be changed (select-case, e.g. Type and Interval)
+    console.log(this.state);
+    if(this.state.type === "select") {
+      this.setState({
+        isDisabled: true
+      })
+    }
   }  
 
   componentDidUpdate(){
@@ -39,6 +49,8 @@ export default class ConfigRow extends Component {
   }
   
   render(){
+
+
     return (
       <Grid container 
         type={{flexGrow: 1}} 
@@ -151,7 +163,8 @@ export default class ConfigRow extends Component {
           <IconButton 
             variant="outlined" 
             onClick={this.props.deleteItem(this.state.id)}
-            color="secondary"  
+            color="secondary"
+            disabled={this.state.isDisabled}
           >
             <DeleteIcon />
             

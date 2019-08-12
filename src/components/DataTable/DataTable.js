@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Consumer } from './DataContext';
-import Spinner from '../assets/Spinner';
+import { Consumer } from '../DataContext';
+import Spinner from '../../assets/Spinner';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
@@ -10,7 +10,7 @@ import MaterialDatePicker from './MaterialDatePicker';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import { DataContext } from './DataContext';
+import { DataContext } from '../DataContext';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import DuplicateIcon from '@material-ui/icons/ControlPointDuplicate';
