@@ -248,8 +248,9 @@ export default class DataTable extends Component {
       }      
     });
     
-    const uuid = require('uuid/v1');
-    data.id = uuid();
+    // id generation, time-based / time-sortable
+    const kuuid = require('kuuid');
+    data.id = kuuid.id();
 
     // 2. Add to backend
     this.contextState.addEntry(data);
