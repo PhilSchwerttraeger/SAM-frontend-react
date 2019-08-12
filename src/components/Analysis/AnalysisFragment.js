@@ -1,21 +1,39 @@
 import React, { Component } from 'react'
 import { Consumer } from '../DataContext';
 import { numberFormat } from '../NumberFormat'
-import { Grid } from '@material-ui/core'
-//import { FaSort, FaSortUp, FaSortDown, FaPlus } from 'react-icons/fa';
 import Avatar from '@material-ui/core/Avatar'
 import { withTheme  } from '@material-ui/styles'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
-import CardMedia from '@material-ui/core/CardMedia'
-import CardContent from '@material-ui/core/CardContent'
-import CardActions from '@material-ui/core/CardActions'
 import IconButton from '@material-ui/core/IconButton'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import InIcon from '@material-ui/icons/SubdirectoryArrowRight'
 import OutIcon from '@material-ui/icons/SubdirectoryArrowLeft'
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 class AnalysisFragment extends Component {
+  state = {
+    anchor: null,
+    menuOpen: false
+  }
+
+  handleClick = event => {
+    console.log(event.currentTarget);
+    this.setState({
+      anchor: event.currentTarget,
+      menuOpen: true
+    });
+  }
+
+  handleClose = event => {
+    console.log(event.currentTarget);
+    this.setState({
+      anchor: null,
+      menuOpen: false
+    });
+  }
+
   sum(array){
     let result = 0;
     array.forEach(element => {
@@ -142,7 +160,10 @@ class AnalysisFragment extends Component {
                   </Avatar>
                 }
                 action={
-                  <IconButton aria-label="settings">
+                  <IconButton 
+                    aria-label="analysis settings"
+                    onClick={this.handleClick}
+                  >
                     <MoreVertIcon />
                   </IconButton>
                 }
@@ -157,6 +178,25 @@ class AnalysisFragment extends Component {
                   </span>
                 }
               />
+
+              <Menu
+                id="long-menu"
+                anchorEl={this.state.anchor}
+                keepMounted
+                open={this.state.menuOpen}
+                onClose={this.handleClose}
+                PaperProps={{
+                  style: {
+                    maxHeight: 48 * 4.5,
+                    width: 200,
+                  },
+                }}
+              >
+                  <MenuItem onClick={this.handleClose}>
+                    Remove
+                  </MenuItem>
+              </Menu>
+
             </Card>
           )
         }}
