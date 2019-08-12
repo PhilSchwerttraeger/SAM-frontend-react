@@ -67,7 +67,7 @@ export default class Analysis extends Component {
                   spacing={3}
                   direction="row"
                   alignItems="flex-start"
-                  justify="space-between"
+                  justify="flex-start"
                 >
                   {this.state.enabledTypes.map(type => {
                     return (

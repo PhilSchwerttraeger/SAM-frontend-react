@@ -12,6 +12,8 @@ import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
 import IconButton from '@material-ui/core/IconButton'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
+import InIcon from '@material-ui/icons/SubdirectoryArrowRight'
+import OutIcon from '@material-ui/icons/SubdirectoryArrowLeft'
 
 class AnalysisFragment extends Component {
   sum(array){
@@ -47,6 +49,30 @@ class AnalysisFragment extends Component {
         return 0;
     }
     return Math.max.apply(Math, array);
+  }
+  
+  totalIn(array){
+    let result = 0;
+    array.forEach(element => {
+      if(element > 0){
+        result += element;
+      }
+    });
+    if(result){
+      return result;
+    } else return 0;
+  }
+  
+  totalOut(array){
+    let result = 0;
+    array.forEach(element => {
+      if(element < 0){
+        result += element;
+      }
+    });
+    if(result){
+      return result;
+    } else return 0;
   }
 
   getIcon(){
@@ -86,6 +112,15 @@ class AnalysisFragment extends Component {
       case "totalin":
         this.result = this.totalIn(this.props.visibleRows.values);
         this.icon = "totalin"
+        break;
+
+      case "totalout":
+        this.result = this.totalOut(this.props.visibleRows.values);
+        this.icon = "totalout"
+        break;
+    
+      default:
+        this.result = 0;
         break;
     }
 
