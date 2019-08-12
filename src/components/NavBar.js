@@ -7,10 +7,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 //import AccountCircle from '@material-ui/icons/AccountCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
 import InfoIcon from '@material-ui/icons/Info';
-import GitHubIcon from '../assets/GitHubIcon';
-//import SimpleDialogDemo from './FieldConfigDialog';
-import CategoriesModal from './CategoryConfig/CategoriesModal';
-import { Consumer } from './DataContext';
+import GitHubIcon from '../assets/GitHubIcon'
+import CategoriesModal from './CategoryConfig/CategoriesModal'
+import { Consumer } from './DataContext'
+import Tooltip from '@material-ui/core/Tooltip'
 
 export default class NavBar extends Component {
   render() {
@@ -22,35 +22,57 @@ export default class NavBar extends Component {
               <IconButton edge="start" color="inherit">
                 <MenuIcon />
               </IconButton>
+
               <Typography>
                 {state.data.strings.title}
               </Typography>
+
               <div style={{flexGrow: 1}}/>
+
               <div style={{display: 'flex'}}>
                 <CategoriesModal />
-                <IconButton 
-                  color="inherit"
-                  className="hideonmobile"
+
+                
+                <Tooltip 
+                  title={state.data.strings.titles.settings}
                 >
-                  <SettingsIcon />
-                </IconButton>
-                <IconButton 
-                  aria-haspopup="true" 
-                  color="inherit"
-                  className="hideonmobile"
+                  <IconButton 
+                    color="inherit"
+                    className="hideonmobile"
+                  >
+                    <SettingsIcon />
+                  </IconButton>
+                </Tooltip>
+                
+                
+                
+                <Tooltip 
+                  title={state.data.strings.titles.info}
                 >
-                  <InfoIcon />
-                </IconButton>
-                <IconButton 
-                  edge="end" 
-                  aria-haspopup="true" 
-                  color="inherit"
-                  href="https://github.com/PhilSchwerttraeger/SAM"
-                  target="_blank"
-                  className="hideonmobile"
+                  <IconButton 
+                    aria-haspopup="true" 
+                    color="inherit"
+                    className="hideonmobile"
+                  >
+                    <InfoIcon />
+                  </IconButton>
+                </Tooltip>
+                
+                
+                <Tooltip 
+                  title={state.data.strings.titles.github}
                 >
-                  <GitHubIcon />
-                </IconButton>
+                  <IconButton 
+                    edge="end" 
+                    aria-haspopup="true" 
+                    color="inherit"
+                    href="https://github.com/PhilSchwerttraeger/SAM"
+                    target="_blank"
+                    className="hideonmobile"
+                  >
+                    <GitHubIcon />
+                  </IconButton>
+                </Tooltip>
               </div>
             </Toolbar>
           </AppBar>

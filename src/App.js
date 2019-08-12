@@ -1,11 +1,22 @@
 import React from 'react';
-import './App.css';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Analysis from './components/Analysis';
-import DataTable from './components/DataTable';
+import Analysis from './components/Analysis/Analysis';
+import DataTable from './components/DataTable/DataTable';
 import NavBar from './components/NavBar';
 import { DataProvider } from './components/DataContext';
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
+import blue from '@material-ui/core/colors/blue';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: blue
+  },
+  status: {
+    danger: 'orange',
+  },
+});
 
 class App extends React.Component {
   styleMain = () => {
@@ -28,19 +39,21 @@ class App extends React.Component {
   render() {
     return (
       <DataProvider>
-        <NavBar />
-        <div className="main">
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Analysis />
+        <ThemeProvider theme={theme}>
+          <NavBar />
+          <div className="main">
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Analysis />
+              </Grid>
+              <Grid item xs={12}>
+                <Paper style={this.stylePaper()}>
+                  <DataTable />
+                </Paper>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Paper style={this.stylePaper()}>
-                <DataTable />
-              </Paper>
-            </Grid>
-          </Grid>
-        </div>
+          </div>
+        </ThemeProvider>
       </DataProvider>
     );
   }

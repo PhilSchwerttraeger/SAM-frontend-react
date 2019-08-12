@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import ViewColumnIcon from '@material-ui/icons/ViewColumn';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { Consumer } from '../DataContext';
-import ConfigRow from './ConfigRow';
-import { Grid } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
+import ViewColumnIcon from '@material-ui/icons/ViewColumn'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import { Consumer } from '../DataContext'
+import ConfigRow from './ConfigRow'
+import { Grid } from '@material-ui/core'
+import AddIcon from '@material-ui/icons/Add'
+import Tooltip from '@material-ui/core/Tooltip'
 
 export default function CategoriesModal(props) {
   const [open, setOpen] = useState(false);
@@ -27,7 +28,7 @@ export default function CategoriesModal(props) {
     setOpen(false);
   }
 
-
+  // eslint-disable-next-line
   function handleSave() {
     setOpen(false);
   }
@@ -67,9 +68,12 @@ export default function CategoriesModal(props) {
       {state => {
       return(
         <div>
-          <IconButton color="inherit" onClick={handleClickOpen}>
-            <ViewColumnIcon />
-          </IconButton>
+          <Tooltip title={state.data.strings.modalFieldConfig.title}>
+            <IconButton color="inherit" onClick={handleClickOpen}>
+              <ViewColumnIcon />
+            </IconButton>
+          </Tooltip>
+
           <Dialog 
             open={open}
             onClose={handleClose}
@@ -126,6 +130,7 @@ export default function CategoriesModal(props) {
               
               <Button 
                 onClick={() => {
+                  // eslint-disable-next-line
                   {/*
                   handleSave();
                   fieldConfig.map(field => {
