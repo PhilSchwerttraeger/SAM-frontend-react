@@ -126,7 +126,7 @@ export class DataProvider extends Component {
       }));
       console.log(res);
       if(res.ok){
-        this.callSnackbar(this.state.strings.snackbar.entryupdated);
+        // nothing
       } else {
         this.callSnackbar(this.state.strings.snackbar.entryupdatederror);
       }
@@ -162,7 +162,7 @@ export class DataProvider extends Component {
       this.fetchFieldsDataFromRestApi();
       console.log(res);
       if(res.ok){
-        this.callSnackbar(this.state.strings.snackbar.entryadded);
+        // nothing
       } else {
         this.callSnackbar(this.state.strings.snackbar.entryaddederror);
       }
@@ -207,7 +207,7 @@ export class DataProvider extends Component {
         });
         this.fetchFieldsDataFromRestApi();
         if(res.ok){
-          this.callSnackbar(this.state.strings.snackbar.entrydeleted);
+          // nothing
         } else {
           this.callSnackbar(this.state.strings.snackbar.entrydeletederror);
         }
@@ -252,7 +252,7 @@ export class DataProvider extends Component {
       console.log(newConfig);
       console.log(res);
       if(res.ok){
-        this.callSnackbar(this.state.strings.snackbar.newfieldconfigset);
+        // nothing
       } else {
         this.callSnackbar(this.state.strings.snackbar.newfieldconfigseterror);
       }
@@ -270,7 +270,6 @@ export class DataProvider extends Component {
       "type": "text",
       "enable": "true"
     };
-
     
     if(backend === "FIREBASE") {
       // preprocess data if needed
@@ -291,11 +290,41 @@ export class DataProvider extends Component {
       }));
       this.fetchFieldsDataFromRestApi();
       if(res.ok){
-        this.callSnackbar(this.state.strings.snackbar.emptyentryadded);
+        // nothing
       } else {
         this.callSnackbar(this.state.strings.snackbar.emptyentryaddederror);
       }
       console.log(res);
+      return res;
+    }).catch(err => {
+      console.log(err);
+      return err;
+    });
+  }
+  
+  setAnalysisSections = () => {
+    if(backend === "FIREBASE") {
+      // preprocess data if needed
+    }
+    if(backend === "JSONSERVER") {
+      // preprocess data if needed
+    }
+
+    return fetch(serverURL + '/generalConfig' + endPhrase, {
+      method: 'PUT',
+      body: JSON.stringify({
+        analysisSections: this.state.generalConfig.analysisSections
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      console.log(res);
+      if(res.ok){
+        // nothing
+      } else {
+        this.callSnackbar(this.state.strings.snackbar.newanalysissectionserror);
+      }
       return res;
     }).catch(err => {
       console.log(err);
@@ -308,6 +337,18 @@ export class DataProvider extends Component {
       SnackbarClicked: true,
       SnackbarText: message
     });
+  }
+
+  removeAnalysisFragment = fragmentToRemove => {
+    let newState = this.state.generalConfig;
+    newState.analysisSections = newState.analysisSections.filter(fragment =>
+      fragment !== fragmentToRemove
+    );
+    this.setState({
+      generalConfig: newState
+    });
+    this.setAnalysisSections();
+    console.log(this.state);
   }
 
   handleClose = () => {
@@ -325,16 +366,23 @@ export class DataProvider extends Component {
     
     const contextValue = {
       data: this.state,
+
       updateEntry: this.updateEntry,
       addEntry: this.addEntry,
       deleteEntries: this.deleteEntries,
+
       setSelectedEntries: this.setSelectedEntries,
       getSelectedEntries: this.getSelectedEntries,
+
       fetchFromRestApi: this.fetchFromRestApi,
       fetchFieldsDataFromRestApi: this.fetchFieldsDataFromRestApi,
+
       setFieldsConfig: this.setFieldsConfig,
       addEmptyFieldConfig: this.addEmptyFieldConfig,
-      openSnackbar: this.openSnackbar
+
+      openSnackbar: this.openSnackbar,
+
+      removeAnalysisFragment: this.removeAnalysisFragment
     };
 
     return(
