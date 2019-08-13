@@ -1,61 +1,57 @@
-import React, { Component } from 'react'
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import { Grid } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import SelectIcon from '@material-ui/icons/List';
-import TextIcon from '@material-ui/icons/TextRotationNone';
-import DateIcon from '@material-ui/icons/DateRange';
-import CurrencyIcon from '@material-ui/icons/AttachMoney';
+import React, { Component } from "react";
+import TextField from "@material-ui/core/TextField";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import { Grid } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import SelectIcon from "@material-ui/icons/List";
+import TextIcon from "@material-ui/icons/TextRotationNone";
+import DateIcon from "@material-ui/icons/DateRange";
+import CurrencyIcon from "@material-ui/icons/AttachMoney";
 
 export default class ConfigRow extends Component {
   state = {
     id: "",
     title: "",
+    name: "",
     type: "",
-    isDisabled: false
-  }
+    enable: true,
+    isDisabled: true,
+    values: null
+  };
 
-  componentDidMount(){
+  componentDidMount() {
     this.setState({
       id: this.props.value.id,
       title: this.props.value.title,
+      name: this.props.value.name,
       type: this.props.value.type,
       enable: this.props.value.enable,
-      isDisabled: false
+      isDisabled: this.props.value.isDisabled
     });
-    
-    // check if type cannot be changed (select-case, e.g. Type and Interval)
-    console.log(this.state);
-    if(this.state.type === "select") {
+    if (this.props.value.values) {
       this.setState({
-        isDisabled: true
-      })
+        values: this.props.value.values
+      });
     }
-  }  
+  }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     this.props.onChange(this.state, this.props.isNew);
   }
 
   toTitleCase(str) {
-    return str.replace(/\w\S*/g, function(txt){
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    return str.replace(/\w\S*/g, function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
   }
-  
-  render(){
 
-
+  render() {
     return (
-      <Grid container 
-        type={{flexGrow: 1}} 
-        spacing={3}
-      >
+      <Grid container type={{ flexGrow: 1 }} spacing={3}>
         <Grid item xs={5}>
           <TextField
             autoFocus
@@ -63,7 +59,7 @@ export default class ConfigRow extends Component {
             label="Column Title"
             type="text"
             value={this.state.title}
-            onChange = {(e) => {
+            onChange={e => {
               this.setState({
                 title: e.target.value
               });
@@ -72,106 +68,94 @@ export default class ConfigRow extends Component {
         </Grid>
 
         <Grid item xs={5}>
-          <FormControl fullWidth= {true}>
+          <FormControl fullWidth={true}>
             <InputLabel>Type</InputLabel>
+
             <Select
               value={this.toTitleCase(this.state.type)}
-              onChange = {(e) => {
+              onChange={e => {
                 this.setState({
-                  type: e.target.value
+                  type: e.target.value.toLowerCase()
                 });
               }}
+              disabled={this.state.isDisabled}
             >
-              <MenuItem value={this.props.strings.select}>
-                <Grid container 
+              {/* Type: Select */}
+              <MenuItem value={this.props.strings.select} disabled={true}>
+                <Grid
+                  container
                   justify="flex-start"
                   alignItems="center"
                   spacing={1}
                 >
                   <Grid item>
-                    <SelectIcon 
-                      color="primary"
-                      style={{ fontSize: 15 }}
-                    />
+                    <SelectIcon color="primary" style={{ fontSize: 15 }} />
                   </Grid>
-                  <Grid item>
-                    {this.props.strings.select}
-                  </Grid>                
+                  <Grid item>{this.props.strings.select}</Grid>
                 </Grid>
               </MenuItem>
 
-              
+              {/* Type: Date */}
               <MenuItem value={this.props.strings.date}>
-                <Grid container 
+                <Grid
+                  container
                   justify="flex-start"
                   alignItems="center"
                   spacing={1}
                 >
                   <Grid item>
-                    <DateIcon 
-                      color="primary"
-                      style={{ fontSize: 15 }}
-                    />
+                    <DateIcon color="primary" style={{ fontSize: 15 }} />
                   </Grid>
-                  <Grid item>
-                    {this.props.strings.date}
-                  </Grid>                
+                  <Grid item>{this.props.strings.date}</Grid>
                 </Grid>
               </MenuItem>
 
+              {/* Type: Text */}
               <MenuItem value={this.props.strings.text}>
-                <Grid container 
+                <Grid
+                  container
                   justify="flex-start"
                   alignItems="center"
                   spacing={1}
                 >
                   <Grid item>
-                    <TextIcon 
-                      color="primary"
-                      style={{ fontSize: 15 }}
-                    />
+                    <TextIcon color="primary" style={{ fontSize: 15 }} />
                   </Grid>
-                  <Grid item>
-                    {this.props.strings.text}
-                  </Grid>                
+                  <Grid item>{this.props.strings.text}</Grid>
                 </Grid>
               </MenuItem>
 
+              {/* Type: Currency */}
               <MenuItem value={this.props.strings.currency}>
-                <Grid container 
+                <Grid
+                  container
                   justify="flex-start"
                   alignItems="center"
                   spacing={1}
                 >
                   <Grid item>
-                    <CurrencyIcon 
-                      color="primary"
-                      style={{ fontSize: 15 }}
-                    />
+                    <CurrencyIcon color="primary" style={{ fontSize: 15 }} />
                   </Grid>
-                  <Grid item>
-                    {this.props.strings.currency}
-                  </Grid>                
+                  <Grid item>{this.props.strings.currency}</Grid>
                 </Grid>
               </MenuItem>
             </Select>
           </FormControl>
         </Grid>
 
-        
+        {/* Delete */}
         <Grid item xs={2}>
-          <IconButton 
-            variant="outlined" 
-            onClick={this.props.deleteItem(this.state.id)}
+          <IconButton
+            variant="outlined"
+            onClick={() => this.props.deleteItem(this.state.id)}
             color="secondary"
-            disabled={this.state.isDisabled}
+            //disabled={this.state.isDisabled}
+            disabled={true}
           >
             <DeleteIcon />
-            
           </IconButton>
         </Grid>
-
       </Grid>
-    )
+    );
   }
 }

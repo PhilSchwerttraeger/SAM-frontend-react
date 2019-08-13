@@ -1,26 +1,28 @@
-import React, { Component } from 'react'
-import { Consumer } from './DataContext'
+import React, { Component } from "react";
+import { Consumer } from "./DataContext";
 
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
-import CategoriesModal from './CategoryConfig/CategoriesModal'
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
+import CategoriesModal from "./CategoryConfig/CategoriesModal";
 
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
-import List from '@material-ui/core/List'
-import Divider from '@material-ui/core/Divider'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import List from "@material-ui/core/List";
+import Divider from "@material-ui/core/Divider";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 
-import GitHubIcon from '../assets/GitHubIcon'
-import MenuIcon from '@material-ui/icons/Menu'
-import SettingsIcon from '@material-ui/icons/Settings'
-import InfoIcon from '@material-ui/icons/Info'
-import Dashboard from '@material-ui/icons/Dashboard'
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import GitHubIcon from "../assets/GitHubIcon";
+import MenuIcon from "@material-ui/icons/Menu";
+import SettingsIcon from "@material-ui/icons/Settings";
+import InfoIcon from "@material-ui/icons/Info";
+import Dashboard from "@material-ui/icons/Dashboard";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+
+import InfoModal from "./Modals/InfoModal";
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -31,72 +33,62 @@ export default class NavBar extends Component {
 
   state = {
     drawerOpened: false
-  }
+  };
 
   openDrawer = () => {
     this.setState({
       drawerOpened: true
-    })
-  }
-  
+    });
+  };
+
   closeDrawer = () => {
     this.setState({
       drawerOpened: false
-    })
-  }
+    });
+  };
 
   render() {
     return (
       <Consumer>
-        {state => 
+        {state => (
           <AppBar position="static">
             <Toolbar>
-              <IconButton 
-                edge="start" 
+              <IconButton
+                edge="start"
                 color="inherit"
                 onClick={this.openDrawer}
               >
                 <MenuIcon />
               </IconButton>
 
-              <Typography>
-                {state.data.strings.title}
-              </Typography>
+              <Typography>{state.data.strings.title}</Typography>
 
-              <div style={{flexGrow: 1}}/>
+              <div style={{ flexGrow: 1 }} />
 
-              <div style={{display: 'flex'}}>
+              <div style={{ display: "flex" }}>
                 <CategoriesModal />
-                
-                <Tooltip 
-                  title={state.data.strings.titles.settings}
-                >
-                  <IconButton 
-                    color="inherit"
-                    className="hideonmobile"
-                  >
+
+                <Tooltip title={state.data.strings.titles.settings}>
+                  <IconButton color="inherit" className="hideonmobile">
                     <SettingsIcon />
                   </IconButton>
                 </Tooltip>
-                
-                <Tooltip 
-                  title={state.data.strings.titles.info}
-                >
-                  <IconButton 
-                    aria-haspopup="true" 
+
+                <Tooltip title={state.data.strings.titles.info}>
+                  <IconButton
+                    aria-haspopup="true"
                     color="inherit"
                     className="hideonmobile"
+                    onClick={state.openInfoModal}
                   >
                     <InfoIcon />
                   </IconButton>
                 </Tooltip>
-                
-                <Tooltip 
-                  title={state.data.strings.titles.github}
-                >
-                  <IconButton 
-                    edge="end" 
-                    aria-haspopup="true" 
+
+                <Tooltip title={state.data.strings.titles.github}>
+                  <IconButton
+                    edge="end"
+                    aria-haspopup="true"
                     color="inherit"
                     href="https://github.com/PhilSchwerttraeger/SAM"
                     target="_blank"
@@ -105,7 +97,6 @@ export default class NavBar extends Component {
                     <GitHubIcon />
                   </IconButton>
                 </Tooltip>
-                
 
                 <SwipeableDrawer
                   open={this.state.drawerOpened}
@@ -122,7 +113,7 @@ export default class NavBar extends Component {
                         <ListItemIcon>
                           <Dashboard />
                         </ListItemIcon>
-                        <ListItemText primary={'Dashboard'} />
+                        <ListItemText primary={"Dashboard"} />
                       </ListItem>
                     </List>
 
@@ -133,31 +124,31 @@ export default class NavBar extends Component {
                         <ListItemIcon>
                           <AccountCircle />
                         </ListItemIcon>
-                        <ListItemText primary={'Account'} />
+                        <ListItemText primary={"Account"} />
                       </ListItem>
 
                       <ListItem button>
                         <ListItemIcon>
                           <SettingsIcon />
                         </ListItemIcon>
-                        <ListItemText primary={'Settings'} />
+                        <ListItemText primary={"Settings"} />
                       </ListItem>
-                      
+
                       <ListItem button>
                         <ListItemIcon>
                           <InfoIcon />
                         </ListItemIcon>
-                        <ListItemText primary={'Info'} />
+                        <ListItemText primary={"Info"} />
                       </ListItem>
                     </List>
                   </div>
                 </SwipeableDrawer>
-
+                <InfoModal show={state.data.modals.showInfo} />
               </div>
             </Toolbar>
           </AppBar>
-        }
+        )}
       </Consumer>
-    )
+    );
   }
 }

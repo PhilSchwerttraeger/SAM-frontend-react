@@ -1,51 +1,61 @@
 {
-    "test": "test-string",
-    "title": "Simple Account Manager",
-    "titles": {
-        "analysis": "Analysis",
-        "statistics": "Statistics",
-        "datatable": "Data Table",
-        "settings": "Settings",
-        "info": "App Info",
-        "github": "Go to GitHub page"
-    },
-    "analysis": {
-        "sum": "Sum",
-        "average": "Average",
-        "minimum": "Minimum",
-        "maximum": "Maximum",
-        "totalin": "Total In",
-        "totalout": "Total Out",
+  "test": "test-string",
+  "title": "Simple Account Manager",
+  "titles": {
+    "analysis": "Analysis",
+    "statistics": "Statistics",
+    "datatable": "Data Table",
+    "settings": "Settings",
+    "info": "App Info",
+    "github": "Go to GitHub page"
+  },
+  "analysis": {
+    "sum": "Sum",
+    "average": "Average",
+    "minimum": "Minimum",
+    "maximum": "Maximum",
+    "totalin": "Total In",
+    "totalout": "Total Out",
 
-        "remove": "Remove",
-        "restore": "Restore default config"
-    },
-    "datatable": {
-        "autoCompleteSelect": "Type and select",
-        "confirmDelete": "Do you really want to delete following entries?"
-    },
-    "modalFieldConfig": {
-        "title": "Column Configuration",
-        "description": "Configure the columns to fit individual purposes and needs.",
-        "save": "Save",
-        "cancel": "Close",
-        "select": "Select",
-        "date": "Date",
-        "text": "Text",
-        "currency": "Currency",
-        "addNewRowToForm": "Add New"
-    },
-    "snackbar": {
-        "entryadded": "Entry added",
-        "entrydeleted": "Entry deleted",
-        "entryupdated": "Entry updated",
-        "newfieldconfigset": "Field configuration updated",
-        "emptyentryadded": "New empty entry created",
-        "entryaddederror": "Error: Can not add entry",
-        "entrydeletederror": "Error: Can not delete entry",
-        "entryupdatederror": "Error: Can not update entry",
-        "newfieldconfigseterror": "Error: Can not update field configuration",
-        "emptyentryaddederror": "Error: Can not create new empty entry",
-        "newanalysissectionserror": "Error: Can not save new analysis configuration"
-    }
+    "remove": "Remove",
+    "restore": "Restore default config"
+  },
+  "datatable": {
+    "add": "Add empty entry",
+    "duplicate": "Duplicate selected entries",
+    "delete": "Delete selected entries",
+    "download": "Download CSV (currently visible data)",
+
+    "autoCompleteSelect": "Type and select",
+    "confirmDelete": "Do you really want to delete following entries?"
+  },
+  "modalFieldConfig": {
+    "title": "Column Configuration",
+    "description": "Configure the columns to fit individual purposes and needs.",
+    "save": "Save",
+    "cancel": "Close",
+    "select": "Select",
+    "date": "Date",
+    "text": "Text",
+    "currency": "Currency",
+    "addNewRowToForm": "Add New"
+  },
+  "snackbar": {
+    "entryadded": "Entry added",
+    "entryaddederror": "Error: Can not add entry",
+
+    "entrydeleted": "Entry deleted",
+    "entrydeletederror": "Error: Can not delete entry",
+
+    "entryupdated": "Entry updated",
+    "entryupdatederror": "Error: Can not update entry",
+
+    "newfieldconfigset": "Field configuration updated",
+    "newfieldconfigseterror": "Error: Can not update field configuration",
+
+    "emptyentryadded": "New empty entry created",
+    "emptyentryaddederror": "Error: Can not create new empty entry",
+
+    "newanalysissectionserror": "Error: Can not save new analysis configuration"
+  }
 }
