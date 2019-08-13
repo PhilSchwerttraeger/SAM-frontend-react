@@ -11,7 +11,7 @@ const backend = "FIREBASE";
 //const backend = "NETLIFY";
 
 if(backend === "FIREBASE"){
-  serverURL = 'https://api-dashboard-5chw.firebaseio.com/';
+  serverURL = 'https://api-dashboard-5chw.firebaseio.com';
   endPhrase = '.json';
 }
 if(backend === "JSONSERVER"){
@@ -305,18 +305,9 @@ export class DataProvider extends Component {
   }
   
   setAnalysisSections = () => {
-    if(backend === "FIREBASE") {
-      // preprocess data if needed
-    }
-    if(backend === "JSONSERVER") {
-      // preprocess data if needed
-    }
-
-    return fetch(serverURL + '/generalConfig' + endPhrase, {
+    return fetch(serverURL + '/generalConfig/analysisSections' + endPhrase, {
       method: 'PUT',
-      body: JSON.stringify({
-        analysisSections: this.state.generalConfig.analysisSections
-      }),
+      body: JSON.stringify(this.state.generalConfig.analysisSections),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -343,9 +334,11 @@ export class DataProvider extends Component {
 
   removeAnalysisFragment = fragmentToRemove => {
     let newState = this.state.generalConfig;
+    console.log(newState);
     newState.analysisSections = newState.analysisSections.filter(fragment =>
       fragment !== fragmentToRemove
     );
+    console.log(newState);
     this.setState({
       generalConfig: newState
     });
