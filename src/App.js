@@ -1,21 +1,21 @@
-import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Analysis from './components/Analysis/Analysis';
-import DataTable from './components/DataTable/DataTable';
-import NavBar from './components/NavBar';
-import { DataProvider } from './components/DataContext';
-import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
+import React from "react";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Analysis from "./components/Analysis/Analysis";
+import DataTable from "./components/DataTable/DataTable";
+import NavBar from "./components/NavBar";
+import { DataProvider } from "./components/DataContext";
+import { ThemeProvider } from "@material-ui/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
+import blue from "@material-ui/core/colors/blue";
 
 const theme = createMuiTheme({
   palette: {
     primary: blue
   },
   status: {
-    danger: 'orange',
-  },
+    danger: "orange"
+  }
 });
 
 class App extends React.Component {
@@ -23,18 +23,17 @@ class App extends React.Component {
     return {
       flexGrow: 1,
       padding: 16,
-      backgroundColor: '#F8F8F8'
-    }
-  }
-  
+      backgroundColor: "#F8F8F8"
+    };
+  };
+
   stylePaper = () => {
     return {
       padding: 16
-    }
-  }
+    };
+  };
 
-  componentDidMount(){
-  }
+  componentDidMount() {}
 
   render() {
     return (

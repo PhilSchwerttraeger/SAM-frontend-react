@@ -29,11 +29,6 @@ export default function CategoriesModal(props) {
     setOpen(false);
   }
 
-  // eslint-disable-next-line
-  function handleSave() {
-    setOpen(false);
-  }
-
   function handleInputUpdate(field, isNew) {
     // newly added field (with no id)
     if (isNew) {
@@ -60,9 +55,8 @@ export default function CategoriesModal(props) {
   }
 
   function deleteItem(id) {
-    fieldConfig = fieldConfig.filter(field => {
-      if (field.id !== id) return field;
-    });
+    fieldConfig = fieldConfig.filter(field => field.id !== id);
+    console.log(fieldConfig);
     contextState.deleteFieldConfig(id);
   }
 
@@ -127,7 +121,7 @@ export default function CategoriesModal(props) {
 
                 <Button
                   onClick={() => {
-                    //handleSave();
+                    handleClose();
 
                     let newFieldConfig = fieldConfig.map(field => {
                       // generate names + make first letter lowercase and remove spaces
@@ -149,7 +143,7 @@ export default function CategoriesModal(props) {
                       }
                       return field;
                     });
-                    console.log(newFieldConfig);
+                    //console.log(newFieldConfig);
                     state.setFieldsConfig(newFieldConfig);
                   }}
                   color="primary"

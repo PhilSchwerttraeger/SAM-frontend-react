@@ -149,7 +149,8 @@ export default class ConfigRow extends Component {
             variant="outlined"
             onClick={() => this.props.deleteItem(this.state.id)}
             color="secondary"
-            disabled={this.state.isDisabled}
+            //disabled={this.state.isDisabled}
+            disabled={true}
           >
             <DeleteIcon />
           </IconButton>

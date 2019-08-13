@@ -40,6 +40,9 @@ export class DataProvider extends Component {
       strings: [],
       runtime: {
         visibleEntries: []
+      },
+      modals: {
+        showInfo: false
       }
     };
   }
@@ -431,6 +434,14 @@ export class DataProvider extends Component {
     });
   };
 
+  openInfoModal = () => {
+    console.log(this.state);
+    let oldState = this.state;
+    oldState.modals.showInfo = true;
+    //this.setState(oldState);
+    console.log(this.state);
+  };
+
   render() {
     let snackbar = "";
     if (this.state.SnackbarClicked) {
@@ -459,7 +470,9 @@ export class DataProvider extends Component {
       openSnackbar: this.openSnackbar,
 
       removeAnalysisFragment: this.removeAnalysisFragment,
-      restoreAnalysisFragment: this.restoreAnalysisFragment
+      restoreAnalysisFragment: this.restoreAnalysisFragment,
+
+      openInfoModal: this.openInfoModal
     };
 
     return (
