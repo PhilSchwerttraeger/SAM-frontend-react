@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
-import { Consumer } from '../DataContext';
-import Spinner from '../../assets/Spinner';
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-material.css';
-import {AutocompleteSelectCellEditor} from 'ag-grid-autocomplete-editor';
-import './autocomplete.css';
-import MaterialDatePicker from './MaterialDatePicker';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import { DataContext } from '../DataContext';
-import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
-import DuplicateIcon from '@material-ui/icons/ControlPointDuplicate';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import React, { Component } from "react";
+import { Consumer } from "../DataContext";
+import Spinner from "../../assets/Spinner";
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-material.css";
+import { AutocompleteSelectCellEditor } from "ag-grid-autocomplete-editor";
+import "./autocomplete.css";
+import MaterialDatePicker from "./MaterialDatePicker";
+import Grid from "@material-ui/core/Grid";
+import IconButton from "@material-ui/core/IconButton";
+import TextField from "@material-ui/core/TextField";
+import { DataContext } from "../DataContext";
+import DeleteIcon from "@material-ui/icons/Delete";
+import AddIcon from "@material-ui/icons/Add";
+import DuplicateIcon from "@material-ui/icons/ControlPointDuplicate";
+import SaveAltIcon from "@material-ui/icons/SaveAlt";
+import Tooltip from "@material-ui/core/Tooltip";
 
 function dateComparator(date1, date2) {
   var date1Number = monthToComparableNumber(date1);
@@ -43,233 +44,242 @@ function monthToComparableNumber(date) {
 }
 
 function currencyFormatter(params) {
-  const formatter = new Intl.NumberFormat('de-DE', {
-    style: 'currency',
-    currency: 'EUR',
+  const formatter = new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
     minimumFractionDigits: 2
-  })
-  
-  if(params.value){
+  });
+
+  if (params.value) {
     return formatter.format(params.value);
   } else {
-    return
+    return;
   }
 }
 
-export function getCurrentlyVisibleRows(){
+export function getCurrentlyVisibleRows() {
   console.log("row data");
   return "row data";
 }
 
 export default class DataTable extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.dataTableRef = React.createRef();
   }
 
   static context = DataContext;
 
-  createColDef = (state) => {
-    return state.fieldConfig.map(
-      column => {
-        let columnConfig = {
-          headerName: column.title,
-          field: column.name,
-          sortable: true,
-          filter: true,
-          editable: true,
-          resizable: true
+  createColDef = state => {
+    return state.fieldConfig.map(column => {
+      let columnConfig = {
+        headerName: column.title,
+        field: column.name,
+        sortable: true,
+        filter: true,
+        editable: true,
+        resizable: true
+      };
+
+      if (column.type === "select") {
+        columnConfig.cellEditor = "agSelectCellEditor";
+        columnConfig.cellEditorParams = {
+          values: column.values
         };
+        columnConfig.width = 110;
+      }
 
-        // enable checkbox if column is first column
-        if(column.id === 0){
-          //columnConfig.checkboxSelection = true;
-        }
+      // enable checkbox if column is first column
+      if (column.id === 0) {
+        columnConfig.checkboxSelection = true;
+        columnConfig.width = 130;
+      }
 
-        if(column.type === "select"){
-          columnConfig.cellEditor = "agSelectCellEditor";
-          columnConfig.cellEditorParams = {
-            values: column.values
-          }
-          columnConfig.width = 110
-        }
+      // enable date comparator when field type is 'date'
+      if (column.type === "date") {
+        columnConfig.comparator = dateComparator;
+        columnConfig.filter = "agDateColumnFilter";
+        columnConfig.cellEditor = "datePicker";
+        columnConfig.filterParams = {
+          comparator: function(filterLocalDateAtMidnight, cellValue) {
+            var dateAsString = cellValue;
+            if (dateAsString == null) return -1;
+            var dateParts = dateAsString.split(".");
+            var cellDate = new Date(
+              Number(dateParts[2]),
+              Number(dateParts[1]) - 1,
+              Number(dateParts[0])
+            );
+            if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+              return 0;
+            }
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            }
+            if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            }
+          },
+          browserDatePicker: true
+        };
+        columnConfig.browserDatePicker = true;
+        columnConfig.width = 150;
+      }
 
-        // enable date comparator when field type is 'date'
-        if(column.type === "date"){
-          columnConfig.comparator = dateComparator;
-          columnConfig.filter = "agDateColumnFilter";
-          columnConfig.cellEditor = "datePicker";
-          columnConfig.filterParams = {
-            comparator: function(filterLocalDateAtMidnight, cellValue) {
-              var dateAsString = cellValue;
-              if (dateAsString == null) return -1;
-              var dateParts = dateAsString.split(".");
-              var cellDate = new Date(Number(dateParts[2]), Number(dateParts[1]) - 1, Number(dateParts[0]));
-              if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
-                return 0;
-              }
-              if (cellDate < filterLocalDateAtMidnight) {
-                return -1;
-              }
-              if (cellDate > filterLocalDateAtMidnight) {
-                return 1;
-              }
-            },
-            browserDatePicker: true
-          }
-          columnConfig.browserDatePicker = true;
-          columnConfig.width = 150
-        }
+      // enable currency settings when field type is 'currency'
+      if (column.type === "currency") {
+        columnConfig.cellStyle = { "text-align": "right" };
+        columnConfig.valueFormatter = currencyFormatter;
+        columnConfig.width = 130;
+      }
 
-        // enable currency settings when field type is 'currency'
-        if(column.type === "currency"){
-          columnConfig.cellStyle = {'text-align': 'right'};
-          columnConfig.valueFormatter = currencyFormatter
-          columnConfig.width = 130
-        }
+      // enable auto-complete (npm package) on pure text-typed fields
+      if (column.type === "text") {
+        columnConfig.cellEditor = AutocompleteSelectCellEditor;
 
-        // enable auto-complete (npm package) on pure text-typed fields
-        if(column.type === "text"){
-          columnConfig.cellEditor = AutocompleteSelectCellEditor;
-
-          // build fields array (with label and value child items)
-          let autocompleteData = [];
-          if(state.fields){
-            autocompleteData = state.fields.map(field => {
-              if(field){
-                if(field.description) {
-                  if(field.description.label){
-                    return ({
-                      label: field.description.label,
-                      value: field.description.value
-                    });
-                  } else return ({
+        // build fields array (with label and value child items)
+        let autocompleteData = [];
+        if (state.fields) {
+          autocompleteData = state.fields.map(field => {
+            if (field) {
+              if (field.description) {
+                if (field.description.label) {
+                  return {
+                    label: field.description.label,
+                    value: field.description.value
+                  };
+                } else
+                  return {
                     label: "",
                     value: ""
-                  })
-                } else return ({
+                  };
+              } else
+                return {
                   label: "",
                   value: ""
-                });
-              } else return null;
-            });
-          }
-
-
-          // filter duplicate array items from autocomplete list
-          let filtered = autocompleteData.filter(el => {
-            if(el){
-              if (el.label) {
-                return el.label;
-              } else return false;
-            } else return false;
+                };
+            } else return null;
           });
-          
+        }
 
-          // comparing two array items with the help of its label property
-          let compare = (a, b) => {
-            const A = a.label;
-            const B = b.label;
-          
-            let comparison = 0;
-            if (A >= B) {
-              comparison = 1;
-            } else if (A < B) {
-              comparison = -1;
-            }
-            return comparison;
+        // filter duplicate array items from autocomplete list
+        let filtered = autocompleteData.filter(el => {
+          if (el) {
+            if (el.label) {
+              return el.label;
+            } else return false;
+          } else return false;
+        });
+
+        // comparing two array items with the help of its label property
+        let compare = (a, b) => {
+          const A = a.label;
+          const B = b.label;
+
+          let comparison = 0;
+          if (A >= B) {
+            comparison = 1;
+          } else if (A < B) {
+            comparison = -1;
           }
+          return comparison;
+        };
 
-          function getUnique(arr, comp) {
-            const unique = arr
-              .map(e => e[comp])
-              .map((e, i, final) => final.indexOf(e) === i && i)
-              .filter(e => arr[e]).map(e => arr[e]);
-             return unique;
-          }
-          
-          // call sorting with custom comparison function
-          let processedData = filtered.sort(compare);
-          let processedDataSet = getUnique(processedData, 'label');
+        function getUnique(arr, comp) {
+          const unique = arr
+            .map(e => e[comp])
+            .map((e, i, final) => final.indexOf(e) === i && i)
+            .filter(e => arr[e])
+            .map(e => arr[e]);
+          return unique;
+        }
 
-          columnConfig.cellEditorParams = {
-            // Add autocompleteData to cell editor
-            // eslint-disable-next-line 
-            selectData: processedDataSet,
-            
-            /*[
+        // call sorting with custom comparison function
+        let processedData = filtered.sort(compare);
+        let processedDataSet = getUnique(processedData, "label");
+
+        columnConfig.cellEditorParams = {
+          // Add autocompleteData to cell editor
+          // eslint-disable-next-line
+          selectData: processedDataSet,
+
+          /*[
                 {
                   label: 'Canada', 
                   value: 'CA', 
                   group: 'North America' 
                 }
             ]*/
-            
-            placeholder: state.strings.datatable.autoCompleteSelect,
-            autocomplete: {
-                strict: false,
-                autoselectfirst: false,
-                debounceWaitMs: 0,
-            }
-          };
 
-          // formatting cell: show label of description
-          columnConfig.valueFormatter = (params) => {
-              if (params.value) {
-                  return params.value.label;
-              }
-              return "";
-          };
-          //columnConfig.editable = true;
-
-          columnConfig.getQuickFilterText = (params) => {
-            if (params.value) {
-              return params.value.label;
-            }
-            return "";
+          placeholder: state.strings.datatable.autoCompleteSelect,
+          autocomplete: {
+            strict: false,
+            autoselectfirst: false,
+            debounceWaitMs: 0
           }
-          columnConfig.width = 220
-        }
+        };
 
-        // return column config
-        return columnConfig;
+        // formatting cell: show label of description
+        columnConfig.valueFormatter = params => {
+          if (params.value) {
+            return params.value.label;
+          }
+          return "";
+        };
+        //columnConfig.editable = true;
+
+        columnConfig.getQuickFilterText = params => {
+          if (params.value) {
+            return params.value.label;
+          }
+          return "";
+        };
+        columnConfig.width = 220;
       }
-    )
-  }
-    
+
+      // return column config
+      return columnConfig;
+    });
+  };
+
   addNewItem = () => {
     // 1. Create new empty row
     let data = {};
     this.contextState.data.fieldConfig.map(fieldConfig => {
-      if(fieldConfig.type === "text"){
-        return data[fieldConfig.name] = {label: ""};
-      } else{
-        return data[fieldConfig.name] = '';
-      }      
+      if (fieldConfig.type === "text") {
+        return (data[fieldConfig.name] = { label: "" });
+      } else {
+        return (data[fieldConfig.name] = "");
+      }
     });
-    
+
     // id generation, time-based / time-sortable
-    const kuuid = require('kuuid');
+    const kuuid = require("kuuid");
     data.id = kuuid.id();
 
     // 2. Add to backend
     this.contextState.addEntry(data);
-  }
+  };
 
   deleteSelectedItem = () => {
     // 1. Get selected items
     const selectedNodes = this.gridApi.getSelectedNodes();
     const selectedIds = selectedNodes.map(node => node.data.id);
-    const selectedDescriptions = selectedNodes.map(node => node.data.description.label);
-    let deleteMessage = this.contextState.data.strings.datatable.confirmDelete + " \n- " + selectedDescriptions.join("\n- ");
+    const selectedDescriptions = selectedNodes.map(
+      node => node.data.description.label
+    );
+    let deleteMessage =
+      this.contextState.data.strings.datatable.confirmDelete +
+      " \n- " +
+      selectedDescriptions.join("\n- ");
     let userConfirmation = window.confirm(deleteMessage);
-    
+
     // Invoke delete action on context component
-    if(userConfirmation) {
+    if (userConfirmation) {
       this.contextState.deleteEntries(selectedIds);
     }
-  }
-  
+  };
+
   duplicateSelectedItem = () => {
     // 1. Get selected items
     const selectedNodes = this.gridApi.getSelectedNodes();
@@ -279,13 +289,12 @@ export default class DataTable extends Component {
     selectedIds.forEach(id => {
       this.contextState.data.fields.forEach(field => {
         // ... check if id matches...
-        if(field.id === id){
-
+        if (field.id === id) {
           // ... and remove id property ...
           delete field.id;
 
           // ... and generate a fresh id ...
-          const uuid = require('uuid/v1');
+          const uuid = require("uuid/v1");
           field.id = uuid();
 
           // ... to then add to backend.
@@ -293,30 +302,30 @@ export default class DataTable extends Component {
         }
       });
     });
-  }
-  
+  };
+
   downloadCSV = () => {
     var params = {
       processCellCallback: cell => {
         console.log(cell);
-        if(cell.value.label){
+        if (cell.value.label) {
           return cell.value.label;
         } else return cell.value;
       }
-    }
+    };
     this.gridApi.exportDataAsCsv(params);
-  }
+  };
 
-  validateValueCell(value){
-    if(typeof(value) === 'string'){
+  validateValueCell(value) {
+    if (typeof value === "string") {
       value = Number(value);
       //console.log("TypeCast: " + typeof(data.value));
       //console.log(value);
-      if(isNaN(value)) 
+      if (isNaN(value))
         this.setState({
           showError: true
-        })
-        //alert("Invalid value input. Please insert Numbers with format 1337 or 1337.99 only.");
+        });
+      //alert("Invalid value input. Please insert Numbers with format 1337 or 1337.99 only.");
     }
   }
 
@@ -325,7 +334,7 @@ export default class DataTable extends Component {
     this.validateValueCell(e.data.value);
     //console.log("e: ", e, " state: ", state);
     state.updateEntry(e.data.id, e.data);
-  }
+  };
 
   autoSizeColumns = () => {
     //alert("autosized");
@@ -334,20 +343,16 @@ export default class DataTable extends Component {
       allColumnIds.push(column.colId);
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds);
-  }
+  };
 
   quickSearch = props => {
     //console.log(props.target.value);
     this.gridApi.setQuickFilter(props.target.value);
-  }
+  };
 
-  componentDidMount(){
-    
-  }
-  
-  componentDidUpdate(){
+  componentDidMount() {}
 
-  }
+  componentDidUpdate() {}
 
   render() {
     return (
@@ -357,78 +362,82 @@ export default class DataTable extends Component {
           //console.log(state);
           //console.log(currentlyVisibleRowData);
           //state.setCurrentlyVisibleRowData("jo");
-          if(state.data === undefined 
-            || state.data.fieldConfig === undefined){
+          if (
+            state.data === undefined ||
+            state.data.fieldConfig === undefined
+          ) {
             // data not fetched yet, show spinner
-            return <Spinner />
+            return <Spinner />;
           } else {
             return (
-              <div 
+              <div
                 className="ag-theme-material"
-                style={{ 
+                style={{
                   //height: '550px',
                   //height: '100%',
                   //width: 100%',
-                  paddingBottom: '10px'
-                }} 
+                  paddingBottom: "10px"
+                }}
               >
                 <Grid
-                  container 
-                  justify='space-between'
+                  container
+                  justify="space-between"
                   direction="row"
                   alignItems="center"
                 >
                   <Grid item>
                     <Grid container>
-
-                    <Grid item>
-                        <IconButton 
-                          variant="outlined" 
-                          onClick={this.addNewItem}
-                          color="primary"  
-                        >
-                        <AddIcon />
-                          
-                        </IconButton>
-                      </Grid>
-                      
                       <Grid item>
-                        <IconButton 
-                          variant="outlined" 
-                          onClick={this.duplicateSelectedItem}
-                          color="primary"  
-                        >
-                        <DuplicateIcon />
-                          
-                        </IconButton>
+                        <Tooltip title={state.data.strings.datatable.add}>
+                          <IconButton
+                            variant="outlined"
+                            onClick={this.addNewItem}
+                            color="primary"
+                          >
+                            <AddIcon />
+                          </IconButton>
+                        </Tooltip>
                       </Grid>
 
                       <Grid item>
-                        <IconButton 
-                          variant="outlined" 
-                          onClick={this.deleteSelectedItem}
-                          color="secondary"  
-                        >
-                          <DeleteIcon />
-                          
-                        </IconButton>
+                        <Tooltip title={state.data.strings.datatable.duplicate}>
+                          <IconButton
+                            variant="outlined"
+                            onClick={this.duplicateSelectedItem}
+                            color="primary"
+                          >
+                            <DuplicateIcon />
+                          </IconButton>
+                        </Tooltip>
                       </Grid>
 
                       <Grid item>
-                        <IconButton 
-                          variant="outlined" 
-                          onClick={this.downloadCSV}
-                          color="primary"
-                        >
-                          <SaveAltIcon />
-                          
-                        </IconButton>
+                        <Tooltip title={state.data.strings.datatable.delete}>
+                          <IconButton
+                            variant="outlined"
+                            onClick={this.deleteSelectedItem}
+                            color="secondary"
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
                       </Grid>
 
+                      <Grid item>
+                        <Tooltip title={state.data.strings.datatable.download}>
+                          <IconButton
+                            variant="outlined"
+                            onClick={this.downloadCSV}
+                            color="primary"
+                          >
+                            <SaveAltIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </Grid>
                     </Grid>
                   </Grid>
 
-                  <Grid item></Grid>
+                  <Grid item />
                   <Grid item>
                     <Grid container alignItems="flex-end">
                       <TextField
@@ -439,28 +448,25 @@ export default class DataTable extends Component {
                         onChange={this.quickSearch.bind(this)}
                       />
                     </Grid>
-
                   </Grid>
                 </Grid>
                 <AgGridReact
                   //forwardRef="agGrid" // "React's id"
-                  domLayout='autoHeight'
+                  domLayout="autoHeight"
                   ref={this.dataTableRef}
                   columnDefs={this.createColDef(state.data)}
                   rowData={state.data.fields}
                   rowSelection="multiple"
-                  suppressRowClickSelectionprevents 
-                  onGridReady={ 
-                    params => {
-                      this.gridApi = params.api;
-                      this.gridColumnApi = params.columnApi;
-                      //this.autoSizeColumns.bind(this);
-                    }
-                  }
+                  suppressRowClickSelectionprevents
+                  onGridReady={params => {
+                    this.gridApi = params.api;
+                    this.gridColumnApi = params.columnApi;
+                    //this.autoSizeColumns.bind(this);
+                  }}
                   frameworkComponents={{
                     datePicker: MaterialDatePicker
                   }}
-                  onCellValueChanged = {
+                  onCellValueChanged={
                     this.onCellChanged.bind(this, state)
                     //this.autoSizeColumns.bind(this);
                     //this.autoSizeColumns();
@@ -470,27 +476,28 @@ export default class DataTable extends Component {
                     this.autoSizeColumns.bind(this)
                   }
                   */
-                  onModelUpdated={
-                    params => {
-                      this.gridApi = params.api;
-                      //this.gridApi.sizeColumnsToFit.bind(this);
-                      state.setSelectedEntries(this.gridApi.getModel().rowsToDisplay);
-                      //this.autoSizeColumns.bind(this);
-                    }
-                  }
+                  onModelUpdated={params => {
+                    this.gridApi = params.api;
+                    //this.gridApi.sizeColumnsToFit.bind(this);
+                    state.setSelectedEntries(
+                      this.gridApi.getModel().rowsToDisplay
+                    );
+                    //this.autoSizeColumns.bind(this);
+                  }}
                   /*
                   onRowDataUpdated={
                     //this.autoSizeColumns.bind(this)
                   }
                   */
                   animateRows={true}
-                >
-                </AgGridReact>
+                  singleClickEdit="true"
+                  //editType="fullRow"
+                />
               </div>
-            )
+            );
           }
         }}
       </Consumer>
-    )
+    );
   }
 }
