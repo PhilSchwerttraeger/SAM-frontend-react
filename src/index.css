@@ -47,3 +47,7 @@ h3 {
 .MuiAvatar-root {
   font-size: 1.5rem !important;
 }
+
+.drawer {
+  width: 230px;
+}

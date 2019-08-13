@@ -1,25 +1,61 @@
 import React, { Component } from 'react'
+import { Consumer } from './DataContext'
+
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu';
-//import AccountCircle from '@material-ui/icons/AccountCircle';
-import SettingsIcon from '@material-ui/icons/Settings';
-import InfoIcon from '@material-ui/icons/Info';
-import GitHubIcon from '../assets/GitHubIcon'
-import CategoriesModal from './CategoryConfig/CategoriesModal'
-import { Consumer } from './DataContext'
 import Tooltip from '@material-ui/core/Tooltip'
+import CategoriesModal from './CategoryConfig/CategoriesModal'
+
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
+import List from '@material-ui/core/List'
+import Divider from '@material-ui/core/Divider'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+
+import GitHubIcon from '../assets/GitHubIcon'
+import MenuIcon from '@material-ui/icons/Menu'
+import SettingsIcon from '@material-ui/icons/Settings'
+import InfoIcon from '@material-ui/icons/Info'
+import Dashboard from '@material-ui/icons/Dashboard'
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 export default class NavBar extends Component {
+  constructor(props) {
+    super(props);
+    this.openDrawer = this.openDrawer.bind(this);
+    this.closeDrawer = this.closeDrawer.bind(this);
+  }
+
+  state = {
+    drawerOpened: false
+  }
+
+  openDrawer = () => {
+    this.setState({
+      drawerOpened: true
+    })
+  }
+  
+  closeDrawer = () => {
+    this.setState({
+      drawerOpened: false
+    })
+  }
+
   render() {
     return (
       <Consumer>
         {state => 
           <AppBar position="static">
             <Toolbar>
-              <IconButton edge="start" color="inherit">
+              <IconButton 
+                edge="start" 
+                color="inherit"
+                onClick={this.openDrawer}
+              >
                 <MenuIcon />
               </IconButton>
 
@@ -31,7 +67,6 @@ export default class NavBar extends Component {
 
               <div style={{display: 'flex'}}>
                 <CategoriesModal />
-
                 
                 <Tooltip 
                   title={state.data.strings.titles.settings}
@@ -44,8 +79,6 @@ export default class NavBar extends Component {
                   </IconButton>
                 </Tooltip>
                 
-                
-                
                 <Tooltip 
                   title={state.data.strings.titles.info}
                 >
@@ -57,7 +90,6 @@ export default class NavBar extends Component {
                     <InfoIcon />
                   </IconButton>
                 </Tooltip>
-                
                 
                 <Tooltip 
                   title={state.data.strings.titles.github}
@@ -73,6 +105,54 @@ export default class NavBar extends Component {
                     <GitHubIcon />
                   </IconButton>
                 </Tooltip>
+                
+
+                <SwipeableDrawer
+                  open={this.state.drawerOpened}
+                  onClose={this.closeDrawer}
+                  onOpen={this.openDrawer}
+                >
+                  <div
+                    className="drawer"
+                    role="presentation"
+                    onClick={this.closeDrawer}
+                  >
+                    <List>
+                      <ListItem button>
+                        <ListItemIcon>
+                          <Dashboard />
+                        </ListItemIcon>
+                        <ListItemText primary={'Dashboard'} />
+                      </ListItem>
+                    </List>
+
+                    <Divider />
+
+                    <List>
+                      <ListItem button>
+                        <ListItemIcon>
+                          <AccountCircle />
+                        </ListItemIcon>
+                        <ListItemText primary={'Account'} />
+                      </ListItem>
+
+                      <ListItem button>
+                        <ListItemIcon>
+                          <SettingsIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Settings'} />
+                      </ListItem>
+                      
+                      <ListItem button>
+                        <ListItemIcon>
+                          <InfoIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Info'} />
+                      </ListItem>
+                    </List>
+                  </div>
+                </SwipeableDrawer>
+
               </div>
             </Toolbar>
           </AppBar>
