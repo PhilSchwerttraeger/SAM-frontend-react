@@ -17,7 +17,8 @@ export default class ConfigRow extends Component {
     id: "",
     title: "",
     type: "",
-    isDisabled: false
+    enable: true,
+    isDisabled: true
   }
 
   componentDidMount(){
@@ -26,17 +27,9 @@ export default class ConfigRow extends Component {
       title: this.props.value.title,
       type: this.props.value.type,
       enable: this.props.value.enable,
-      isDisabled: false
+      isDisabled: this.props.value.isDisabled
     });
-    
-    // check if type cannot be changed (select-case, e.g. Type and Interval)
-    console.log(this.state);
-    if(this.state.type === "select") {
-      this.setState({
-        isDisabled: true
-      })
-    }
-  }  
+  }
 
   componentDidUpdate(){
     this.props.onChange(this.state, this.props.isNew);
@@ -49,8 +42,6 @@ export default class ConfigRow extends Component {
   }
   
   render(){
-
-
     return (
       <Grid container 
         type={{flexGrow: 1}} 
@@ -73,7 +64,9 @@ export default class ConfigRow extends Component {
 
         <Grid item xs={5}>
           <FormControl fullWidth= {true}>
-            <InputLabel>Type</InputLabel>
+            <InputLabel>
+              Type
+            </InputLabel>
             <Select
               value={this.toTitleCase(this.state.type)}
               onChange = {(e) => {
@@ -81,7 +74,9 @@ export default class ConfigRow extends Component {
                   type: e.target.value
                 });
               }}
+              disabled={this.state.isDisabled}
             >
+              {/*
               <MenuItem value={this.props.strings.select}>
                 <Grid container 
                   justify="flex-start"
@@ -99,6 +94,7 @@ export default class ConfigRow extends Component {
                   </Grid>                
                 </Grid>
               </MenuItem>
+              */}
 
               
               <MenuItem value={this.props.strings.date}>

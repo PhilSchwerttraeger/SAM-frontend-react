@@ -69,7 +69,10 @@ export default function CategoriesModal(props) {
       return(
         <div>
           <Tooltip title={state.data.strings.modalFieldConfig.title}>
-            <IconButton color="inherit" onClick={handleClickOpen}>
+            <IconButton 
+              color="inherit" 
+              onClick={e => handleClickOpen(e)}
+            >
               <ViewColumnIcon />
             </IconButton>
           </Tooltip>
@@ -105,7 +108,7 @@ export default function CategoriesModal(props) {
 
                 <Grid item>
                   <Button 
-                    onClick={{/* state.addEmptyFieldConfig*/}} 
+                    onClick={() => state.addEmptyFieldConfig} 
                     
                     color="primary"
                     variant="outlined" 
@@ -130,26 +133,27 @@ export default function CategoriesModal(props) {
               
               <Button 
                 onClick={() => {
-                  // eslint-disable-next-line
-                  {/*
-                  handleSave();
-                  fieldConfig.map(field => {
+                  //handleSave();
+
+                  let newFieldConfig = fieldConfig.map(field => {
                     // generate names + make first letter lowercase and remove spaces
                     field.name = field.title.replace(" ", "");
                     field.name = field.name.charAt(0).toLowerCase() + field.name.slice(1);
 
-                    // copy over values property
-                    field.values = state.data.fieldConfig.find(fieldConfig => {
-                      if(fieldConfig.name === field.name){
-                        console.log(fieldConfig.values.values);
-                        return fieldConfig.values.values;
+                    // copy over values property (if present; cases: type, interval)
+                    let config = state.data.fieldConfig.find(fieldConfig => {
+                      if(fieldConfig.values && fieldConfig.name === field.name){
+                        return fieldConfig.values;
                       }
                       return null
                     })
+                    if(config && config.values){
+                      field.values = config.values;                      
+                    }
                     return field;
                   });
-                  state.setFieldsConfig(fieldConfig);
-                */}
+                  console.log(newFieldConfig);
+                  state.setFieldsConfig(newFieldConfig);
                 }}
                 color="primary"
               >
