@@ -7,6 +7,8 @@ import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import IconButton from '@material-ui/core/IconButton'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
+import MaxIcon from '@material-ui/icons/ArrowUpward'
+import MinIcon from '@material-ui/icons/ArrowDownward'
 import InIcon from '@material-ui/icons/SubdirectoryArrowRight'
 import OutIcon from '@material-ui/icons/SubdirectoryArrowLeft'
 import Menu from '@material-ui/core/Menu';
@@ -111,8 +113,8 @@ class AnalysisFragment extends Component {
     switch(this.icon) {
       case "sum": return "+"
       case "average": return "~"
-      case "minimum": return "⭳"
-      case "maximum": return "⭱"
+      case "maximum": return <MaxIcon />
+      case "minimum": return <MinIcon />
       case "totalin": return <InIcon />
       case "totalout": return <OutIcon />
       default: return
