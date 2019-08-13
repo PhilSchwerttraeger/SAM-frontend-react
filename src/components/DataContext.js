@@ -267,12 +267,17 @@ export class DataProvider extends Component {
 
   addEmptyFieldConfig = () => {
     let emptyFieldConfig = {
-      "name": "",
       "title": "",
       "type": "text",
       "enable": "true"
     };
-    
+
+    // id generation, time-based / time-sortable
+    const kuuid = require('kuuid');
+    emptyFieldConfig.id = kuuid.id();
+    emptyFieldConfig.name = "field_";    
+    emptyFieldConfig.name += kuuid.id().substring(0, 7);
+
     if(backend === "FIREBASE") {
       // preprocess data if needed
     }
@@ -296,7 +301,7 @@ export class DataProvider extends Component {
       } else {
         this.callSnackbar(this.state.strings.snackbar.emptyentryaddederror);
       }
-      //console.log(res);
+      console.log(res);
       return res;
     }).catch(err => {
       console.log(err);

@@ -108,7 +108,7 @@ export default function CategoriesModal(props) {
 
                 <Grid item>
                   <Button 
-                    onClick={() => state.addEmptyFieldConfig} 
+                    onClick={() => state.addEmptyFieldConfig()} 
                     
                     color="primary"
                     variant="outlined" 
