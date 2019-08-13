@@ -96,7 +96,7 @@ export class DataProvider extends Component {
     .then(res => res.json())
     .then(res => {
       let data = Object.values(res);
-      console.log(data);
+      //console.log(data);
       this.setState({
         fields: data
       });
@@ -126,7 +126,7 @@ export class DataProvider extends Component {
           el.id === id ? data : el
         )
       }));
-      console.log(res);
+      //console.log(res);
       if(res.ok){
         // nothing
       } else {
@@ -162,7 +162,7 @@ export class DataProvider extends Component {
         fields: [...oldState.fields, data]
       }));
       this.fetchFieldsDataFromRestApi();
-      console.log(res);
+      //console.log(res);
       if(res.ok){
         // nothing
       } else {
@@ -192,8 +192,8 @@ export class DataProvider extends Component {
           'Content-Type': 'application/json'
         }
       }).then(res => {
-        console.log(res);
-        console.log(id + " was deleted from db.");
+        //console.log(res);
+        //console.log(id + " was deleted from db.");
         this.setState(oldState => {
           // eslint-disable-next-line
           return {
@@ -201,7 +201,7 @@ export class DataProvider extends Component {
               if(item.id !== id){
                 return true;
               } else {
-                console.log(id + " was deleted from state.");
+                //console.log(id + " was deleted from state.");
                 return false;
               }
             })
@@ -251,8 +251,8 @@ export class DataProvider extends Component {
       this.setState({
         fieldConfig: newConfig
       });
-      console.log(newConfig);
-      console.log(res);
+      //console.log(newConfig);
+      //console.log(res);
       if(res.ok){
         // nothing
       } else {
@@ -296,7 +296,7 @@ export class DataProvider extends Component {
       } else {
         this.callSnackbar(this.state.strings.snackbar.emptyentryaddederror);
       }
-      console.log(res);
+      //console.log(res);
       return res;
     }).catch(err => {
       console.log(err);
@@ -312,7 +312,7 @@ export class DataProvider extends Component {
         'Content-Type': 'application/json'
       }
     }).then(res => {
-      console.log(res);
+      //console.log(res);
       if(res.ok){
         // nothing
       } else {
@@ -334,16 +334,13 @@ export class DataProvider extends Component {
 
   removeAnalysisFragment = fragmentToRemove => {
     let newState = this.state.generalConfig;
-    console.log(newState);
     newState.analysisSections = newState.analysisSections.filter(fragment =>
       fragment !== fragmentToRemove
     );
-    console.log(newState);
     this.setState({
       generalConfig: newState
     });
     this.setAnalysisSections();
-    console.log(this.state);
   }
 
   restoreAnalysisFragment = () => {
@@ -353,7 +350,7 @@ export class DataProvider extends Component {
       generalConfig: newState
     });
     this.setAnalysisSections();
-    console.log(this.state);
+    //console.log(this.state);
   }
 
   handleClose = () => {
