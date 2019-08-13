@@ -137,8 +137,8 @@ export default function CategoriesModal(props) {
 
                   let newFieldConfig = fieldConfig.map(field => {
                     // generate names + make first letter lowercase and remove spaces
-                    field.name = field.title.replace(" ", "");
-                    field.name = field.name.charAt(0).toLowerCase() + field.name.slice(1);
+                    //field.name = field.title.replace(" ", "");
+                    //field.name = field.name.charAt(0).toLowerCase() + field.name.slice(1);
 
                     // copy over values property (if present; cases: type, interval)
                     let config = state.data.fieldConfig.find(fieldConfig => {

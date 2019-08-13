@@ -118,14 +118,14 @@ export default class DataTable extends Component {
             browserDatePicker: true
           }
           columnConfig.browserDatePicker = true;
-          columnConfig.width = 120
+          columnConfig.width = 150
         }
 
         // enable currency settings when field type is 'currency'
         if(column.type === "currency"){
           columnConfig.cellStyle = {'text-align': 'right'};
           columnConfig.valueFormatter = currencyFormatter
-          columnConfig.width = 120
+          columnConfig.width = 130
         }
 
         // enable auto-complete (npm package) on pure text-typed fields
@@ -473,7 +473,7 @@ export default class DataTable extends Component {
                   onModelUpdated={
                     params => {
                       this.gridApi = params.api;
-                      this.gridApi.sizeColumnsToFit.bind(this);
+                      //this.gridApi.sizeColumnsToFit.bind(this);
                       state.setSelectedEntries(this.gridApi.getModel().rowsToDisplay);
                       //this.autoSizeColumns.bind(this);
                     }

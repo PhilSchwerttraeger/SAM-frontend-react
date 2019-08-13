@@ -16,19 +16,27 @@ export default class ConfigRow extends Component {
   state = {
     id: "",
     title: "",
+    name: "",
     type: "",
     enable: true,
-    isDisabled: true
+    isDisabled: true,
+    values: null
   }
 
   componentDidMount(){
     this.setState({
       id: this.props.value.id,
       title: this.props.value.title,
+      name: this.props.value.name,
       type: this.props.value.type,
       enable: this.props.value.enable,
       isDisabled: this.props.value.isDisabled
     });
+    if(this.props.value.values){
+      this.setState({
+        values: this.props.value.values
+      })
+    }
   }
 
   componentDidUpdate(){
@@ -71,13 +79,15 @@ export default class ConfigRow extends Component {
               value={this.toTitleCase(this.state.type)}
               onChange = {(e) => {
                 this.setState({
-                  type: e.target.value
+                  type: e.target.value.toLowerCase()
                 });
               }}
               disabled={this.state.isDisabled}
             >
-              {/*
-              <MenuItem value={this.props.strings.select}>
+              <MenuItem 
+                value={this.props.strings.select}
+                disabled={true}
+              >
                 <Grid container 
                   justify="flex-start"
                   alignItems="center"
@@ -94,7 +104,6 @@ export default class ConfigRow extends Component {
                   </Grid>                
                 </Grid>
               </MenuItem>
-              */}
 
               
               <MenuItem value={this.props.strings.date}>
