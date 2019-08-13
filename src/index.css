@@ -7,9 +7,8 @@ html {
 body {
   height: 100%;
   margin: 0;
-  font-family: "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -36,7 +35,7 @@ h3 {
   padding: 16px !important;
 }
 
-  /* 
+/* 
 .AnalysisIcons {
   margin: 0px;
   color: '#fff';
@@ -50,4 +49,8 @@ h3 {
 
 .drawer {
   width: 230px;
+}
+
+.ag-icon {
+  color: #2196f3 !important;
 }
