@@ -32,6 +32,22 @@ function dateComparator(date1, date2) {
   return date1Number - date2Number;
 }
 
+function textComparator(a, b) {
+  if (a === null && b === null) {
+    return 0;
+  }
+  if (a === null || a.label === null) {
+    return -1;
+  }
+  if (b === null || b.label === null) {
+    return 1;
+  }
+  a = a.label;
+  b = b.label;
+  let result = a.toLowerCase().localeCompare(b.toLowerCase());
+  return result;
+}
+
 function monthToComparableNumber(date) {
   if (date === undefined || date === null || date.length !== 10) {
     return null;
@@ -137,6 +153,8 @@ export default class DataTable extends Component {
       if (column.type === "text") {
         columnConfig.cellEditor = AutocompleteSelectCellEditor;
 
+        columnConfig.comparator = textComparator;
+
         // build fields array (with label and value child items)
         let autocompleteData = [];
         if (state.fields) {
@@ -177,7 +195,7 @@ export default class DataTable extends Component {
           const B = b.label;
 
           let comparison = 0;
-          if (A >= B) {
+          if (A > B) {
             comparison = 1;
           } else if (A < B) {
             comparison = -1;

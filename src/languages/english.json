@@ -29,17 +29,6 @@
     "autoCompleteSelect": "Type and select",
     "confirmDelete": "Do you really want to delete following entries?"
   },
-  "modalFieldConfig": {
-    "title": "Column Configuration",
-    "description": "Configure the columns to fit individual purposes and needs.",
-    "save": "Save",
-    "cancel": "Close",
-    "select": "Select",
-    "date": "Date",
-    "text": "Text",
-    "currency": "Currency",
-    "addNewRowToForm": "Add New"
-  },
   "snackbar": {
     "entryadded": "Entry added",
     "entryaddederror": "Error: Can not add entry",
@@ -78,5 +67,16 @@
     "title": "Settings",
     "body": "Nothing to configure here, yet.",
     "close": "close"
+  },
+  "fieldConfig": {
+    "title": "Column Configuration",
+    "description": "Configure the columns to fit individual purposes and needs.",
+    "save": "Save",
+    "cancel": "Close",
+    "select": "Select",
+    "date": "Date",
+    "text": "Text",
+    "currency": "Currency",
+    "addNewRowToForm": "Add New"
   }
 }

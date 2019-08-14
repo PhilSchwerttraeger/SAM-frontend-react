@@ -6,7 +6,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import CategoriesModal from "./CategoryConfig/CategoriesModal";
 
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import List from "@material-ui/core/List";
@@ -67,8 +66,6 @@ export default class NavBar extends Component {
               <div style={{ flexGrow: 1 }} />
 
               <div style={{ display: "flex" }}>
-                <CategoriesModal />
-
                 <Tooltip title={state.data.strings.titles.settings}>
                   <IconButton
                     color="inherit"
