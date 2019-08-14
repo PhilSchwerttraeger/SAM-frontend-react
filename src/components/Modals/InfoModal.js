@@ -42,17 +42,21 @@ export default function InfoModal(props) {
                 </Grid>
               </DialogTitle>
               <DialogContent>
-                <DialogContentText style={{ marginBottom: "0" }}>
-                  <Typography>{state.data.strings.info.body}</Typography>
+                <Typography style={{ marginBottom: "0" }}>
+                  {state.data.strings.info.body}
+                </Typography>
+                <br />
 
-                  <List dense={true}>
-                    {state.data.strings.info.featuretitle}
-                    {state.data.strings.info.features.map((feature, index) => {
-                      return <ListItem key={index}>- {feature}</ListItem>;
-                    })}
-                    <ListItem />
-                  </List>
-                </DialogContentText>
+                <Typography variant="h6">
+                  {state.data.strings.info.featurestitle}
+                </Typography>
+
+                <List dense={true}>
+                  {state.data.strings.info.features.map((feature, index) => {
+                    return <ListItem key={index}>- {feature}</ListItem>;
+                  })}
+                  <ListItem />
+                </List>
               </DialogContent>
 
               <DialogActions>
