@@ -69,7 +69,11 @@ export default class NavBar extends Component {
                 <CategoriesModal />
 
                 <Tooltip title={state.data.strings.titles.settings}>
-                  <IconButton color="inherit" className="hideonmobile">
+                  <IconButton
+                    color="inherit"
+                    className="hideonmobile"
+                    onClick={() => console.log(state.data)}
+                  >
                     <SettingsIcon />
                   </IconButton>
                 </Tooltip>
@@ -79,7 +83,7 @@ export default class NavBar extends Component {
                     aria-haspopup="true"
                     color="inherit"
                     className="hideonmobile"
-                    onClick={state.openInfoModal}
+                    onClick={() => state.toggleInfoModal()}
                   >
                     <InfoIcon />
                   </IconButton>
@@ -134,7 +138,7 @@ export default class NavBar extends Component {
                         <ListItemText primary={"Settings"} />
                       </ListItem>
 
-                      <ListItem button>
+                      <ListItem button onClick={() => state.toggleInfoModal()}>
                         <ListItemIcon>
                           <InfoIcon />
                         </ListItemIcon>
@@ -143,7 +147,10 @@ export default class NavBar extends Component {
                     </List>
                   </div>
                 </SwipeableDrawer>
-                <InfoModal show={state.data.modals.showInfo} />
+                <InfoModal
+                  show={state.data.modals.showInfo}
+                  toggle={() => state.toggleInfoModal()}
+                />
               </div>
             </Toolbar>
           </AppBar>

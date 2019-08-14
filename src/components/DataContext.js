@@ -434,12 +434,12 @@ export class DataProvider extends Component {
     });
   };
 
-  openInfoModal = () => {
-    console.log(this.state);
-    let oldState = this.state;
-    oldState.modals.showInfo = true;
-    //this.setState(oldState);
-    console.log(this.state);
+  toggleInfoModal = () => {
+    let newModals = this.state.modals;
+    newModals.showInfo = !newModals.showInfo;
+    this.setState({
+      modals: newModals
+    });
   };
 
   render() {
@@ -472,7 +472,7 @@ export class DataProvider extends Component {
       removeAnalysisFragment: this.removeAnalysisFragment,
       restoreAnalysisFragment: this.restoreAnalysisFragment,
 
-      openInfoModal: this.openInfoModal
+      toggleInfoModal: this.toggleInfoModal
     };
 
     return (
