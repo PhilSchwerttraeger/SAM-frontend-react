@@ -20,9 +20,10 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SettingsIcon from "@material-ui/icons/Settings";
 import InfoIcon from "@material-ui/icons/Info";
 import Dashboard from "@material-ui/icons/Dashboard";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+//import AccountCircle from "@material-ui/icons/AccountCircle";
 
 import InfoModal from "./Modals/InfoModal";
+import SettingsModal from "./Modals/SettingsModal";
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -72,7 +73,7 @@ export default class NavBar extends Component {
                   <IconButton
                     color="inherit"
                     className="hideonmobile"
-                    onClick={() => console.log(state.data)}
+                    onClick={() => state.toggleSettingsModal()}
                   >
                     <SettingsIcon />
                   </IconButton>
@@ -124,14 +125,19 @@ export default class NavBar extends Component {
                     <Divider />
 
                     <List>
+                      {/* 
                       <ListItem button>
                         <ListItemIcon>
                           <AccountCircle />
                         </ListItemIcon>
                         <ListItemText primary={"Account"} />
                       </ListItem>
+                      */}
 
-                      <ListItem button>
+                      <ListItem
+                        button
+                        onClick={() => state.toggleSettingsModal()}
+                      >
                         <ListItemIcon>
                           <SettingsIcon />
                         </ListItemIcon>
@@ -150,6 +156,10 @@ export default class NavBar extends Component {
                 <InfoModal
                   show={state.data.modals.showInfo}
                   toggle={() => state.toggleInfoModal()}
+                />
+                <SettingsModal
+                  show={state.data.modals.showSettings}
+                  toggle={() => state.toggleSettingsModal()}
                 />
               </div>
             </Toolbar>

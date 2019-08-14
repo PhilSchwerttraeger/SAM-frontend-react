@@ -42,7 +42,8 @@ export class DataProvider extends Component {
         visibleEntries: []
       },
       modals: {
-        showInfo: false
+        showInfo: false,
+        showSettings: false
       }
     };
   }
@@ -442,6 +443,14 @@ export class DataProvider extends Component {
     });
   };
 
+  toggleSettingsModal = () => {
+    let newModals = this.state.modals;
+    newModals.showSettings = !newModals.showSettings;
+    this.setState({
+      modals: newModals
+    });
+  };
+
   render() {
     let snackbar = "";
     if (this.state.SnackbarClicked) {
@@ -472,7 +481,8 @@ export class DataProvider extends Component {
       removeAnalysisFragment: this.removeAnalysisFragment,
       restoreAnalysisFragment: this.restoreAnalysisFragment,
 
-      toggleInfoModal: this.toggleInfoModal
+      toggleInfoModal: this.toggleInfoModal,
+      toggleSettingsModal: this.toggleSettingsModal
     };
 
     return (

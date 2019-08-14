@@ -73,5 +73,10 @@
       "Responsive design"
     ],
     "close": "close"
+  },
+  "settings": {
+    "title": "Settings",
+    "body": "Nothing to configure here, yet.",
+    "close": "close"
   }
 }
