@@ -33,16 +33,26 @@ export default function InfoModal(props) {
               fullScreen={fullScreen}
             >
               <DialogTitle id="form-dialog-title">
-                {state.data.strings.modalFieldConfig.title}
+                <Grid container>
+                  <Grid item>{state.data.strings.info.title}</Grid>
+                  <Grid item style={{ flexGrow: 1 }} />
+                  <Grid item>
+                    <DialogContentText>Version: {version}</DialogContentText>
+                  </Grid>
+                </Grid>
               </DialogTitle>
               <DialogContent>
-                <DialogContentText>
-                  {state.data.strings.modalFieldConfig.description}
-                </DialogContentText>
+                <DialogContentText style={{ marginBottom: "0" }}>
+                  <Typography>{state.data.strings.info.body}</Typography>
 
-                <Grid container direction={"column"} spacing={3}>
-                  <Grid item>version: {version}</Grid>
-                </Grid>
+                  <List dense={true}>
+                    {state.data.strings.info.featuretitle}
+                    {state.data.strings.info.features.map((feature, index) => {
+                      return <ListItem key={index}>- {feature}</ListItem>;
+                    })}
+                    <ListItem />
+                  </List>
+                </DialogContentText>
               </DialogContent>
 
               <DialogActions>
