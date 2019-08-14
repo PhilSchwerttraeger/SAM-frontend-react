@@ -57,5 +57,26 @@
     "emptyentryaddederror": "Error: Can not create new empty entry",
 
     "newanalysissectionserror": "Error: Can not save new analysis configuration"
+  },
+  "info": {
+    "title": "Info",
+    "body": "SAM (Simple Account Management) is a simple React-based web tool for managing and analyzing recurring income and expenditure items.",
+    "featurestitle": "Features",
+    "features": [
+      "Single-page React application",
+      "Add, edit, duplicate, delete table entries",
+      "Sorting, filtering, searching table entries",
+      "Keyboard navigation support",
+      "Customizable selection of analysis cards",
+      "Add, delete, rename table columns",
+      "Download visible table data (CSV)",
+      "Responsive design"
+    ],
+    "close": "close"
+  },
+  "settings": {
+    "title": "Settings",
+    "body": "Nothing to configure here, yet.",
+    "close": "close"
   }
 }

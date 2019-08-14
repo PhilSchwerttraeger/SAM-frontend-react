@@ -20,9 +20,10 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SettingsIcon from "@material-ui/icons/Settings";
 import InfoIcon from "@material-ui/icons/Info";
 import Dashboard from "@material-ui/icons/Dashboard";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+//import AccountCircle from "@material-ui/icons/AccountCircle";
 
 import InfoModal from "./Modals/InfoModal";
+import SettingsModal from "./Modals/SettingsModal";
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -69,7 +70,11 @@ export default class NavBar extends Component {
                 <CategoriesModal />
 
                 <Tooltip title={state.data.strings.titles.settings}>
-                  <IconButton color="inherit" className="hideonmobile">
+                  <IconButton
+                    color="inherit"
+                    className="hideonmobile"
+                    onClick={() => state.toggleSettingsModal()}
+                  >
                     <SettingsIcon />
                   </IconButton>
                 </Tooltip>
@@ -79,7 +84,7 @@ export default class NavBar extends Component {
                     aria-haspopup="true"
                     color="inherit"
                     className="hideonmobile"
-                    onClick={state.openInfoModal}
+                    onClick={() => state.toggleInfoModal()}
                   >
                     <InfoIcon />
                   </IconButton>
@@ -120,21 +125,26 @@ export default class NavBar extends Component {
                     <Divider />
 
                     <List>
+                      {/* 
                       <ListItem button>
                         <ListItemIcon>
                           <AccountCircle />
                         </ListItemIcon>
                         <ListItemText primary={"Account"} />
                       </ListItem>
+                      */}
 
-                      <ListItem button>
+                      <ListItem
+                        button
+                        onClick={() => state.toggleSettingsModal()}
+                      >
                         <ListItemIcon>
                           <SettingsIcon />
                         </ListItemIcon>
                         <ListItemText primary={"Settings"} />
                       </ListItem>
 
-                      <ListItem button>
+                      <ListItem button onClick={() => state.toggleInfoModal()}>
                         <ListItemIcon>
                           <InfoIcon />
                         </ListItemIcon>
@@ -143,7 +153,14 @@ export default class NavBar extends Component {
                     </List>
                   </div>
                 </SwipeableDrawer>
-                <InfoModal show={state.data.modals.showInfo} />
+                <InfoModal
+                  show={state.data.modals.showInfo}
+                  toggle={() => state.toggleInfoModal()}
+                />
+                <SettingsModal
+                  show={state.data.modals.showSettings}
+                  toggle={() => state.toggleSettingsModal()}
+                />
               </div>
             </Toolbar>
           </AppBar>
