@@ -18,6 +18,7 @@ import GitHubIcon from "../assets/GitHubIcon";
 import MenuIcon from "@material-ui/icons/Menu";
 import SettingsIcon from "@material-ui/icons/Settings";
 import InfoIcon from "@material-ui/icons/Info";
+import BugIcon from "@material-ui/icons/BugReport";
 import Dashboard from "@material-ui/icons/Dashboard";
 //import AccountCircle from "@material-ui/icons/AccountCircle";
 
@@ -69,7 +70,6 @@ export default class NavBar extends Component {
                 <Tooltip title={state.data.strings.titles.settings}>
                   <IconButton
                     color="inherit"
-                    className="hideonmobile"
                     onClick={() => state.toggleSettingsModal()}
                   >
                     <SettingsIcon />
@@ -86,6 +86,14 @@ export default class NavBar extends Component {
                     <InfoIcon />
                   </IconButton>
                 </Tooltip>
+
+                <IconButton
+                  color="inherit"
+                  className="hideonmobile"
+                  onClick={() => console.log(state)}
+                >
+                  <BugIcon />
+                </IconButton>
 
                 <Tooltip title={state.data.strings.titles.github}>
                   <IconButton
