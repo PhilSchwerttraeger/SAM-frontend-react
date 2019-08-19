@@ -9,28 +9,9 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-const styles = {
-  formcontainer: {
-    textAlign: "center",
-    marginTop: "5rem",
-    padding: "1rem"
-  },
-  textField: {
-    marginTop: "2rem"
-  },
-  button: {
-    margin: "1.5rem",
-    position: "relative"
-  },
-  customError: {
-    color: "red",
-    fontSize: "0.8rem",
-    marginTop: "2rem"
-  },
-  progress: {
-    position: "absolute"
-  }
-};
+const styles = theme => ({
+  ...theme.spreadThis
+});
 
 class Login extends Component {
   constructor() {
@@ -75,6 +56,7 @@ class Login extends Component {
       })
       .then(data => {
         console.log(data); // token or error
+        localStorage.setItem("FirebaseIdToken", `Bearer ${data.token}`);
         if (data.token) {
           this.setState({
             loading: false
@@ -91,8 +73,6 @@ class Login extends Component {
       .catch(err => {
         console.log(err);
       });
-
-    console.log(event);
   };
 
   handleChange = event => {

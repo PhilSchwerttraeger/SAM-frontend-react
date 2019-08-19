@@ -2,21 +2,15 @@ import React from "react";
 import { DataProvider } from "./components/DataContext";
 import { ThemeProvider } from "@material-ui/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
-import blue from "@material-ui/core/colors/blue";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: blue
-  },
-  status: {
-    danger: "orange"
-  }
-});
+import themeFile from "./style/Theme";
+
+const theme = createMuiTheme(themeFile);
 
 class App extends React.Component {
   render() {
