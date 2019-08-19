@@ -6,21 +6,29 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/Textfield";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const styles = {
   formcontainer: {
     textAlign: "center",
-    marginTop: "5rem"
+    marginTop: "5rem",
+    padding: "1rem"
   },
   textField: {
     marginTop: "2rem"
   },
   button: {
-    margin: "2rem"
+    margin: "1.5rem",
+    position: "relative"
   },
   customError: {
     color: "red",
-    fontSize: "0.8rem"
+    fontSize: "0.8rem",
+    marginTop: "2rem"
+  },
+  progress: {
+    position: "absolute"
   }
 };
 
@@ -33,13 +41,57 @@ class Login extends Component {
       loading: false,
       errors: {
         email: false,
-        password: false
+        password: false,
+        general: false
       }
     };
   }
 
   handleSubmit = event => {
     event.preventDefault();
+    this.setState({
+      loading: true
+    });
+
+    const header = {
+      method: "POST",
+      mode: "cors",
+      body: JSON.stringify({
+        email: this.state.email,
+        password: this.state.password
+      }),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    const serverURL =
+      "http://localhost:5000/api-dashboard-5chw/europe-west1/api";
+
+    fetch(serverURL + "/login", header)
+      .then(res => {
+        console.log(res);
+        return res.json();
+      })
+      .then(data => {
+        console.log(data); // token or error
+        if (data.token) {
+          this.setState({
+            loading: false
+            // TODO: save token
+          });
+          this.props.history.push("/");
+        } else {
+          this.setState({
+            errors: data,
+            loading: false
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
     console.log(event);
   };
 
@@ -85,7 +137,7 @@ class Login extends Component {
               />
               {errors.general && (
                 <Typography variant="body2" className={classes.customError}>
-                  {errors.general}
+                  User not found.
                 </Typography>
               )}
               <Button
@@ -93,9 +145,17 @@ class Login extends Component {
                 variant="contained"
                 color="primary"
                 className={classes.button}
+                disabled={loading}
               >
                 Login
+                {loading && (
+                  <CircularProgress size={30} className={classes.progress} />
+                )}
               </Button>
+              <br />
+              <small>
+                Dont have an account? Sign up <Link to="/signup">here</Link>
+              </small>
             </form>
           </Grid>
           <Grid item sm />
