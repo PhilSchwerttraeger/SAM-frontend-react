@@ -87,9 +87,11 @@ export default class DataTable extends Component {
   static context = DataContext;
 
   createColDef = state => {
+    let counter = -1;
     return state.fieldConfig.map(column => {
+      counter++;
       let columnConfig = {
-        headerName: column.title,
+        headerName: column.name,
         field: column.name,
         sortable: true,
         filter: true,
@@ -106,7 +108,7 @@ export default class DataTable extends Component {
       }
 
       // enable checkbox if column is first column
-      if (column.id === 0) {
+      if (counter === 0) {
         columnConfig.checkboxSelection = true;
         columnConfig.width = 130;
       }
@@ -473,7 +475,7 @@ export default class DataTable extends Component {
                   domLayout="autoHeight"
                   ref={this.dataTableRef}
                   columnDefs={this.createColDef(state.data)}
-                  rowData={state.data.fields}
+                  rowData={state.data.entries}
                   rowSelection="multiple"
                   suppressRowClickSelectionprevents
                   onGridReady={params => {

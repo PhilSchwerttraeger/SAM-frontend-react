@@ -11,13 +11,23 @@ const backend = "FIREBASE";
 //const backend = "NETLIFY";
 
 if (backend === "FIREBASE") {
-  serverURL = "https://api-dashboard-5chw.firebaseio.com";
-  endPhrase = ".json";
+  //serverURL = "https://api-dashboard-5chw.firebaseio.com";
+  //endPhrase = ".json";
+  serverURL = "https://europe-west1-api-dashboard-5chw.cloudfunctions.net/api";
+  endPhrase = "";
 }
 if (backend === "JSONSERVER") {
   serverURL = "http://localhost:3009";
   endPhrase = "";
 }
+
+const header = {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjY0MWU3OWQzZjUwOWUyYzdhNjQ1N2ZjOTVmY2U1MGNjOGM3M2VmMDMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYXBpLWRhc2hib2FyZC01Y2h3IiwiYXVkIjoiYXBpLWRhc2hib2FyZC01Y2h3IiwiYXV0aF90aW1lIjoxNTY2MjA5MzU1LCJ1c2VyX2lkIjoidTV1dGlMMVJpc2RVc01WWVFqUWdmVHA5VHRRMiIsInN1YiI6InU1dXRpTDFSaXNkVXNNVllRalFnZlRwOVR0UTIiLCJpYXQiOjE1NjYyMDkzNTUsImV4cCI6MTU2NjIxMjk1NSwiZW1haWwiOiJuZXd1c2VyQGVtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJuZXd1c2VyQGVtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.RbsPyUjaWTEJM2rCs7hFzSb7AlGr8KgXVzmfc9Kno9AITf5sd6-7CY9c8vq_l_yai0EZ_kJN2Ye5Yrm7iqcC6_cDhG9WB35sVKbaQ0qO2qt9EwH90ER36MAQMiVTYgJ-3w7J79xuibP1ijKsUIt7MFA9OgFBKwAKZr05GR-bBBvVgoWzGwKDErac69C2FFNXqUIpFTYvaFFGa3EKRlsGjnHT1MOFTZALGvIg1PWLbmfhGv5RUPiywRoMOgyU0FXXUfSzZz7PfIe17bTjmwWd6BupV8_ANkEtkhSxOh4TmDrm24v-5ciYX1NcVKWHReP2qr8pcW-i2m3qYSbUiUWvfw"
+  }
+};
 
 const defaultAnalysisConfig = [
   "sum",
@@ -33,10 +43,38 @@ export class DataProvider extends Component {
     super(props);
     this.fetchFieldsDataFromRestApi.bind(this);
 
+    /* OLD STATE (1.0)
     this.state = {
       generalConfig: {},
       fieldConfig: [],
       fields: [],
+      strings: [],
+      runtime: {
+        visibleEntries: []
+      },
+      modals: {
+        showInfo: false,
+        showSettings: false
+      }
+    };
+    */
+
+    // new state (2.0, with firebase)
+    this.state = {
+      userId: null,
+      email: null,
+      createdAt: null,
+
+      settings: {
+        accountType: null, // premium, free
+        language: null, // english, german
+        currency: null, // euro, dollar
+        analysisSections: []
+        // sum, average, minimum, maximum, totalin, totalout
+      },
+      fieldConfig: [],
+      entries: [],
+
       strings: [],
       runtime: {
         visibleEntries: []
@@ -59,18 +97,18 @@ export class DataProvider extends Component {
     if (backend === "JSONSERVER") {
       // preprocess data if needed
     }
-    fetch(serverURL + "/generalConfig" + endPhrase)
+    fetch(serverURL + "/userdata" + endPhrase, header)
       .then(res => res.json())
       .then(data => {
-        this.setState({
-          generalConfig: data
+        this.setState(oldState => {
+          return { ...oldState, ...data };
         });
       })
       .catch(err => {
-        console.log(err);
+        console.log("userdata: ", err);
       });
 
-    fetch(serverURL + "/fieldConfig" + endPhrase)
+    fetch(serverURL + "/fieldConfig" + endPhrase, header)
       .then(res => res.json())
       .then(data => {
         this.setState({
@@ -78,19 +116,18 @@ export class DataProvider extends Component {
         });
       })
       .catch(err => {
-        console.log(err);
+        console.log("fieldconfig: ", err);
       });
 
-    fetch(serverURL + "/fields" + endPhrase)
+    fetch(serverURL + "/entries" + endPhrase, header)
       .then(res => res.json())
-      .then(res => {
-        let data = Object.values(res);
+      .then(data => {
         this.setState({
-          fields: data
+          entries: data
         });
       })
       .catch(err => {
-        if (!err.ok) console.log(err);
+        console.log("entries: ", err);
       });
 
     this.setState({
@@ -106,7 +143,7 @@ export class DataProvider extends Component {
       // preprocess data if needed
     }
 
-    fetch(serverURL + "/fields" + endPhrase)
+    fetch(serverURL + "/entries" + endPhrase, header)
       .then(res => res.json())
       .then(res => {
         let data = Object.values(res);
