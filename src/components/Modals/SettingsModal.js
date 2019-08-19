@@ -56,6 +56,21 @@ export default function SettingsModal(props) {
     <Consumer>
       {state => {
         contextState = state;
+        let tableRows;
+        if (state && state.data && state.data.fieldConfig) {
+          tableRows = state.data.fieldConfig.map(fieldConfig => (
+            <Grid item key={fieldConfig.id}>
+              <ConfigRow
+                value={fieldConfig}
+                strings={state.data.strings.fieldConfig}
+                isNew={false}
+                onChange={handleInputUpdate}
+                deleteItem={deleteItem}
+              />
+            </Grid>
+          ));
+        }
+
         return (
           <div>
             <Dialog
@@ -74,17 +89,7 @@ export default function SettingsModal(props) {
 
                 {/* Table Row */}
                 <Grid container direction={"column"} spacing={3}>
-                  {state.data.fieldConfig.map(fieldConfig => (
-                    <Grid item key={fieldConfig.id}>
-                      <ConfigRow
-                        value={fieldConfig}
-                        strings={state.data.strings.fieldConfig}
-                        isNew={false}
-                        onChange={handleInputUpdate}
-                        deleteItem={deleteItem}
-                      />
-                    </Grid>
-                  ))}
+                  {tableRows}
 
                   {/* Add New Row */}
                   <Grid item>
