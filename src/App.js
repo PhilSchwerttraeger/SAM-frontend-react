@@ -2,6 +2,7 @@ import React from "react";
 import { DataProvider } from "./components/DataContext";
 import { ThemeProvider } from "@material-ui/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
+// eslint-disable-next-line
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
