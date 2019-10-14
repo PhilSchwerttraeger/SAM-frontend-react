@@ -119,7 +119,7 @@ export default class DataTable extends Component {
         columnConfig.filter = "agDateColumnFilter";
         columnConfig.cellEditor = "datePicker";
         columnConfig.filterParams = {
-          comparator: function(filterLocalDateAtMidnight, cellValue) {
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
             var dateAsString = cellValue;
             if (dateAsString == null) return -1;
             var dateParts = dateAsString.split(".");
@@ -359,7 +359,7 @@ export default class DataTable extends Component {
   autoSizeColumns = () => {
     //alert("autosized");
     var allColumnIds = [];
-    this.gridColumnApi.getAllColumns().forEach(function(column) {
+    this.gridColumnApi.getAllColumns().forEach(function (column) {
       allColumnIds.push(column.colId);
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds);
@@ -370,11 +370,12 @@ export default class DataTable extends Component {
     this.gridApi.setQuickFilter(props.target.value);
   };
 
-  componentDidMount() {}
+  componentDidMount() { }
 
-  componentDidUpdate() {}
+  componentDidUpdate() { }
 
   render() {
+
     return (
       <Consumer>
         {state => {
@@ -382,6 +383,7 @@ export default class DataTable extends Component {
           //console.log(state);
           //console.log(currentlyVisibleRowData);
           //state.setCurrentlyVisibleRowData("jo");
+
           if (
             state.data === undefined ||
             state.data.fieldConfig === undefined

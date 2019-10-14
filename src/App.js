@@ -18,7 +18,8 @@ const token = localStorage.FirebaseIdToken;
 if (token) {
   // decode the token
   const decodedToken = jwtDecode(token);
-  if (decodedToken.exp * 1000 < Date.now()) {
+  if (decodedToken.exp * 1001 < Date.now()) {
+    console.log(window.location.href);
     window.location.href = "/login";
     authenticated = false;
   } else {

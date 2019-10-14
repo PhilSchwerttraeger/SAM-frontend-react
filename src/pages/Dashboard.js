@@ -6,20 +6,6 @@ import DataTable from "../components/DataTable/DataTable";
 import NavBar from "../components/NavBar";
 
 export default class Dashboard extends Component {
-  styleMain = () => {
-    return {
-      flexGrow: 1,
-      padding: 16,
-      backgroundColor: "#F8F8F8"
-    };
-  };
-
-  stylePaper = () => {
-    return {
-      padding: 16
-    };
-  };
-
   render() {
     return (
       <div>
@@ -29,7 +15,7 @@ export default class Dashboard extends Component {
             <Analysis />
           </Grid>
           <Grid item xs={12}>
-            <Paper style={this.stylePaper()}>
+            <Paper style={{ padding: "16" }}>
               <DataTable />
             </Paper>
           </Grid>
