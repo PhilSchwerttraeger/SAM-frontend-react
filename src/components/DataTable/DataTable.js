@@ -84,8 +84,6 @@ export default class DataTable extends Component {
     this.dataTableRef = React.createRef();
   }
 
-  static context = DataContext;
-
   createColDef = state => {
     let counter = -1;
     //console.log(state.fieldConfig);
@@ -263,10 +261,10 @@ export default class DataTable extends Component {
     }) : null;
   };
 
-  addNewItem = () => {
+  addNewItem = (state) => {
     // 1. Create new empty row
     let data = {};
-    this.contextState.data.fieldConfig.map(fieldConfig => {
+    state.data.fieldConfig.map(fieldConfig => {
       if (fieldConfig.type === "text") {
         return (data[fieldConfig.name] = { label: "" });
       } else {
@@ -279,7 +277,8 @@ export default class DataTable extends Component {
     data.id = kuuid.id();
 
     // 2. Add to backend
-    this.contextState.addEntry(data);
+    console.log(data);
+    state.addEntry(data);
   };
 
   deleteSelectedItem = () => {
@@ -290,14 +289,14 @@ export default class DataTable extends Component {
       node => node.data.description.label
     );
     let deleteMessage =
-      this.contextState.data.strings.datatable.confirmDelete +
+      this.state.data.strings.datatable.confirmDelete +
       " \n- " +
       selectedDescriptions.join("\n- ");
     let userConfirmation = window.confirm(deleteMessage);
 
     // Invoke delete action on context component
     if (userConfirmation) {
-      this.contextState.deleteEntries(selectedIds);
+      this.state.deleteEntries(selectedIds);
     }
   };
 
@@ -308,7 +307,7 @@ export default class DataTable extends Component {
 
     // 2. For each selected item...
     selectedIds.forEach(id => {
-      this.contextState.data.fields.forEach(field => {
+      this.state.data.fields.forEach(field => {
         // ... check if id matches...
         if (field.id === id) {
           // ... and remove id property ...
@@ -319,7 +318,7 @@ export default class DataTable extends Component {
           field.id = uuid();
 
           // ... to then add to backend.
-          this.contextState.addEntry(field);
+          this.state.addEntry(field);
         }
       });
     });
@@ -376,12 +375,9 @@ export default class DataTable extends Component {
   componentDidUpdate() { }
 
   render() {
-
     return (
       <Consumer>
         {state => {
-          this.contextState = state;
-
           let entriesBody = (state.data.entries && state.data.entries.length) ? state.data.entries : [];
           entriesBody = entriesBody.map(entry => entry.body);
           console.log(entriesBody);
@@ -485,7 +481,6 @@ export default class DataTable extends Component {
                   columnDefs={this.createColDef(state.data)}
                   rowData={entriesBody}
                   rowSelection="multiple"
-                  suppressRowClickSelectionprevents
                   onGridReady={params => {
                     this.gridApi = params.api;
                     this.gridColumnApi = params.columnApi;

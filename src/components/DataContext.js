@@ -49,6 +49,7 @@ export class DataProvider extends Component {
           showSettings: false
         }
       },
+      isFetching: true
     };
   }
 
@@ -98,7 +99,7 @@ export class DataProvider extends Component {
   }
 
   fetchEntries = () => {
-    return;
+    //return;
 
     fetch(serverURL + "/entries", header)
       .then(res => res.json())
@@ -106,6 +107,9 @@ export class DataProvider extends Component {
         this.setState({
           entries: data
         });
+        this.setState({
+          isFetching: false
+        })
       })
       .catch(err => {
         console.log("Error fetching entries: ", err);
@@ -143,7 +147,7 @@ export class DataProvider extends Component {
 
   addEntry = data => {
     this.setState(oldState => {
-      //console.log(oldState.entries);
+      console.log("old state: ", oldState.entries);
       let newEntries = oldState.entries;
       newEntries.push(data);
       return {
