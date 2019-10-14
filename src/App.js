@@ -13,29 +13,47 @@ import AuthRoute from "./util/AuthRoute";
 import themeFile from "./style/Theme";
 const theme = createMuiTheme(themeFile);
 
-let authenticated;
-const token = localStorage.FirebaseIdToken;
-if (token) {
-  // decode the token
-  const decodedToken = jwtDecode(token);
-  if (decodedToken.exp * 1001 < Date.now()) {
-    console.log(window.location.href);
-    window.location.href = "/login";
-    authenticated = false;
-  } else {
-    authenticated = true;
-  }
-}
 
 class App extends React.Component {
   render() {
+    let authenticated;
+    const token = localStorage.FirebaseIdToken;
+    if (token) {
+      // decode the token
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.exp * 1000 < Date.now()) {
+        //window.location.href = "/login";
+        authenticated = false;
+      } else {
+        authenticated = true;
+      }
+    }
+
     return (
       <DataProvider>
         <ThemeProvider theme={theme}>
           <Router>
-            <Route exact path="/" component={Dashboard} />
-            <Route exact path="/login" component={Login} authenticated={authenticated} />
-            <Route exact path="/signup" component={Signup} authenticated={authenticated} />
+            <AuthRoute
+              exact
+              path="/"
+              componentAuthorized={Dashboard}
+              componentUnauthorized={Login}
+              authenticated={authenticated}
+            />
+            <AuthRoute
+              exact
+              path="/login"
+              componentAuthorized={Dashboard}
+              componentUnauthorized={Login}
+              authenticated={authenticated}
+            />
+            <AuthRoute
+              exact
+              path="/signup"
+              componentAuthorized={Dashboard}
+              componentUnauthorized={Signup}
+              authenticated={authenticated}
+            />
           </Router>
         </ThemeProvider>
       </DataProvider>
