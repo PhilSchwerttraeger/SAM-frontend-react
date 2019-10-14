@@ -57,19 +57,24 @@ export default function SettingsModal(props) {
       {state => {
         contextState = state;
         let tableRows;
-        if (state && state.data && state.data.fieldConfig) {
-          tableRows = state.data.fieldConfig.map(fieldConfig => (
-            <Grid item key={fieldConfig.id}>
-              <ConfigRow
-                value={fieldConfig}
-                strings={state.data.strings.fieldConfig}
-                isNew={false}
-                onChange={handleInputUpdate}
-                deleteItem={deleteItem}
-              />
-            </Grid>
-          ));
+        try {
+          if (state && state.data && state.data.fieldConfig) {
+            tableRows = state.data.fieldConfig.map(fieldConfig => (
+              <Grid item key={fieldConfig.id}>
+                <ConfigRow
+                  value={fieldConfig}
+                  strings={state.data.strings.fieldConfig}
+                  isNew={false}
+                  onChange={handleInputUpdate}
+                  deleteItem={deleteItem}
+                />
+              </Grid>
+            ));
+          }
         }
+        catch (e) {
+          console.log(e);
+        };
 
         return (
           <div>

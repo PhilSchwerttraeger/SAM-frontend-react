@@ -3,33 +3,16 @@ import Snackbar from "./Snackbars";
 
 export const DataContext = React.createContext();
 
-let serverURL;
-let endPhrase;
-
-//const backend = "JSONSERVER"; // aka self-hosted
-const backend = "FIREBASE";
-//const backend = "NETLIFY";
-
-if (backend === "FIREBASE") {
-  //serverURL = "https://api-dashboard-5chw.firebaseio.com";
-  //endPhrase = ".json";
-  serverURL = "https://europe-west1-api-dashboard-5chw.cloudfunctions.net/api";
-  endPhrase = "";
-}
-if (backend === "JSONSERVER") {
-  serverURL = "http://localhost:3009";
-  endPhrase = "";
-}
 const serverURL =
   //"https://europe-west1-api-dashboard-5chw.cloudfunctions.net/api";
   "http://localhost:5000/api-dashboard-5chw/europe-west1/api";
 
 const header = {
-  headers: {
+  headers: new Headers({
     "Content-Type": "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjY0MWU3OWQzZjUwOWUyYzdhNjQ1N2ZjOTVmY2U1MGNjOGM3M2VmMDMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYXBpLWRhc2hib2FyZC01Y2h3IiwiYXVkIjoiYXBpLWRhc2hib2FyZC01Y2h3IiwiYXV0aF90aW1lIjoxNTY2MjA5MzU1LCJ1c2VyX2lkIjoidTV1dGlMMVJpc2RVc01WWVFqUWdmVHA5VHRRMiIsInN1YiI6InU1dXRpTDFSaXNkVXNNVllRalFnZlRwOVR0UTIiLCJpYXQiOjE1NjYyMDkzNTUsImV4cCI6MTU2NjIxMjk1NSwiZW1haWwiOiJuZXd1c2VyQGVtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJuZXd1c2VyQGVtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.RbsPyUjaWTEJM2rCs7hFzSb7AlGr8KgXVzmfc9Kno9AITf5sd6-7CY9c8vq_l_yai0EZ_kJN2Ye5Yrm7iqcC6_cDhG9WB35sVKbaQ0qO2qt9EwH90ER36MAQMiVTYgJ-3w7J79xuibP1ijKsUIt7MFA9OgFBKwAKZr05GR-bBBvVgoWzGwKDErac69C2FFNXqUIpFTYvaFFGa3EKRlsGjnHT1MOFTZALGvIg1PWLbmfhGv5RUPiywRoMOgyU0FXXUfSzZz7PfIe17bTjmwWd6BupV8_ANkEtkhSxOh4TmDrm24v-5ciYX1NcVKWHReP2qr8pcW-i2m3qYSbUiUWvfw"
-  }
+    "Authorization":
+      `${localStorage.FirebaseIdToken}`
+  })
 };
 
 const defaultAnalysisConfig = [
@@ -44,25 +27,6 @@ const defaultAnalysisConfig = [
 export class DataProvider extends Component {
   constructor(props) {
     super(props);
-    this.fetchFieldsDataFromRestApi.bind(this);
-
-    /* OLD STATE (1.0)
-    this.state = {
-      generalConfig: {},
-      fieldConfig: [],
-      fields: [],
-      strings: [],
-      runtime: {
-        visibleEntries: []
-      },
-      modals: {
-        showInfo: false,
-        showSettings: false
-      }
-    };
-    */
-
-    // new state (2.0, with firebase)
     this.state = {
       userId: null,
       email: null,
@@ -72,57 +36,71 @@ export class DataProvider extends Component {
         accountType: null, // premium, free
         language: null, // english, german
         currency: null, // euro, dollar
-        analysisSections: []
-        // sum, average, minimum, maximum, totalin, totalout
+        analysisSections: [] // sum, average, minimum, maximum, totalin, totalout
       },
       fieldConfig: [],
       entries: [],
 
       strings: [],
       runtime: {
-        visibleEntries: []
+        visibleEntries: [],
+        modals: {
+          showInfo: false,
+          showSettings: false
+        }
       },
-      modals: {
-        showInfo: false,
-        showSettings: false
-      }
     };
   }
 
   componentWillMount() {
-    this.fetchFromRestApi();
+    this.fetchEverything();
   }
 
-  fetchFromRestApi = () => {
-    if (backend === "FIREBASE") {
-      // preprocess data if needed
-    }
-    if (backend === "JSONSERVER") {
-      // preprocess data if needed
-    }
-    fetch(serverURL + "/userdata" + endPhrase, header)
+  fetchEverything = () => {
+    this.fetchUserData();
+    this.fetchFieldConfig();
+    this.fetchEntries();
+    this.setState({ strings: require("../languages/english.json") });
+  };
+
+  fetchUserData = () => {
+    return;
+
+    fetch(serverURL + "/userdata", header)
       .then(res => res.json())
       .then(data => {
         this.setState(oldState => {
-          return { ...oldState, ...data };
+          return {
+            ...oldState,
+            ...data
+          };
         });
       })
       .catch(err => {
-        console.log("userdata: ", err);
+        console.log("Error fetching userdata: ", err);
       });
+  }
 
-    fetch(serverURL + "/fieldConfig" + endPhrase, header)
+  fetchFieldConfig = () => {
+    //return;
+
+    fetch(serverURL + "/fieldConfig", header)
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         this.setState({
           fieldConfig: data
         });
       })
       .catch(err => {
-        console.log("fieldconfig: ", err);
+        console.log("Error fetching fieldconfig: ", err);
       });
+  }
 
-    fetch(serverURL + "/entries" + endPhrase, header)
+  fetchEntries = () => {
+    return;
+
+    fetch(serverURL + "/entries", header)
       .then(res => res.json())
       .then(data => {
         this.setState({
@@ -130,56 +108,26 @@ export class DataProvider extends Component {
         });
       })
       .catch(err => {
-        console.log("entries: ", err);
+        console.log("Error fetching entries: ", err);
       });
-
-    this.setState({
-      strings: require("../languages/english.json")
-    });
-  };
-
-  fetchFieldsDataFromRestApi = () => {
-    if (backend === "FIREBASE") {
-      // preprocess data if needed
-    }
-    if (backend === "JSONSERVER") {
-      // preprocess data if needed
-    }
-
-    fetch(serverURL + "/entries" + endPhrase, header)
-      .then(res => res.json())
-      .then(res => {
-        let data = Object.values(res);
-        //console.log(data);
-        this.setState({
-          fields: data
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+  }
 
   updateEntry = (id, data) => {
-    if (backend === "FIREBASE") {
-      // preprocess data if needed
-    }
-    if (backend === "JSONSERVER") {
-      // preprocess data if needed
-    }
-
     delete data.tableData;
-    return fetch(serverURL + "/fields/" + id + endPhrase, {
-      method: "PUT",
+    this.setState(oldState => ({
+      entries: oldState.entries.map(el => (el.id === id ? data : el))
+    }));
+
+    return;
+
+    fetch(serverURL + "/entries/" + id, {
+      method: "POST",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json"
       }
     })
       .then(res => {
-        this.setState(oldState => ({
-          fields: oldState.fields.map(el => (el.id === id ? data : el))
-        }));
         //console.log(res);
         if (res.ok) {
           // nothing
@@ -189,59 +137,62 @@ export class DataProvider extends Component {
         return res;
       })
       .catch(err => {
-        console.log(err);
+        console.log("Error while updating entry" + err);
       });
   };
 
   addEntry = data => {
-    let preEndPhrase;
-    let selectedMethod;
+    this.setState(oldState => {
+      //console.log(oldState.entries);
+      let newEntries = oldState.entries;
+      newEntries.push(data);
+      return {
+        entries: newEntries
+      };
+    });
 
-    if (backend === "FIREBASE") {
-      preEndPhrase = "/" + data.id;
-      selectedMethod = "PUT";
-    }
-    if (backend === "JSONSERVER") {
-      preEndPhrase = "";
-      selectedMethod = "POST";
-    }
+    return;
 
-    return fetch(serverURL + "/fields" + preEndPhrase + endPhrase, {
-      method: selectedMethod,
+    return fetch(serverURL + "/entries/", {
+      method: "POST",
       body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: header.headers
     })
       .then(res => {
-        this.setState(oldState => ({
-          fields: [...oldState.fields, data]
-        }));
-        this.fetchFieldsDataFromRestApi();
-        //console.log(res);
         if (res.ok) {
           // nothing
+          // DO TO: save ID
         } else {
           this.callSnackbar(this.state.strings.snackbar.entryaddederror);
         }
         return res;
       })
       .catch(err => {
-        console.log(err);
+        console.log("Error while adding entry: " + err);
         return err;
       });
   };
 
   deleteEntries = Ids => {
-    if (backend === "FIREBASE") {
-      // preprocess data if needed
-    }
-    if (backend === "JSONSERVER") {
-      // preprocess data if needed
-    }
 
     Ids.forEach(id => {
-      return fetch(serverURL + "/fields/" + id + endPhrase, {
+      this.setState(oldState => {
+        // eslint-disable-next-line
+        return {
+          entries: oldState.entries.filter(item => {
+            if (item.id !== id) {
+              return true;
+            } else {
+              //console.log(id + " was deleted from state.");
+              return false;
+            }
+          })
+        };
+      });
+
+      return;
+
+      fetch(serverURL + "/entries/" + id, {
         method: "DELETE",
         //body: JSON.stringify(data),
         headers: {
@@ -251,20 +202,6 @@ export class DataProvider extends Component {
         .then(res => {
           //console.log(res);
           //console.log(id + " was deleted from db.");
-          this.setState(oldState => {
-            // eslint-disable-next-line
-            return {
-              fields: oldState.fields.filter(item => {
-                if (item.id !== id) {
-                  return true;
-                } else {
-                  //console.log(id + " was deleted from state.");
-                  return false;
-                }
-              })
-            };
-          });
-          this.fetchFieldsDataFromRestApi();
           if (res.ok) {
             // nothing
           } else {
@@ -278,38 +215,36 @@ export class DataProvider extends Component {
     });
   };
 
+  // SELECTED ENTRIES
+
   setSelectedEntries = entries => {
-    this.setState({
+    this.setState(oldState => ({
       runtime: {
+        ...oldState.runtime,
         visibleEntries: entries
       }
-    });
-  };
+    }));
+  }
 
   getSelectedEntries = () => {
-    //console.log(this.state.runtime.visibleEntries);
     return this.state.runtime.visibleEntries;
   };
 
   setFieldsConfig = newConfig => {
-    if (backend === "FIREBASE") {
-      // preprocess data if needed
-    }
-    if (backend === "JSONSERVER") {
-      // preprocess data if needed
-    }
+    this.setState({
+      fieldConfig: newConfig
+    });
 
-    return fetch(serverURL + "/fieldConfig" + endPhrase, {
-      method: "PUT",
+    return;
+
+    fetch(serverURL + "/fieldConfig", {
+      method: "POST",
       body: JSON.stringify(newConfig),
       headers: {
         "Content-Type": "application/json"
       }
     })
       .then(res => {
-        this.setState({
-          fieldConfig: newConfig
-        });
         //console.log(newConfig);
         //console.log(res);
         if (res.ok) {
@@ -338,14 +273,13 @@ export class DataProvider extends Component {
     emptyFieldConfig.name = "field_";
     emptyFieldConfig.name += kuuid.id().substring(0, 7);
 
-    if (backend === "FIREBASE") {
-      // preprocess data if needed
-    }
-    if (backend === "JSONSERVER") {
-      // preprocess data if needed
-    }
+    this.setState(oldState => ({
+      fieldConfig: [...oldState.fieldConfig, emptyFieldConfig]
+    }));
 
-    return fetch(serverURL + "/fieldConfig" + endPhrase, {
+    return;
+
+    fetch(serverURL + "/fieldConfig", {
       method: "POST",
       body: JSON.stringify(emptyFieldConfig),
       headers: {
@@ -353,10 +287,6 @@ export class DataProvider extends Component {
       }
     })
       .then(res => {
-        this.setState(oldState => ({
-          fieldConfig: [...oldState.fieldConfig, emptyFieldConfig]
-        }));
-        this.fetchFieldsDataFromRestApi();
         if (res.ok) {
           // nothing
         } else {
@@ -372,14 +302,23 @@ export class DataProvider extends Component {
   };
 
   deleteFieldConfig = id => {
-    if (backend === "FIREBASE") {
-      // preprocess data if needed
-    }
-    if (backend === "JSONSERVER") {
-      // preprocess data if needed
-    }
+    this.setState(oldState => {
+      // eslint-disable-next-line
+      return {
+        entries: oldState.fieldConfig.filter(item => {
+          if (item.id !== id) {
+            return true;
+          } else {
+            //console.log(id + " was deleted from state.");
+            return false;
+          }
+        })
+      };
+    });
 
-    return fetch(serverURL + "/fieldConfig/" + id + endPhrase, {
+    return;
+
+    fetch(serverURL + "/fieldConfig/" + id, {
       method: "DELETE",
       //body: JSON.stringify(data),
       headers: {
@@ -389,20 +328,6 @@ export class DataProvider extends Component {
       .then(res => {
         console.log(res);
         //console.log(id + " was deleted from db.");
-        this.setState(oldState => {
-          // eslint-disable-next-line
-          return {
-            fields: oldState.fieldConfig.filter(item => {
-              if (item.id !== id) {
-                return true;
-              } else {
-                //console.log(id + " was deleted from state.");
-                return false;
-              }
-            })
-          };
-        });
-        this.fetchFromRestApi();
         if (res.ok) {
           // nothing
         } else {
@@ -415,18 +340,24 @@ export class DataProvider extends Component {
       });
   };
 
-  setAnalysisSections = () => {
-    return fetch(serverURL + "/generalConfig/analysisSections" + endPhrase, {
-      method: "PUT",
-      body: JSON.stringify(this.state.generalConfig.analysisSections),
-      headers: {
-        "Content-Type": "application/json"
-      }
+  setSettings = newSettings => {
+    console.log("Setting new settings: ", newSettings);
+
+    this.setState({
+      settings: newSettings
+    });
+
+    return;
+
+    fetch(serverURL + "/settings", {
+      method: "POST",
+      body: JSON.stringify(newSettings),
+      headers: header.headers
     })
       .then(res => {
         //console.log(res);
         if (res.ok) {
-          // nothing
+          console.log("Net settings set successfully.");
         } else {
           this.callSnackbar(
             this.state.strings.snackbar.newanalysissectionserror
@@ -438,6 +369,36 @@ export class DataProvider extends Component {
         console.log(err);
         return err;
       });
+  }
+
+  removeAnalysisFragment = fragmentToRemove => {
+    console.log("Remove analysis fragment: ", fragmentToRemove);
+
+    let newSections = this.state.settings.analysisSections;
+    newSections = newSections.filter(
+      fragment => fragment !== fragmentToRemove
+    );
+    let newState;
+    this.setState(oldState => {
+      newState = {
+        ...oldState.settings,
+        analysisSections: newSections
+      };
+      this.setSettings(newState); // calls api
+      return { settings: newState }
+    });
+  };
+
+  restoreAnalysisFragment = () => {
+    let newState = this.state.settings.analysisSections;
+    newState = defaultAnalysisConfig;
+    this.setState(oldState => ({
+      settings: {
+        ...oldState.settings,
+        analysisSections: newState
+      }
+    }));
+    this.setSettings(); // calls api
   };
 
   callSnackbar = message => {
@@ -447,57 +408,37 @@ export class DataProvider extends Component {
     });
   };
 
-  removeAnalysisFragment = fragmentToRemove => {
-    let newState = this.state.generalConfig;
-    newState.analysisSections = newState.analysisSections.filter(
-      fragment => fragment !== fragmentToRemove
-    );
-    this.setState({
-      generalConfig: newState
-    });
-    this.setAnalysisSections();
-  };
-
-  restoreAnalysisFragment = () => {
-    let newState = this.state.generalConfig;
-    newState.analysisSections = defaultAnalysisConfig;
-    this.setState({
-      generalConfig: newState
-    });
-    this.setAnalysisSections();
-    //console.log(this.state);
-  };
-
   handleClose = () => {
     this.setState({
-      SnackbarClicked: false,
-      SnackbarText: ""
+      SnackbarClicked: false
     });
   };
 
   toggleInfoModal = () => {
-    let newModals = this.state.modals;
-    newModals.showInfo = !newModals.showInfo;
+    let newState = !this.state.runtime.modals.showInfo;
     this.setState({
-      modals: newModals
+      runtime: {
+        modals: {
+          showInfo: newState
+        }
+      }
     });
   };
 
   toggleSettingsModal = () => {
-    let newModals = this.state.modals;
+    let newModals = this.state.runtime.modals;
     newModals.showSettings = !newModals.showSettings;
     this.setState({
-      modals: newModals
+      runtime: {
+        modals: newModals
+      }
     });
   };
 
   render() {
-    let snackbar = "";
-    if (this.state.SnackbarClicked) {
-      snackbar = (
-        <Snackbar close={this.handleClose} message={this.state.SnackbarText} />
-      );
-    }
+    let snackbar = this.state.SnackbarClicked ?
+      <Snackbar close={this.handleClose} message={this.state.SnackbarText} />
+      : null;
 
     const contextValue = {
       data: this.state,
@@ -509,8 +450,10 @@ export class DataProvider extends Component {
       setSelectedEntries: this.setSelectedEntries,
       getSelectedEntries: this.getSelectedEntries,
 
-      fetchFromRestApi: this.fetchFromRestApi,
-      fetchFieldsDataFromRestApi: this.fetchFieldsDataFromRestApi,
+      fetchEverything: this.fetchEverything,
+      fetchEntries: this.fetchEntries,
+      fetchFieldConfig: this.fetchFieldConfig,
+      fetchSettings: this.fetchSettings,
 
       setFieldsConfig: this.setFieldsConfig,
       addEmptyFieldConfig: this.addEmptyFieldConfig,

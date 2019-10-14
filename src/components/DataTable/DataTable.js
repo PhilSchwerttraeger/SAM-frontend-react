@@ -88,7 +88,8 @@ export default class DataTable extends Component {
 
   createColDef = state => {
     let counter = -1;
-    return state.fieldConfig.map(column => {
+    //console.log(state.fieldConfig);
+    return (state && state.fieldConfig && state.fieldConfig.length) ? state.fieldConfig.map(column => {
       counter++;
       let columnConfig = {
         headerName: column.name,
@@ -259,7 +260,7 @@ export default class DataTable extends Component {
 
       // return column config
       return columnConfig;
-    });
+    }) : null;
   };
 
   addNewItem = () => {
@@ -380,6 +381,11 @@ export default class DataTable extends Component {
       <Consumer>
         {state => {
           this.contextState = state;
+
+          let entriesBody = (state.data.entries && state.data.entries.length) ? state.data.entries : [];
+          entriesBody = entriesBody.map(entry => entry.body);
+          console.log(entriesBody);
+
           //console.log(state);
           //console.log(currentlyVisibleRowData);
           //state.setCurrentlyVisibleRowData("jo");
@@ -477,7 +483,7 @@ export default class DataTable extends Component {
                   domLayout="autoHeight"
                   ref={this.dataTableRef}
                   columnDefs={this.createColDef(state.data)}
-                  rowData={state.data.entries}
+                  rowData={entriesBody}
                   rowSelection="multiple"
                   suppressRowClickSelectionprevents
                   onGridReady={params => {
@@ -512,8 +518,7 @@ export default class DataTable extends Component {
                   }
                   */
                   animateRows={true}
-                  singleClickEdit="true"
-                  //editType="fullRow"
+                //editType="fullRow"
                 />
               </div>
             );

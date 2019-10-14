@@ -159,11 +159,11 @@ export default class NavBar extends Component {
                   </div>
                 </SwipeableDrawer>
                 <InfoModal
-                  show={state.data.modals.showInfo}
+                  show={state.data.runtime.modals.showInfo ? true : false}
                   toggle={() => state.toggleInfoModal()}
                 />
                 <SettingsModal
-                  show={state.data.modals.showSettings}
+                  show={state.data.runtime.modals.showSettings}
                   toggle={() => state.toggleSettingsModal()}
                 />
               </div>
