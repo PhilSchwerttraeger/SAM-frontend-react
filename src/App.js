@@ -8,6 +8,7 @@ import jwtDecode from "jwt-decode";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import AuthRoute from "./util/AuthRoute";
 
 import themeFile from "./style/Theme";
 const theme = createMuiTheme(themeFile);
@@ -32,8 +33,8 @@ class App extends React.Component {
         <ThemeProvider theme={theme}>
           <Router>
             <Route exact path="/" component={Dashboard} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={Signup} />
+            <Route exact path="/login" component={Login} authenticated={authenticated} />
+            <Route exact path="/signup" component={Signup} authenticated={authenticated} />
           </Router>
         </ThemeProvider>
       </DataProvider>
