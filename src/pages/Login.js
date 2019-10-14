@@ -34,6 +34,10 @@ class Login extends Component {
       loading: true
     });
 
+    const serverURL =
+      //"https://europe-west1-api-dashboard-5chw.cloudfunctions.net/api";
+      "http://localhost:5000/api-dashboard-5chw/europe-west1/api";
+
     const header = {
       method: "POST",
       mode: "cors",
@@ -45,9 +49,6 @@ class Login extends Component {
         "Content-Type": "application/json"
       }
     };
-
-    const serverURL =
-      "http://localhost:5000/api-dashboard-5chw/europe-west1/api";
 
     fetch(serverURL + "/login", header)
       .then(res => {

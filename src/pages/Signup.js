@@ -50,6 +50,7 @@ class Signup extends Component {
     };
 
     const serverURL =
+      //"https://europe-west1-api-dashboard-5chw.cloudfunctions.net/api";
       "http://localhost:5000/api-dashboard-5chw/europe-west1/api";
 
     fetch(serverURL + "/signup", header)

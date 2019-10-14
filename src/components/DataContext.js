@@ -20,6 +20,9 @@ if (backend === "JSONSERVER") {
   serverURL = "http://localhost:3009";
   endPhrase = "";
 }
+const serverURL =
+  //"https://europe-west1-api-dashboard-5chw.cloudfunctions.net/api";
+  "http://localhost:5000/api-dashboard-5chw/europe-west1/api";
 
 const header = {
   headers: {
