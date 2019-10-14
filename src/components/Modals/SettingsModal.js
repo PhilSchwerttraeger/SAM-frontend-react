@@ -60,7 +60,7 @@ export default function SettingsModal(props) {
         try {
           if (state && state.data && state.data.fieldConfig) {
             tableRows = state.data.fieldConfig.map(fieldConfig => (
-              <Grid item key={fieldConfig.id}>
+              <Grid item key={fieldConfig.name}>
                 <ConfigRow
                   value={fieldConfig}
                   strings={state.data.strings.fieldConfig}
