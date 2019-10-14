@@ -10,7 +10,7 @@ import MaterialDatePicker from "./MaterialDatePicker";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import TextField from "@material-ui/core/TextField";
-import { DataContext } from "../DataContext";
+//import { DataContext } from "../DataContext";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import DuplicateIcon from "@material-ui/icons/ControlPointDuplicate";
@@ -264,39 +264,33 @@ export default class DataTable extends Component {
   addNewItem = (state) => {
     // 1. Create new empty row
     let data = {};
-    state.data.fieldConfig.map(fieldConfig => {
-      if (fieldConfig.type === "text") {
-        return (data[fieldConfig.name] = { label: "" });
-      } else {
-        return (data[fieldConfig.name] = "");
-      }
-    });
+    state.data.fieldConfig.map(fieldConfig => data[fieldConfig.name] = "");
 
     // id generation, time-based / time-sortable
     const kuuid = require("kuuid");
     data.id = kuuid.id();
 
     // 2. Add to backend
-    console.log(data);
+    //console.log(data);
     state.addEntry(data);
   };
 
-  deleteSelectedItem = () => {
+  deleteSelectedItem = (state) => {
     // 1. Get selected items
     const selectedNodes = this.gridApi.getSelectedNodes();
     const selectedIds = selectedNodes.map(node => node.data.id);
     const selectedDescriptions = selectedNodes.map(
-      node => node.data.description.label
+      node => node.data.description
     );
     let deleteMessage =
-      this.state.data.strings.datatable.confirmDelete +
+      state.data.strings.datatable.confirmDelete +
       " \n- " +
       selectedDescriptions.join("\n- ");
     let userConfirmation = window.confirm(deleteMessage);
 
     // Invoke delete action on context component
     if (userConfirmation) {
-      this.state.deleteEntries(selectedIds);
+      state.deleteEntries(selectedIds);
     }
   };
 
@@ -415,7 +409,7 @@ export default class DataTable extends Component {
                         <Tooltip title={state.data.strings.datatable.add}>
                           <IconButton
                             variant="outlined"
-                            onClick={this.addNewItem}
+                            onClick={() => this.addNewItem(state)}
                             color="primary"
                           >
                             <AddIcon />
@@ -439,7 +433,7 @@ export default class DataTable extends Component {
                         <Tooltip title={state.data.strings.datatable.delete}>
                           <IconButton
                             variant="outlined"
-                            onClick={this.deleteSelectedItem}
+                            onClick={() => this.deleteSelectedItem(state)}
                             color="secondary"
                           >
                             <DeleteIcon />

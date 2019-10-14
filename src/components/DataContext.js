@@ -147,15 +147,16 @@ export class DataProvider extends Component {
 
   addEntry = data => {
     this.setState(oldState => {
-      console.log("old state: ", oldState.entries);
+      //console.log("old state: ", oldState.entries);
       let newEntries = oldState.entries;
-      newEntries.push(data);
+      newEntries.push({ body: data });
+      //console.log(newEntries);
       return {
         entries: newEntries
       };
     });
 
-    return;
+    //return; // skip backend
 
     return fetch(serverURL + "/entries/", {
       method: "POST",
@@ -163,6 +164,7 @@ export class DataProvider extends Component {
       headers: header.headers
     })
       .then(res => {
+        //console.log("new state: ", this.state.entries);
         if (res.ok) {
           // nothing
           // DO TO: save ID
@@ -178,30 +180,22 @@ export class DataProvider extends Component {
   };
 
   deleteEntries = Ids => {
-
     Ids.forEach(id => {
       this.setState(oldState => {
         // eslint-disable-next-line
         return {
-          entries: oldState.entries.filter(item => {
-            if (item.id !== id) {
-              return true;
-            } else {
-              //console.log(id + " was deleted from state.");
-              return false;
-            }
-          })
+          entries: oldState.entries.filter(
+            item => item.body.id !== id ? true : false
+          )
         };
       });
 
-      return;
+      //return; // skip backend
 
-      fetch(serverURL + "/entries/" + id, {
+      fetch(serverURL + "/entries/", {
         method: "DELETE",
-        //body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json"
-        }
+        body: JSON.stringify(Ids),
+        headers: header.headers
       })
         .then(res => {
           //console.log(res);
