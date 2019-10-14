@@ -16,6 +16,7 @@ import AddIcon from "@material-ui/icons/Add";
 import DuplicateIcon from "@material-ui/icons/ControlPointDuplicate";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import Tooltip from "@material-ui/core/Tooltip";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function dateComparator(date1, date2) {
   var date1Number = monthToComparableNumber(date1);
@@ -369,11 +370,12 @@ export default class DataTable extends Component {
   componentDidUpdate() { }
 
   render() {
+    const { classes } = this.props;
     return (
       <Consumer>
         {state => {
-          let entriesBody = (state.data.entries && state.data.entries.length) ? state.data.entries : [];
-          entriesBody = entriesBody.map(entry => entry.body);
+          let entriesBody = (state.data.entries && state.data.entries.length) ? state.data.entries : null;
+          entriesBody = entriesBody ? entriesBody.map(entry => entry.body) : null;
           console.log(entriesBody);
 
           //console.log(state);
@@ -509,6 +511,19 @@ export default class DataTable extends Component {
                   animateRows={true}
                 //editType="fullRow"
                 />
+
+                {state.data.isFetching && (
+                  <div style={{
+                    display: "grid",
+                    width: "100%",
+                    height: "100px",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}>
+                    <CircularProgress size={30} />
+                  </div>
+                )}
+                {console.log(state.data.isFetching)}
               </div>
             );
           }

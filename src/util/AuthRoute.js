@@ -11,7 +11,7 @@ const AuthRoute = ({
       {...rest}
       render={props =>
         authenticated === true ?
-          <ComponentAuthorized /> :
+          <ComponentAuthorized {...props} /> :
           <ComponentUnauthorized {...props} />
       }
     />

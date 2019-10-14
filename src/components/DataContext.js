@@ -83,7 +83,9 @@ export class DataProvider extends Component {
   }
 
   fetchFieldConfig = () => {
-    //return;
+    this.setState({
+      isFetching: true
+    })
 
     fetch(serverURL + "/fieldConfig", header)
       .then(res => res.json())
@@ -99,7 +101,9 @@ export class DataProvider extends Component {
   }
 
   fetchEntries = () => {
-    //return;
+    this.setState({
+      isFetching: true
+    })
 
     fetch(serverURL + "/entries", header)
       .then(res => res.json())
@@ -123,6 +127,10 @@ export class DataProvider extends Component {
     }));
 
     return;
+
+    this.setState({
+      isFetching: true
+    })
 
     fetch(serverURL + "/entries/" + id, {
       method: "POST",
@@ -158,6 +166,10 @@ export class DataProvider extends Component {
 
     //return; // skip backend
 
+    this.setState({
+      isFetching: true
+    })
+
     return fetch(serverURL + "/entries/", {
       method: "POST",
       body: JSON.stringify(data),
@@ -166,8 +178,10 @@ export class DataProvider extends Component {
       .then(res => {
         //console.log("new state: ", this.state.entries);
         if (res.ok) {
-          // nothing
-          // DO TO: save ID
+          this.setState({
+            isFetching: false
+          })
+
         } else {
           this.callSnackbar(this.state.strings.snackbar.entryaddederror);
         }
@@ -192,14 +206,20 @@ export class DataProvider extends Component {
 
       //return; // skip backend
 
+      this.setState({
+        isFetching: true
+      })
+
       fetch(serverURL + "/entries/", {
         method: "DELETE",
         body: JSON.stringify(Ids),
         headers: header.headers
       })
         .then(res => {
-          //console.log(res);
-          //console.log(id + " was deleted from db.");
+          this.setState({
+            isFetching: false
+          })
+
           if (res.ok) {
             // nothing
           } else {
@@ -235,6 +255,10 @@ export class DataProvider extends Component {
 
     return;
 
+    this.setState({
+      isFetching: true
+    })
+
     fetch(serverURL + "/fieldConfig", {
       method: "POST",
       body: JSON.stringify(newConfig),
@@ -243,6 +267,10 @@ export class DataProvider extends Component {
       }
     })
       .then(res => {
+        this.setState({
+          isFetching: false
+        })
+
         //console.log(newConfig);
         //console.log(res);
         if (res.ok) {
@@ -277,6 +305,10 @@ export class DataProvider extends Component {
 
     return;
 
+    this.setState({
+      isFetching: true
+    })
+
     fetch(serverURL + "/fieldConfig", {
       method: "POST",
       body: JSON.stringify(emptyFieldConfig),
@@ -286,7 +318,10 @@ export class DataProvider extends Component {
     })
       .then(res => {
         if (res.ok) {
-          // nothing
+          this.setState({
+            isFetching: false
+          })
+
         } else {
           this.callSnackbar(this.state.strings.snackbar.emptyentryaddederror);
         }
@@ -316,6 +351,11 @@ export class DataProvider extends Component {
 
     return;
 
+    this.setState({
+      isFetching: true
+    })
+
+
     fetch(serverURL + "/fieldConfig/" + id, {
       method: "DELETE",
       //body: JSON.stringify(data),
@@ -327,7 +367,10 @@ export class DataProvider extends Component {
         console.log(res);
         //console.log(id + " was deleted from db.");
         if (res.ok) {
-          // nothing
+          this.setState({
+            isFetching: false
+          })
+
         } else {
           this.callSnackbar(this.state.strings.snackbar.entrydeletederror);
         }
@@ -347,13 +390,20 @@ export class DataProvider extends Component {
 
     return;
 
+    this.setState({
+      isFetching: true
+    })
+
     fetch(serverURL + "/settings", {
       method: "POST",
       body: JSON.stringify(newSettings),
       headers: header.headers
     })
       .then(res => {
-        //console.log(res);
+        this.setState({
+          isFetching: false
+        })
+
         if (res.ok) {
           console.log("Net settings set successfully.");
         } else {
