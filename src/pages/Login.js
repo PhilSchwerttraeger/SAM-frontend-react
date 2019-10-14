@@ -64,6 +64,7 @@ class Login extends Component {
             // TODO: save token
           });
           this.props.history.push("/");
+          window.location.href = "/";
         } else {
           this.setState({
             errors: data,
