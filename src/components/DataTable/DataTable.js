@@ -99,10 +99,6 @@ export default class DataTable extends Component {
       };
 
       if (column.type === "select") {
-        columnConfig.cellEditor = "agSelectCellEditor";
-        columnConfig.cellEditorParams = {
-          values: column.values
-        };
         columnConfig.width = 110;
       }
 
@@ -116,7 +112,6 @@ export default class DataTable extends Component {
       if (column.type === "date") {
         columnConfig.comparator = dateComparator;
         columnConfig.filter = "agDateColumnFilter";
-        columnConfig.cellEditor = "datePicker";
         columnConfig.filterParams = {
           comparator: function (filterLocalDateAtMidnight, cellValue) {
             var dateAsString = cellValue;
@@ -152,10 +147,9 @@ export default class DataTable extends Component {
 
       // enable auto-complete (npm package) on pure text-typed fields
       if (column.type === "text") {
-        columnConfig.cellEditor = AutocompleteSelectCellEditor;
-
         columnConfig.comparator = textComparator;
 
+        /*
         // build fields array (with label and value child items)
         let autocompleteData = [];
         if (state.fields) {
@@ -222,14 +216,6 @@ export default class DataTable extends Component {
           // eslint-disable-next-line
           selectData: processedDataSet,
 
-          /*[
-                {
-                  label: 'Canada', 
-                  value: 'CA', 
-                  group: 'North America' 
-                }
-            ]*/
-
           placeholder: state.strings.datatable.autoCompleteSelect,
           autocomplete: {
             strict: false,
@@ -246,6 +232,8 @@ export default class DataTable extends Component {
           return "";
         };
         //columnConfig.editable = true;
+
+        */
 
         columnConfig.getQuickFilterText = params => {
           if (params.value) {
@@ -322,51 +310,16 @@ export default class DataTable extends Component {
     var params = {
       processCellCallback: cell => {
         console.log(cell);
-        if (cell.value.label) {
-          return cell.value.label;
-        } else return cell.value;
+        return cell.value;
       }
     };
     this.gridApi.exportDataAsCsv(params);
-  };
-
-  validateValueCell(value) {
-    if (typeof value === "string") {
-      value = Number(value);
-      //console.log("TypeCast: " + typeof(data.value));
-      //console.log(value);
-      if (isNaN(value))
-        this.setState({
-          showError: true
-        });
-      //alert("Invalid value input. Please insert Numbers with format 1337 or 1337.99 only.");
-    }
-  }
-
-  // cell in table modified -> update backend (DataContext)
-  onCellChanged = (state, e) => {
-    this.validateValueCell(e.data.value);
-    //console.log("e: ", e, " state: ", state);
-    state.updateEntry(e.data.id, e.data);
-  };
-
-  autoSizeColumns = () => {
-    //alert("autosized");
-    var allColumnIds = [];
-    this.gridColumnApi.getAllColumns().forEach(function (column) {
-      allColumnIds.push(column.colId);
-    });
-    this.gridColumnApi.autoSizeColumns(allColumnIds);
   };
 
   quickSearch = props => {
     //console.log(props.target.value);
     this.gridApi.setQuickFilter(props.target.value);
   };
-
-  componentDidMount() { }
-
-  componentDidUpdate() { }
 
   render() {
     const { classes } = this.props;
@@ -377,154 +330,109 @@ export default class DataTable extends Component {
           entriesBody = entriesBody ? entriesBody.map(entry => entry.body) : null;
           console.log(entriesBody);
 
-          //console.log(state);
-          //console.log(currentlyVisibleRowData);
-          //state.setCurrentlyVisibleRowData("jo");
-
-          if (
-            state.data === undefined ||
-            state.data.fieldConfig === undefined
-          ) {
-            // data not fetched yet, show spinner
-            return <Spinner />;
-          } else {
-            return (
-              <div
-                className="ag-theme-material"
-                style={{
-                  //height: '550px',
-                  //height: '100%',
-                  //width: 100%',
-                  paddingBottom: "10px"
-                }}
+          return (
+            <div
+              className="ag-theme-material"
+              style={{
+                //height: '550px',
+                //height: '100%',
+                //width: 100%',
+                paddingBottom: "10px"
+              }}
+            >
+              <Grid
+                container
+                justify="space-between"
+                direction="row"
+                alignItems="center"
               >
-                <Grid
-                  container
-                  justify="space-between"
-                  direction="row"
-                  alignItems="center"
-                >
-                  <Grid item>
-                    <Grid container>
-                      <Grid item>
-                        <Tooltip title={state.data.strings.datatable.add}>
-                          <IconButton
-                            variant="outlined"
-                            onClick={() => this.addNewItem(state)}
-                            color="primary"
-                          >
-                            <AddIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </Grid>
-
-                      <Grid item>
-                        <Tooltip title={state.data.strings.datatable.duplicate}>
-                          <IconButton
-                            variant="outlined"
-                            onClick={this.duplicateSelectedItem}
-                            color="primary"
-                          >
-                            <DuplicateIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </Grid>
-
-                      <Grid item>
-                        <Tooltip title={state.data.strings.datatable.delete}>
-                          <IconButton
-                            variant="outlined"
-                            onClick={() => this.deleteSelectedItem(state)}
-                            color="secondary"
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </Grid>
-
-                      <Grid item>
-                        <Tooltip title={state.data.strings.datatable.download}>
-                          <IconButton
-                            variant="outlined"
-                            onClick={this.downloadCSV}
-                            color="primary"
-                          >
-                            <SaveAltIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </Grid>
+                <Grid item>
+                  <Grid container>
+                    <Grid item>
+                      <Tooltip title={state.data.strings.datatable.add}>
+                        <IconButton
+                          variant="outlined"
+                          onClick={() => this.addNewItem(state)}
+                          color="primary"
+                        >
+                          <AddIcon />
+                        </IconButton>
+                      </Tooltip>
                     </Grid>
-                  </Grid>
 
-                  <Grid item />
-                  <Grid item>
-                    <Grid container alignItems="flex-end">
-                      <TextField
-                        id="standard-search"
-                        label="Search field"
-                        type="search"
-                        margin="none"
-                        onChange={this.quickSearch.bind(this)}
-                      />
+                    <Grid item>
+                      <Tooltip title={state.data.strings.datatable.duplicate}>
+                        <IconButton
+                          variant="outlined"
+                          onClick={this.duplicateSelectedItem}
+                          color="primary"
+                        >
+                          <DuplicateIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Grid>
+
+                    <Grid item>
+                      <Tooltip title={state.data.strings.datatable.delete}>
+                        <IconButton
+                          variant="outlined"
+                          onClick={() => this.deleteSelectedItem(state)}
+                          color="secondary"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Grid>
+
+                    <Grid item>
+                      <Tooltip title={state.data.strings.datatable.download}>
+                        <IconButton
+                          variant="outlined"
+                          onClick={this.downloadCSV}
+                          color="primary"
+                        >
+                          <SaveAltIcon />
+                        </IconButton>
+                      </Tooltip>
                     </Grid>
                   </Grid>
                 </Grid>
-                <AgGridReact
-                  //forwardRef="agGrid" // "React's id"
-                  domLayout="autoHeight"
-                  ref={this.dataTableRef}
-                  columnDefs={this.createColDef(state.data)}
-                  rowData={entriesBody}
-                  rowSelection="multiple"
-                  onGridReady={params => {
-                    this.gridApi = params.api;
-                    this.gridColumnApi = params.columnApi;
-                    //this.autoSizeColumns.bind(this);
-                  }}
-                  frameworkComponents={{
-                    datePicker: MaterialDatePicker
-                  }}
-                  onCellValueChanged={
-                    this.onCellChanged.bind(this, state)
-                    //this.autoSizeColumns.bind(this);
-                    //this.autoSizeColumns();
-                  }
-                  /*
-                  onFirstDataRendered={
-                    this.autoSizeColumns.bind(this)
-                  }
-                  */
-                  onModelUpdated={params => {
-                    this.gridApi = params.api;
-                    //this.gridApi.sizeColumnsToFit.bind(this);
-                    state.setSelectedEntries(
-                      this.gridApi.getModel().rowsToDisplay
-                    );
-                    //this.autoSizeColumns.bind(this);
-                  }}
-                  /*
-                  onRowDataUpdated={
-                    //this.autoSizeColumns.bind(this)
-                  }
-                  */
-                  animateRows={true}
-                //editType="fullRow"
-                />
 
-                {state.data.isFetching && (
-                  <div style={{
-                    display: "grid",
-                    width: "100%",
-                    height: "100px",
-                    justifyContent: "center",
-                    alignItems: "center"
-                  }}>
-                  </div>
-                )}
-                {console.log(state.data.isFetching)}
-              </div>
-            );
-          }
+                <Grid item />
+                <Grid item>
+                  <Grid container alignItems="flex-end">
+                    <TextField
+                      id="standard-search"
+                      label="Search field"
+                      type="search"
+                      margin="none"
+                      onChange={this.quickSearch.bind(this)}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <AgGridReact
+                domLayout="autoHeight"
+                columnDefs={this.createColDef(state.data)}
+                rowData={entriesBody}
+                rowSelection="multiple"
+                onGridReady={params => {
+                  this.gridApi = params.api;
+                  this.gridColumnApi = params.columnApi;
+                }}
+                frameworkComponents={{
+                  datePicker: MaterialDatePicker
+                }}
+                onModelUpdated={params => {
+                  this.gridApi = params.api;
+                  state.setSelectedEntries(
+                    this.gridApi.getModel().rowsToDisplay
+                  );
+                }}
+                animateRows={true}
+              />
+            </div>
+          );
         }}
       </Consumer>
     );
