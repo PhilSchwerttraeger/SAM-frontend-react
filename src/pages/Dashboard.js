@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Analysis from "../components/Analysis/Analysis";
 import DataTable from "../components/DataTable/DataTable";
 import NavBar from "../components/NavBar";
+import Entry from "../components/Modals/Entry"
 
 export default class Dashboard extends Component {
   render() {
@@ -17,6 +18,7 @@ export default class Dashboard extends Component {
           <Grid item xs={12}>
             <Paper style={{ padding: "16" }}>
               <DataTable />
+              <Entry />
             </Paper>
           </Grid>
         </Grid>
