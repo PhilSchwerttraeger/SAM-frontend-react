@@ -45,6 +45,7 @@ export class DataProvider extends Component {
       runtime: {
         visibleEntries: [],
         modals: {
+          showEntry: false,
           showInfo: false,
           showSettings: false
         }
@@ -162,6 +163,15 @@ export class DataProvider extends Component {
       return {
         entries: newEntries
       };
+    });
+    this.setState({
+      runtime: {
+        ...this.state.runtime,
+        modals: {
+          ...this.state.runtime.modals,
+          showEntry: true
+        }
+      }
     });
 
     //return; // skip backend
@@ -462,6 +472,21 @@ export class DataProvider extends Component {
     });
   };
 
+  toggleEntryModal = () => {
+    let newState = !this.state.runtime.modals.showEntry;
+    this.setState(oldState => {
+      return {
+        runtime: {
+          ...oldState.runtime,
+          modals: {
+            ...oldState.runtime.modals,
+            showEntry: newState
+          }
+        }
+      }
+    });
+  };
+
   toggleInfoModal = () => {
     let newState = !this.state.runtime.modals.showInfo;
     this.setState({
@@ -512,6 +537,7 @@ export class DataProvider extends Component {
       removeAnalysisFragment: this.removeAnalysisFragment,
       restoreAnalysisFragment: this.restoreAnalysisFragment,
 
+      toggleEntryModal: this.toggleEntryModal,
       toggleInfoModal: this.toggleInfoModal,
       toggleSettingsModal: this.toggleSettingsModal
     };
