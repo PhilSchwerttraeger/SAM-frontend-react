@@ -16,7 +16,6 @@ import AddIcon from "@material-ui/icons/Add";
 import DuplicateIcon from "@material-ui/icons/ControlPointDuplicate";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import Tooltip from "@material-ui/core/Tooltip";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 function dateComparator(date1, date2) {
   var date1Number = monthToComparableNumber(date1);
@@ -520,7 +519,6 @@ export default class DataTable extends Component {
                     justifyContent: "center",
                     alignItems: "center"
                   }}>
-                    <CircularProgress size={30} />
                   </div>
                 )}
                 {console.log(state.data.isFetching)}

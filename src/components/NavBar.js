@@ -13,6 +13,7 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import GitHubIcon from "../assets/GitHubIcon";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -67,6 +68,14 @@ export default class NavBar extends Component {
               <div style={{ flexGrow: 1 }} />
 
               <div style={{ display: "flex" }}>
+                {state.data.isFetching && (
+                  <Tooltip title={"Updating database"}>
+                    <div style={{ display: "grid", justifyContent: "center", alignItems: "center", padding: "0 1rem" }}>
+                      <CircularProgress color={"secondary"} size={24} />
+                    </div>
+                  </Tooltip>
+                )}
+
                 <Tooltip title={state.data.strings.titles.settings}>
                   <IconButton
                     color="inherit"
